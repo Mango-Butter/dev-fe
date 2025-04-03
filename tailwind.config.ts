@@ -75,7 +75,11 @@ const config: Config = {
 
       boxShadow: {
         "input-box": "2px 2px 8px 0px rgba(0, 0, 0, 0.25)",
+        "layout-box": "0px 8px 36px 0px rgba(0, 0, 0, 0.15)",
       },
+    },
+    fontFamily: {
+      sans: ["Pretendard", "sans-serif"], // 전역 기본 폰트 설정
     },
   },
   plugins: [],
