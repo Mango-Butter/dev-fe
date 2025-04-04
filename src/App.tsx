@@ -1,10 +1,19 @@
-import QrScanner from "./components/QrScanner.tsx";
+// 🌱 App.tsx
+import Step1 from "./components/Step1";
+import Step2 from "./components/Step2";
+import Step3 from "./components/Step3";
+import Step4 from "./components/Step4";
+import { useContractStore } from "./store/contractStore";
 
-export default function App() {
+function App() {
+  const step = useContractStore((s) => s.step);
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center bg-gray-100">
-      <h1 className="text-4xl font-bold text-blue-500">Mango-Butter</h1>
-      <QrScanner />
+    <div className="p-6">
+      {step === 1 && <Step1 />}
+      {step === 2 && <Step2 />}
+      {step === 3 && <Step3 />}
+      {step === 4 && <Step4 />}
     </div>
   );
 }
+export default App;
