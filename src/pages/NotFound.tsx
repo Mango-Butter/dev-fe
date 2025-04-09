@@ -1,12 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import MangoCharacter from "../components/MangoCharacter";
+import LogoIcon from "../components/icons/LogoIcon.tsx";
 
 const NotFound = () => {
   const navigate = useNavigate();
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen bg-[#FFFCE1] font-sans text-black">
-      <MangoCharacter className="animate-bounce [animation-delay:1s] [animation-duration:2s]" />
+      <LogoIcon
+        type={"icon"}
+        className="w-[140px] h-[140px] mb-10 animate-bounce [animation-delay:1s] [animation-duration:2s]"
+      />
 
       <div className="w-[100px] h-5 rounded-full bg-[#D2B04C] blur-sm mb-8 animate-pulse"></div>
 

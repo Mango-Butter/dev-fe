@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import MobileLayout from "./layouts/MobileLayout";
+import MobileLayout from "./components/layouts/MobileLayout";
 import Home from "./pages/Home";
 import Schedule from "./pages/Schedule";
 import Employees from "./pages/Employees";
