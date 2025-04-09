@@ -1,0 +1,148 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .scrollbar-hide {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none; /* Chrome, Safari and Opera */
+    }
+}
+
+@layer base {
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    html {
+        font-family:
+                "Pretendard Variable",
+                Pretendard,
+                -apple-system,
+                BlinkMacSystemFont,
+                system-ui,
+                Roboto,
+                "Helvetica Neue",
+                "Segoe UI",
+                "Apple SD Gothic Neo",
+                "Noto Sans KR",
+                "Malgun Gothic",
+                "Apple Color Emoji",
+                "Segoe UI Emoji",
+                "Segoe UI Symbol",
+                sans-serif;
+        font-weight: 400;
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    #check {
+        display: none;
+    }
+
+    input:focus {
+        outline: none;
+        border: 1px solid #fff;
+    }
+
+    /* 스크롤바 스타일링 */
+    ::-webkit-scrollbar {
+        width: 3px;
+        height: 3px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #cfcfcf;
+        border-radius: 4px;
+        opacity: 1;
+        transition: all 0.3s ease;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #909090;
+    }
+
+    /* 스크롤바 페이드 아웃 */
+    .scrollbar-fade::-webkit-scrollbar-thumb {
+        opacity: 0;
+        background: transparent;
+        transition: all 0.4s ease;
+    }
+}
+
+@layer components {
+
+    .heading-1 {
+        @apply text-[1.5rem] font-bold leading-[130%] tracking-[-0.0125rem];
+    }
+
+    .heading-2 {
+        @apply text-[1.25rem] font-semibold leading-[130%] tracking-[0rem];
+    }
+
+    .title-1 {
+        @apply text-[1rem] font-semibold leading-[150%] tracking-[0rem];
+    }
+
+    .body-1 {
+        @apply text-[1rem] font-medium leading-[150%] tracking-[0rem];
+    }
+
+    .title-2 {
+        @apply text-[0.875rem] font-semibold leading-[150%] tracking-[0rem];
+    }
+
+    .body-2 {
+        @apply text-[0.875rem] font-medium leading-[150%] tracking-[0rem];
+    }
+
+    .title-3 {
+        @apply text-[0.75rem] font-semibold leading-[150%] tracking-[0rem];
+    }
+
+    .body-3 {
+        @apply text-[0.75rem] font-medium leading-[150%] tracking-[0rem];
+    }
+
+    .title-4 {
+        @apply text-[0.625rem] font-semibold leading-[150%] tracking-[0rem];
+    }
+
+    .body-4 {
+        @apply text-[0.625rem] font-medium leading-[150%] tracking-[0rem];
+    }
+
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
