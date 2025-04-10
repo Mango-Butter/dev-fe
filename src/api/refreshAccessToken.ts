@@ -11,7 +11,7 @@ export async function refreshAccessToken(): Promise<string> {
   }
 
   try {
-    const res = await axiosInstance.patch("/api/users/reissue-token", {
+    const res = await axiosInstance.patch("/api/auth/reissue-token", {
       refreshToken,
     });
 
