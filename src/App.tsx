@@ -1,11 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import MobileLayout from "./layouts/MobileLayout";
+import MobileLayout from "./components/layouts/MobileLayout";
 import Home from "./pages/Home";
 import Schedule from "./pages/Schedule";
 import Employees from "./pages/Employees";
 import Task from "./pages/Task.tsx";
 import Store from "./pages/Store";
 import NotFound from "./pages/NotFound";
+import LoginSuccess from "./pages/auth/LoginSuccess.tsx";
+import Login from "./pages/auth/Login.tsx";
 
 //Todo: 추후 페이지 별 Lazy Loading 적용 예정
 function App() {
@@ -18,6 +20,8 @@ function App() {
           <Route path="employees" element={<Employees />} />
           <Route path="task" element={<Task />} />
           <Route path="store" element={<Store />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/loginSuccess" element={<LoginSuccess />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
