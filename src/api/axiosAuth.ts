@@ -1,8 +1,8 @@
-// src/api/axiosInstance.ts
+// src/api/axiosAuth.ts
 import axios from "axios";
 import { refreshAccessToken } from "./refreshAccessToken";
 
-const instance = axios.create({
+const axiosAuth = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   headers: {
     "Content-Type": "application/json",
@@ -11,7 +11,7 @@ const instance = axios.create({
 });
 
 // ✅ 요청 인터셉터: 토큰 자동 부착
-instance.interceptors.request.use((config) => {
+axiosAuth.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -20,7 +20,7 @@ instance.interceptors.request.use((config) => {
 });
 
 // ✅ 응답 인터셉터: 401이면 토큰 리프레시 → 재요청
-instance.interceptors.response.use(
+axiosAuth.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
@@ -31,7 +31,7 @@ instance.interceptors.response.use(
       try {
         const newToken = await refreshAccessToken();
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
-        return instance(originalRequest); // ✅ 재요청
+        return axiosAuth(originalRequest);
       } catch (refreshError) {
         return Promise.reject(refreshError);
       }
@@ -41,4 +41,4 @@ instance.interceptors.response.use(
   },
 );
 
-export default instance;
+export default axiosAuth;
