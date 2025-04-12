@@ -6,7 +6,7 @@ import LogoIcon from "../../components/icons/LogoIcon.tsx";
 const Login = () => {
   return (
     <div className="w-full h-full">
-      <div className="flex flex-col items-center justify-start min-h-full gap-4 py-[3.75rem] px-5">
+      <div className="flex flex-col items-center justify-start min-h-screen gap-4 py-[3.75rem] px-5">
         <div className="w-full flex flex-col gap-5 mb-20">
           <LogoIcon type="text" className="w-[162px] h-[31px]" />
           <div className="heading-2">
