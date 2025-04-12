@@ -15,20 +15,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Use Node.js 20
-        uses: actions/setup-node@v4
+      - name: Use Node.js 20 + pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
-
-      - name: Install pnpm
-        run: npm install -g pnpm
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Build React app
-        run: pnpm build
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            pnpm build:prod
+          elif [[ "${{ github.ref }}" == "refs/heads/test" ]]; then
+            pnpm build:test
+          else
+            pnpm build:dev
+          fi
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -38,8 +45,7 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: Sync to S3
-        run: |
-          aws s3 sync dist/ s3://$S3_BUCKET --delete
+        run: aws s3 sync dist/ s3://$S3_BUCKET --delete
         env:
           S3_BUCKET: ${{ github.ref == 'refs/heads/main' && secrets.AWS_S3_BUCKET
             || github.ref == 'refs/heads/test' && secrets.AWS_S3_BUCKET_TEST
