@@ -1,6 +1,6 @@
 // src/api/refreshAccessToken.ts
-import axiosInstance from "./axiosInstance";
-import { useAuthStore } from "../store/authStore.ts";
+import { useAuthStore } from "../store/authStore";
+import axiosBare from "./axiosBare.ts";
 
 export async function refreshAccessToken(): Promise<string> {
   const refreshToken = useAuthStore.getState().refreshToken;
@@ -11,13 +11,12 @@ export async function refreshAccessToken(): Promise<string> {
   }
 
   try {
-    const res = await axiosInstance.patch("/api/auth/reissue-token", {
+    const res = await axiosBare.patch("/api/auth/reissue-token", {
       refreshToken,
     });
 
     const newAccessToken = res.data.accessToken;
     useAuthStore.getState().setAccessToken(newAccessToken);
-
     return newAccessToken;
   } catch (error) {
     handleLogout("로그인이 만료되었습니다.");
