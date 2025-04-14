@@ -23,7 +23,11 @@ const LoginSuccess = () => {
         const user = await fetchUserProfile();
         setUser(user);
 
-        navigate("/");
+        if (user.role === "UNASSIGNED") {
+          navigate("/signup");
+        } else {
+          navigate("/");
+        }
       } catch (err) {
         alert("로그인 실패");
         navigate("/login");
