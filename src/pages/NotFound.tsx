@@ -7,7 +7,7 @@ const NotFound = () => {
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen bg-[#FFFCE1] font-sans text-black">
       <LogoIcon
-        type={"icon"}
+        theme="icon"
         className="w-[140px] h-[140px] mb-10 animate-bounce [animation-delay:1s] [animation-duration:2s]"
       />
 
