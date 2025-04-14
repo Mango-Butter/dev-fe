@@ -1,8 +1,15 @@
 import { NavLink } from "react-router-dom";
+import { useLayoutStore } from "../../stores/layoutStore.ts";
 
 const BottomNav = () => {
+  const { bottomNavVisible } = useLayoutStore();
+
   return (
-    <nav className="h-14 flex justify-around items-center bg-white border-t">
+    <nav
+      className={`h-14 ${
+        bottomNavVisible ? "flex" : "hidden"
+      } justify-around items-center bg-white border-t`}
+    >
       <NavLink
         to="/"
         className={({ isActive }) =>

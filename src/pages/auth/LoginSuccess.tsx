@@ -2,11 +2,17 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginWithKakaoCode } from "../../api/auth";
+import { useLayout } from "../../hooks/useLayout.ts";
 import { useAuthStore } from "../../stores/authStore";
 import { useUserStore } from "../../stores/userStore";
 import { fetchUserProfile } from "../../api/user";
 
 const LoginSuccess = () => {
+  useLayout({
+    headerVisible: false,
+    bottomNavVisible: false,
+  });
+
   const navigate = useNavigate();
   const setTokens = useAuthStore((state) => state.setTokens);
   const setUser = useUserStore((state) => state.setUser);

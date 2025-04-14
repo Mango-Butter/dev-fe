@@ -1,12 +1,6 @@
 // src/stores/userStore.ts
 import { create } from "zustand";
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  // 필요한 필드 추가
-}
+import { User } from "../types/user.ts";
 
 interface UserState {
   user: User | null;

@@ -1,10 +1,14 @@
-// src/pages/auth/Login.tsx
-import KakaoLoginButton from "../../components/common/KakaoLoginButton.tsx";
+// src/pages/signup/SignupStep1.tsx
 import Footer from "../../components/layouts/Footer.tsx";
 import LogoIcon from "../../components/icons/LogoIcon.tsx";
+import Button from "../../components/common/Button.tsx";
 import { useLayout } from "../../hooks/useLayout.ts";
 
-const Login = () => {
+interface SignupStep1Props {
+  onSelectType: (type: "사장님" | "알바생") => void;
+}
+
+const SignupStep1 = ({ onSelectType }: SignupStep1Props) => {
   useLayout({
     headerVisible: false,
     bottomNavVisible: false,
@@ -27,7 +31,24 @@ const Login = () => {
         </div>
         <div className="flex flex-col gap-8 w-full justify-center items-center">
           <LogoIcon theme="icon" className="w-[104px] h-[115px]" />
-          <KakaoLoginButton className="w-full" />
+          <div className="w-full flex flex-col gap-4">
+            <Button
+              theme="primary"
+              size="md"
+              className="w-full text-grayscale-800"
+              onClick={() => onSelectType("사장님")}
+            >
+              사장님 회원가입하기
+            </Button>
+            <Button
+              theme="primary"
+              size="md"
+              className="w-full text-grayscale-800"
+              onClick={() => onSelectType("알바생")}
+            >
+              알바생 회원가입하기
+            </Button>
+          </div>
         </div>
       </div>
       <Footer />
@@ -35,4 +56,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignupStep1;
