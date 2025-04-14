@@ -1,5 +1,5 @@
 // src/api/refreshAccessToken.ts
-import { useAuthStore } from "../store/authStore";
+import { useAuthStore } from "../stores/authStore";
 import axiosBare from "./axiosBare.ts";
 
 export async function refreshAccessToken(): Promise<string> {

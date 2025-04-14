@@ -5,12 +5,9 @@ import { LoginResponse } from "../types/auth";
 export const loginWithKakaoCode = async (
   authorizationCode: string,
 ): Promise<LoginResponse> => {
-  const res = await axiosBare.post("/api/auth/login/kakao", {
+  const res = await axiosBare.post<LoginResponse>("/api/auth/login/kakao", {
     authorizationCode,
   });
 
-  return {
-    accessToken: res.data.accessToken,
-    refreshToken: res.data.refreshToken,
-  };
+  return res.data;
 };
