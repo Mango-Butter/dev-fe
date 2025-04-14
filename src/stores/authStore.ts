@@ -1,5 +1,6 @@
 // src/stores/authStore.ts
 import { create } from "zustand";
+import { useUserStore } from "./userStore";
 
 interface AuthState {
   accessToken: string | null;
@@ -27,6 +28,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   logout: () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    useUserStore.getState().clearUser();
     set({ accessToken: null, refreshToken: null });
   },
 }));
