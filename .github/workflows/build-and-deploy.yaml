@@ -19,6 +19,7 @@ jobs:
         uses: pnpm/action-setup@v2
         with:
           version: 8
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -26,6 +27,19 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+
+      - name: Inject environment variables
+        run: |
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env
+          echo "VITE_KAKAO_JS_KEY=${{ secrets.VITE_KAKAO_JS_KEY }}" >> .env
+
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "VITE_KAKAO_REDIRECT_URI=${{ secrets.VITE_KAKAO_REDIRECT_URI_PROD }}" >> .env.production
+          elif [ "${{ github.ref }}" = "refs/heads/test" ]; then
+            echo "VITE_KAKAO_REDIRECT_URI=${{ secrets.VITE_KAKAO_REDIRECT_URI_TEST }}" >> .env.test
+          else
+            echo "VITE_KAKAO_REDIRECT_URI=${{ secrets.VITE_KAKAO_REDIRECT_URI_DEV }}" >> .env.development
+          fi
 
       - name: Build React app
         run: |
@@ -36,7 +50,6 @@ jobs:
           else
             pnpm build:dev
           fi
-      
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
