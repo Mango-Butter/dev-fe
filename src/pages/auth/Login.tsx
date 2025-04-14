@@ -2,13 +2,19 @@
 import KakaoLoginButton from "../../components/common/KakaoLoginButton.tsx";
 import Footer from "../../components/layouts/Footer.tsx";
 import LogoIcon from "../../components/icons/LogoIcon.tsx";
+import { useLayout } from "../../hooks/useLayout.ts";
 
 const Login = () => {
+  useLayout({
+    headerVisible: false,
+    bottomNavVisible: false,
+  });
+
   return (
     <div className="w-full h-full">
       <div className="flex flex-col items-center justify-start min-h-screen gap-4 py-[3.75rem] px-5">
         <div className="w-full flex flex-col gap-5 mb-20">
-          <LogoIcon type="text" className="w-[162px] h-[31px]" />
+          <LogoIcon theme="text" className="w-[162px] h-[31px]" />
           <div className="heading-2">
             소상공인 사장님들을 위한
             <br />
@@ -20,7 +26,7 @@ const Login = () => {
           </div>
         </div>
         <div className="flex flex-col gap-8 w-full justify-center items-center">
-          <LogoIcon type="icon" className="w-[104px] h-[115px]" />
+          <LogoIcon theme="icon" className="w-[104px] h-[115px]" />
           <KakaoLoginButton className="w-full" />
         </div>
       </div>

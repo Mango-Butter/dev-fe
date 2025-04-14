@@ -1,14 +1,14 @@
 import { FC } from "react";
 
 type LogoIconProps = {
-  type: "icon" | "text" | "full";
+  theme: "icon" | "text" | "full";
   className?: string;
 };
 
 const LogoSvg: FC<{ className?: string }> = ({ className = "" }) => (
   <svg
-    width="192"
-    height="192"
+    width={192}
+    height={192}
     viewBox="0 0 192 192"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -37,8 +37,8 @@ const LogoSvg: FC<{ className?: string }> = ({ className = "" }) => (
     <ellipse cx="95.9999" cy="96" rx="28.9032" ry="29.5385" fill="#131313" />
     <ellipse cx="30.9677" cy="96" rx="28.9032" ry="29.5385" fill="#131313" />
     <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
+      fillRule="evenodd"
+      clipRule="evenodd"
       d="M91.1023 125.116L103.62 67.4989C108.667 68.9048 113.164 71.6733 116.709 75.3936L106.227 123.636C103.048 124.865 99.6009 125.538 96 125.538C94.3306 125.538 92.6943 125.394 91.1023 125.116Z"
       fill="#6B6B6B"
     />
@@ -51,6 +51,8 @@ const LogoSvg: FC<{ className?: string }> = ({ className = "" }) => (
 
 const TextSvg: FC<{ className?: string }> = ({ className = "" }) => (
   <svg
+    width={160}
+    height={24}
     viewBox="0 0 160 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -69,6 +71,8 @@ const TextSvg: FC<{ className?: string }> = ({ className = "" }) => (
 
 const FullSvg: FC<{ className?: string }> = ({ className = "" }) => (
   <svg
+    width={200}
+    height={31}
     viewBox="0 0 200 31"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -90,8 +94,8 @@ const FullSvg: FC<{ className?: string }> = ({ className = "" }) => (
     <ellipse cx="15.9999" cy="15.5" rx="4.66667" ry="4.76923" fill="#131313" />
     <ellipse cx="5.49992" cy="15.5" rx="4.66667" ry="4.76923" fill="#131313" />
     <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
+      fillRule="evenodd"
+      clipRule="evenodd"
       d="M15.2092 20.2011L17.2303 10.8983C18.0452 11.1253 18.7712 11.5723 19.3436 12.173L17.6513 19.9621C17.138 20.1606 16.5814 20.2693 16 20.2693C15.7305 20.2693 15.4663 20.2459 15.2092 20.2011Z"
       fill="#6B6B6B"
     />
@@ -110,8 +114,8 @@ const FullSvg: FC<{ className?: string }> = ({ className = "" }) => (
   </svg>
 );
 
-const LogoIcon: FC<LogoIconProps> = ({ type, className }) => {
-  switch (type) {
+const LogoIcon: FC<LogoIconProps> = ({ theme, className }) => {
+  switch (theme) {
     case "icon":
       return <LogoSvg className={className} />;
     case "text":
