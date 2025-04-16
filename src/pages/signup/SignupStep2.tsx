@@ -4,22 +4,23 @@ import TextField from "../../components/common/TextField.tsx";
 import Checkbox from "../../components/common/Checkbox.tsx";
 import Button from "../../components/common/Button.tsx";
 import ArrowIcon from "../../components/icons/ArrowIcon.tsx";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { SignupFormValues, signupSchema } from "../../schemas/signupSchema.ts";
 import { useGeolocationPermission } from "../../hooks/useGeolocationPermission.ts";
 import { useCameraPermission } from "../../hooks/useCameraPermission.ts";
 import { useLayout } from "../../hooks/useLayout.ts";
 import { useUserStore } from "../../stores/userStore.ts";
 import { useAuth } from "../../hooks/useAuth.ts";
+import { signup } from "../../api/auth.ts";
 
 interface SignupStep2Props {
-  userType: "사장님" | "알바생" | null;
+  role: "BOSS" | "STAFF";
   onBack: () => void;
 }
 
-const SignupStep2 = ({ userType, onBack }: SignupStep2Props) => {
+const SignupStep2 = ({ role, onBack }: SignupStep2Props) => {
   useLayout({
-    title: `${userType} 회원가입`,
+    title: `${role === "BOSS" ? "사장님" : "알바생"} 회원가입`,
     theme: "plain",
     headerVisible: true,
     bottomNavVisible: false,
@@ -29,6 +30,7 @@ const SignupStep2 = ({ userType, onBack }: SignupStep2Props) => {
 
   const { isLoggedIn, isLoading } = useAuth();
   const { user } = useUserStore();
+  const navigate = useNavigate();
 
   if (isLoading) return <div>로딩 중...</div>;
   if (!isLoggedIn || !user) return <Navigate to="/login" replace />;
@@ -47,6 +49,7 @@ const SignupStep2 = ({ userType, onBack }: SignupStep2Props) => {
       phone: user.phone,
       email: user.email,
       birth: user.birth,
+      role,
       isAgreeTerms: false,
       isAgreePrivacy: false,
       isAgreeLocation: false,
@@ -96,9 +99,16 @@ const SignupStep2 = ({ userType, onBack }: SignupStep2Props) => {
       },
     });
 
-  const onSubmit = (data: SignupFormValues) => {
-    console.log("제출된 데이터 ✅", data);
-    // 다음 단계 라우팅 or 상태 저장
+  // 회원가입 처리
+  const onSubmit = async (data: SignupFormValues) => {
+    if (!data.role) return;
+    try {
+      await signup(data.role);
+      navigate("/");
+    } catch (error) {
+      console.error("회원가입 실패", error);
+      alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
@@ -283,7 +293,7 @@ const SignupStep2 = ({ userType, onBack }: SignupStep2Props) => {
         disabled={!isValid}
         className="w-full text-black"
       >
-        가입하기
+        {role === "BOSS" ? "사장님" : "알바생"}으로 가입하기
       </Button>
     </form>
   );

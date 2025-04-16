@@ -5,11 +5,11 @@ import SignupStep2 from "./SignupStep2";
 
 const Signup = () => {
   const [step, setStep] = useState<1 | 2>(1);
-  const [userType, setUserType] = useState<"사장님" | "알바생" | null>(null);
+  const [role, setRole] = useState<"BOSS" | "STAFF">("BOSS");
 
   // Step1에서 회원 유형 선택 시 호출
-  const handleSelectType = (type: "사장님" | "알바생") => {
-    setUserType(type);
+  const handleSelectRole = (role: "BOSS" | "STAFF") => {
+    setRole(role);
     setStep(2);
   };
 
@@ -20,10 +20,8 @@ const Signup = () => {
 
   return (
     <>
-      {step === 1 && <SignupStep1 onSelectType={handleSelectType} />}
-      {step === 2 && (
-        <SignupStep2 userType={userType} onBack={handleBackToStep1} />
-      )}
+      {step === 1 && <SignupStep1 onSelectRole={handleSelectRole} />}
+      {step === 2 && <SignupStep2 role={role} onBack={handleBackToStep1} />}
     </>
   );
 };

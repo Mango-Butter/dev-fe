@@ -5,10 +5,10 @@ import Button from "../../components/common/Button.tsx";
 import { useLayout } from "../../hooks/useLayout.ts";
 
 interface SignupStep1Props {
-  onSelectType: (type: "사장님" | "알바생") => void;
+  onSelectRole: (role: "BOSS" | "STAFF") => void;
 }
 
-const SignupStep1 = ({ onSelectType }: SignupStep1Props) => {
+const SignupStep1 = ({ onSelectRole }: SignupStep1Props) => {
   useLayout({
     headerVisible: false,
     bottomNavVisible: false,
@@ -35,16 +35,16 @@ const SignupStep1 = ({ onSelectType }: SignupStep1Props) => {
             <Button
               theme="primary"
               size="md"
-              className="w-full text-grayscale-800"
-              onClick={() => onSelectType("사장님")}
+              className="w-full text-grayscale-900"
+              onClick={() => onSelectRole("BOSS")}
             >
               사장님 회원가입하기
             </Button>
             <Button
               theme="primary"
               size="md"
-              className="w-full text-grayscale-800"
-              onClick={() => onSelectType("알바생")}
+              className="w-full text-grayscale-900"
+              onClick={() => onSelectRole("STAFF")}
             >
               알바생 회원가입하기
             </Button>
