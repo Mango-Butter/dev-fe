@@ -201,7 +201,7 @@ const SignupStep2 = ({ role, onBack }: SignupStep2Props) => {
               required
               icon={
                 <Link
-                  to="https://docs.google.com/document/d/15DNZV6lv6GqLtyQME6NiCqqBvGxY8BSvxJbIJDiKaQQ/edit"
+                  to="https://docs.google.com/document/d/1sFIlp430W6V1SOnA6BL4OBlDG8LnfY7m5spCOdyNmMk/edit?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="my-auto"
@@ -224,7 +224,7 @@ const SignupStep2 = ({ role, onBack }: SignupStep2Props) => {
               required
               icon={
                 <Link
-                  to="https://docs.google.com/document/d/1iyz6mA52xL4UzaHPGam8MDuRtiNv9r0qiKbRokENji4/edit"
+                  to="https://docs.google.com/document/d/1JLk4JOV_wgg7WVzACsP9jcblS-jMPQl4B_QcNbVyQAw/edit?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="my-auto"
