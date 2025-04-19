@@ -5,6 +5,7 @@ export const signupSchema = z.object({
   phone: z.string(),
   email: z.string(),
   birth: z.string(),
+  role: z.enum(["BOSS", "STAFF"]),
   isAgreeTerms: z.boolean().refine((val) => val, {
     message: "서비스 이용약관에 동의해주세요.",
   }),
