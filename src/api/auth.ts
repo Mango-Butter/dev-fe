@@ -16,5 +16,5 @@ export const loginWithKakaoCode = async (
 
 // 회원가입(역할 등록)
 export const signup = async (role: "BOSS" | "STAFF") => {
-  await axiosAuth.post("/api/auth/sign-up", { role });
+  await axiosAuth.post("/api/users/sign-up", { role });
 };
