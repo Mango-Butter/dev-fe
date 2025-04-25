@@ -13,6 +13,7 @@
     "preview": "vite preview --mode production",
     "lint": "eslint ."
   },
+
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
     "axios": "^1.8.4",

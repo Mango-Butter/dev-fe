@@ -40,6 +40,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/loginSuccess" element={<LoginSuccess />} />
           </Route>
+
           {/* ✅ 404 페이지 */}
           <Route path="*" element={<NotFound />} />
         </Route>
