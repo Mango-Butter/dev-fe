@@ -4,12 +4,10 @@ import AccountIcon from "../icons/AccountIcon.tsx";
 import AlarmIcon from "../icons/AlarmIcon.tsx";
 import ArrowIcon from "../icons/ArrowIcon.tsx";
 import LogoIcon from "../icons/LogoIcon.tsx";
-import { useUserStore } from "../../stores/userStore";
 import { useLayoutStore } from "../../stores/layoutStore.ts";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
-  const user = useUserStore((state) => state.user);
   const { headerVisible, title, theme, rightIcon, onBack } = useLayoutStore();
 
   const handleBack = onBack ?? (() => navigate(-1));
@@ -47,7 +45,6 @@ const Header: React.FC = () => {
             </button>
             <button aria-label="마이페이지">
               <AccountIcon className="w-6 h-6" />
-              {user?.name ? ` (${user.name})` : ""}
             </button>
           </>
         ) : (

@@ -12,6 +12,7 @@ import { useLayout } from "../../hooks/useLayout.ts";
 import { useUserStore } from "../../stores/userStore.ts";
 import { useAuth } from "../../hooks/useAuth.ts";
 import { signup } from "../../api/auth.ts";
+import { useAuthStore } from "../../stores/authStore.ts";
 
 interface SignupStep2Props {
   role: "BOSS" | "STAFF";
@@ -99,15 +100,20 @@ const SignupStep2 = ({ role, onBack }: SignupStep2Props) => {
       },
     });
 
-  // 회원가입 처리
   const onSubmit = async (data: SignupFormValues) => {
     if (!data.role) return;
+
     try {
-      await signup(data.role);
+      const { accessToken, refreshToken } = await signup(data.role);
+      useAuthStore.getState().setTokens(accessToken, refreshToken);
       navigate("/");
-    } catch (error) {
-      console.error("회원가입 실패", error);
-      alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+    } catch (error: any) {
+      if (error.response?.status === 409) {
+        alert("이미 가입된 사용자입니다.");
+      } else {
+        console.error("회원가입 실패", error);
+        alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+      }
     }
   };
 
