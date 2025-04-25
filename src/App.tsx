@@ -4,7 +4,7 @@ import PublicRoute from "./routes/PublicRoute";
 import AppInitializer from "./routes/AppInitializer.tsx";
 import MobileLayout from "./components/layouts/MobileLayout";
 import Home from "./pages/Home";
-import Schedule from "./pages/Schedule";
+import Schedule from "./pages/schedule/Schedule.tsx";
 import Employees from "./pages/Employees";
 import Task from "./pages/Task";
 import Store from "./pages/Store";
