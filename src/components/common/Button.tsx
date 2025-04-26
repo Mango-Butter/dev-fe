@@ -2,7 +2,7 @@ import { cn } from "../../libs";
 import { cva } from "class-variance-authority";
 
 const buttonVariants = cva(
-  "justify-center items-center gap-[0.5rem] rounded-lg inline-flex",
+  "justify-center min-w-fit items-center gap-[0.5rem] rounded-lg inline-flex",
   {
     variants: {
       size: {
