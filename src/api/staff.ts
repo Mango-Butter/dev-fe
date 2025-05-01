@@ -1,5 +1,9 @@
 import axiosAuth from "./axiosAuth";
-import { RegularSchedule, CreateRegularScheduleDto } from "../types/staff.ts";
+import {
+  RegularSchedule,
+  CreateRegularScheduleDto,
+  StaffBrief,
+} from "../types/staff.ts";
 
 export const createRegularSchedules = async (
   storeId: number,
@@ -32,4 +36,13 @@ export const deleteRegularSchedule = async (
     `/api/boss/stores/${storeId}/staffs/${staffId}/regular/${regularId}`,
   );
   return response.data;
+};
+
+export const getStaffBriefList = async (
+  storeId: number,
+): Promise<StaffBrief[]> => {
+  const response = await axiosAuth.get(
+    `/api/boss/stores/${storeId}/staffs/brief`,
+  );
+  return response.data.result;
 };

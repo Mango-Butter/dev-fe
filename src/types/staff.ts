@@ -23,8 +23,8 @@ export const weekdayKorean: Record<DayOfWeek, string> = {
 // POST 요청용
 export interface CreateRegularScheduleDto {
   dayOfWeek: DayOfWeek;
-  repeatStartDate: string; // YYYY-MM-DD
-  repeatEndDate: string; // YYYY-MM-DD
+  startDate: string; // YYYY-MM-DD
+  endDate: string; // YYYY-MM-DD
   startTime: string; // HH:mm
   endTime: string; // HH:mm
 }
@@ -37,4 +37,10 @@ export interface RegularSchedule {
   endTime: string; // HH:mm:ss
   startDate: string; // YYYY-MM-DD
   endDate: string; // YYYY-MM-DD
+}
+
+export interface StaffBrief {
+  staffId: number;
+  name: string;
+  profileImageUrl: string;
 }

@@ -69,8 +69,8 @@ const ScheduleAddForm = () => {
     const [startDateObj, endDateObj] = data.range;
     if (!startDateObj || !endDateObj) return;
 
-    const repeatStartDate = startDateObj.toISOString().slice(0, 10);
-    const repeatEndDate = endDateObj.toISOString().slice(0, 10);
+    const startDate = startDateObj.toISOString().slice(0, 10);
+    const endDate = endDateObj.toISOString().slice(0, 10);
 
     const payload: CreateRegularScheduleDto[] = data.selectedDays.map((day) => {
       const time = data.timeMap[day];
@@ -78,8 +78,8 @@ const ScheduleAddForm = () => {
 
       return {
         dayOfWeek: day,
-        repeatStartDate,
-        repeatEndDate,
+        startDate,
+        endDate,
         startTime: time.startTime,
         endTime: time.endTime,
       };
