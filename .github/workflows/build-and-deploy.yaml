@@ -3,8 +3,7 @@ name: Build and Deploy to S3 + CloudFront
 on:
   push:
     branches:
-      - main
-      - test
+      - main  # 메인 브랜치에 푸시될 때만 배포 실행
 
 jobs:
   deploy:
@@ -14,32 +13,62 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Use Node.js 20
-        uses: actions/setup-node@v4
+      - name: Use Node.js 20 + pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: yarn install
+        run: pnpm install
+
+      - name: Inject environment variables
+        run: |
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env
+          echo "VITE_KAKAO_JS_KEY=${{ secrets.VITE_KAKAO_JS_KEY }}" >> .env
+
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "VITE_KAKAO_REDIRECT_URI=${{ secrets.VITE_KAKAO_REDIRECT_URI_PROD }}" >> .env.production
+          elif [ "${{ github.ref }}" = "refs/heads/test" ]; then
+            echo "VITE_KAKAO_REDIRECT_URI=${{ secrets.VITE_KAKAO_REDIRECT_URI_TEST }}" >> .env.test
+          else
+            echo "VITE_KAKAO_REDIRECT_URI=${{ secrets.VITE_KAKAO_REDIRECT_URI_DEV }}" >> .env.development
+          fi
 
       - name: Build React app
-        run: yarn build
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            pnpm build:prod
+          elif [ "${{ github.ref }}" = "refs/heads/test" ]; then
+            pnpm build:test
+          else
+            pnpm build:dev
+          fi
 
-      - name: Upload to S3
-        uses: jakejarvis/s3-sync-action@master
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
         with:
-          args: --delete
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Sync to S3
+        run: aws s3 sync dist/ s3://$S3_BUCKET --delete
         env:
-          AWS_S3_BUCKET: ${{ github.ref == 'refs/heads/main' && secrets.AWS_S3_BUCKET || secrets.AWS_S3_BUCKET_TEST }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ap-northeast-2
-          SOURCE_DIR: dist
+          S3_BUCKET: ${{ github.ref == 'refs/heads/main' && secrets.AWS_S3_BUCKET
+            || github.ref == 'refs/heads/test' && secrets.AWS_S3_BUCKET_TEST
+            || secrets.AWS_S3_BUCKET_DEV }}
 
       - name: Invalidate CloudFront cache
         uses: chetan/invalidate-cloudfront-action@v2
         env:
-          DISTRIBUTION: ${{ github.ref == 'refs/heads/main' && secrets.CLOUDFRONT_DISTRIBUTION_ID || secrets.CLOUDFRONT_DISTRIBUTION_ID_TEST }}
+          DISTRIBUTION: ${{ github.ref == 'refs/heads/main' && secrets.CLOUDFRONT_DISTRIBUTION_ID
+            || github.ref == 'refs/heads/test' && secrets.CLOUDFRONT_DISTRIBUTION_ID_TEST
+            || secrets.CLOUDFRONT_DISTRIBUTION_ID_DEV }}
           PATHS: '/*'
           AWS_REGION: ap-northeast-2
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
