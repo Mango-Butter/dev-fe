@@ -1,4 +1,4 @@
-.schedule-page-calendar .react-calendar {
+.schedule-page-calendar {
     width: 100%;
     background: white;
     border: none !important;
@@ -26,7 +26,7 @@
 
 .schedule-page-calendar .react-calendar__navigation__arrow {
     width: 32px;
-    height: 32px;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -89,37 +89,32 @@
 }
 
 /* dot 표시 */
-.schedule-page-calendar .dot-container {
+.schedule-page-calendar .calendar-dot-layer {
     position: absolute;
     bottom: 4px;
+    width: 100%;
     display: flex;
     justify-content: center;
     gap: 3px;
-    width: 100%;
     pointer-events: none;
 }
 
-.schedule-page-calendar .dot {
+/* 스케줄용 점 (오늘 포함 미래만 표시) */
+.schedule-page-calendar .calendar-dot--schedule {
     width: 5px;
     height: 5px;
     border-radius: 50%;
+    background-color: #9ca3af; /* gray-400 */
 }
 
-.dot-green {
-    background-color: #22c55e; /* 출근 */
+/* 추후 추가할 예시: 근태용 dot */
+.schedule-page-calendar .calendar-dot--attendance {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: #3b82f6; /* 예시: blue-500 */
 }
-.dot-yellow {
-    background-color: #facc15; /* 지각 */
-}
-.dot-red {
-    background-color: #ef4444; /* 결근 */
-}
-.dot-blue {
-    background-color: #3b82f6; /* 추가근무 */
-}
-.dot-gray {
-    background-color: #9ca3af; /* 출근 전 */
-}
+
 
 /* 요일 색상 */
 .schedule-page-calendar .sunday abbr {

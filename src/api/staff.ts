@@ -1,49 +1,35 @@
 import axiosAuth from "./axiosAuth";
+import { RegularSchedule, CreateRegularScheduleDto } from "../types/staff.ts";
 
-export const getStaffList = (storeId: number) =>
-  axiosAuth.get(`/api/boss/stores/${storeId}/staff`);
-
-export const getStaff = (storeId: number, staffId: number) =>
-  axiosAuth.get(`/api/boss/stores/${storeId}/staffs/${staffId}`);
-
-export const getStaffDocuments = (storeId: number, staffId: number) =>
-  axiosAuth.get(`/api/boss/stores/${storeId}/staffs/${staffId}/documents`);
-
-export const getStaffAttendances = (
+export const createRegularSchedules = async (
   storeId: number,
   staffId: number,
-  date: string,
-) =>
-  axiosAuth.get(`/api/boss/stores/${storeId}/staffs/${staffId}/attendences`, {
-    params: { date },
-  });
+  schedules: CreateRegularScheduleDto[],
+): Promise<void> => {
+  const response = await axiosAuth.post(
+    `/api/boss/stores/${storeId}/staffs/${staffId}/regular`,
+    schedules,
+  );
+  return response.data;
+};
 
-export const getStaffSchedules = (
+export const getRegularSchedules = async (
   storeId: number,
   staffId: number,
-  date: string,
-) =>
-  axiosAuth.get(`/api/boss/stores/${storeId}/staffs/${staffId}/schedules`, {
-    params: { date },
-  });
+): Promise<RegularSchedule[]> => {
+  const response = await axiosAuth.get(
+    `/api/boss/stores/${storeId}/staffs/${staffId}/regular`,
+  );
+  return response.data.result;
+};
 
-export const getStaffRegular = (storeId: number, staffId: number) =>
-  axiosAuth.get(`/api/boss/stores/${storeId}/staffs/${staffId}/regular`);
-
-export const createStaffRegular = (
-  storeId: number,
-  staffId: number,
-  data: any,
-) =>
-  axiosAuth.post(`/api/boss/stores/${storeId}/staffs/${staffId}/regular`, data);
-
-export const updateStaffRegular = (
+export const deleteRegularSchedule = async (
   storeId: number,
   staffId: number,
   regularId: number,
-  data: any,
-) =>
-  axiosAuth.put(
+): Promise<void> => {
+  const response = await axiosAuth.delete(
     `/api/boss/stores/${storeId}/staffs/${staffId}/regular/${regularId}`,
-    data,
   );
+  return response.data;
+};
