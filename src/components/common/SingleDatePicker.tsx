@@ -4,6 +4,7 @@ import { formatFullDate } from "../../utils/date";
 import ArrowIcon from "../icons/ArrowIcon";
 import TextField from "./TextField.tsx";
 import CalendarIcon from "../icons/CalendarIcon.tsx";
+import "../../styles/datePickerCalendar.css";
 
 interface SingleDatePickerProps {
   value: Date | null;
@@ -61,7 +62,7 @@ export default function SingleDatePicker({
       />
 
       {open && (
-        <div className="absolute z-10 mt-2 w-fit">
+        <div className="date-picker-calendar absolute z-10 mt-2 w-fit">
           <Calendar
             calendarType="gregory"
             value={value}
