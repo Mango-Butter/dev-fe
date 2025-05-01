@@ -70,11 +70,11 @@ const SingleScheduleAddForm = () => {
           {[1, 2, 3, 4, 5].map((id) => (
             <li key={id} className="flex flex-col items-center">
               <img
-                src={`/dummy/avatar${id}.jpg`}
+                src={`https://i.pravatar.cc/48?img=${id}`}
                 alt={`avatar-${id}`}
                 className="h-12 w-12 rounded-full object-cover"
               />
-              <span className="text-xs mt-1">이름{id}</span>
+              <span className="text-xs mt-1">알바생 {id}</span>
             </li>
           ))}
         </ul>
