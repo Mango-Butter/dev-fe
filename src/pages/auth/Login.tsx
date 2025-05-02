@@ -3,6 +3,41 @@ import KakaoLoginButton from "../../components/common/KakaoLoginButton.tsx";
 import Footer from "../../components/layouts/Footer.tsx";
 import LogoIcon from "../../components/icons/LogoIcon.tsx";
 import { useLayout } from "../../hooks/useLayout.ts";
+import AccountIcon from "../../components/icons/AccountIcon.tsx";
+import AlarmIcon from "../../components/icons/AlarmIcon.tsx";
+import ArrowIcon from "../../components/icons/ArrowIcon.tsx";
+import CloseIcon from "../../components/icons/CloseIcon.tsx";
+import ErrorIcon from "../../components/icons/ErrorIcon.tsx";
+import {
+  CheckboxFilled,
+  CheckboxOff,
+  CheckboxOn,
+} from "../../components/icons/CheckboxIcon.tsx";
+import EditIcon from "../../components/icons/EditIcon.tsx";
+import DownloadIcon from "../../components/icons/DownloadIcon.tsx";
+import {
+  RadioGray,
+  RadioOff,
+  RadioPrimary,
+  RadioSecondary,
+} from "../../components/icons/RadioIcon.tsx";
+import ImageIcon from "../../components/icons/ImageIcon.tsx";
+import ResetIcon from "../../components/icons/ResetIcon.tsx";
+import TimeIcon from "../../components/icons/TimeIcon.tsx";
+import UploadIcon from "../../components/icons/UploadIcon.tsx";
+import {
+  BusinessOff,
+  BusinessOn,
+} from "../../components/icons/BusinessIcon.tsx";
+import { StoreOff, StoreOn } from "../../components/icons/StoreIcon.tsx";
+import { CoinOff, CoinOn } from "../../components/icons/CoinIcon.tsx";
+import { HomeOff, HomeOn } from "../../components/icons/HomeIcon.tsx";
+import { PersonOff, PersonOn } from "../../components/icons/PersonIcon.tsx";
+import {
+  CalendarOff,
+  CalendarOn,
+} from "../../components/icons/CalendarIcon.tsx";
+import { CameraOff, CameraOn } from "../../components/icons/CameraIcon.tsx";
 
 const Login = () => {
   useLayout({
@@ -23,6 +58,39 @@ const Login = () => {
           <div className="body-2 text-grayscale-500">
             <span className="text-primary-900">1분</span>이면 간편하게 서비스를
             이용해 보세요!
+            <AccountIcon />
+            <AlarmIcon />
+            <ArrowIcon direction={"up"} />
+            <CheckboxFilled />
+            <CheckboxOff />
+            <CheckboxOn />
+            <EditIcon />
+            <DownloadIcon />
+            <CloseIcon />
+            <ErrorIcon />
+            <LogoIcon theme={"icon"} />
+            <RadioOff />
+            <RadioGray />
+            <RadioPrimary />
+            <RadioSecondary />
+            <ImageIcon />
+            <ResetIcon />
+            <TimeIcon />
+            <UploadIcon />
+            <BusinessOff />
+            <CameraOn />
+            <CameraOff />
+            <BusinessOn />
+            <StoreOn />
+            <CalendarOn />
+            <CalendarOff />
+            <StoreOff />
+            <CoinOff />
+            <PersonOn />
+            <PersonOff />
+            <CoinOn />
+            <HomeOff />
+            <HomeOn />
           </div>
         </div>
         <div className="flex flex-col gap-8 w-full justify-center items-center">

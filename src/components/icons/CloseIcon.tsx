@@ -1,6 +1,6 @@
 export default function CloseIcon({
   className,
-  fill = "currentColor",
+  fill = "#6B6B6B",
   ...props
 }: React.ComponentProps<"svg">) {
   return (
