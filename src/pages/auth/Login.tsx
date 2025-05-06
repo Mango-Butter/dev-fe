@@ -3,25 +3,12 @@ import KakaoLoginButton from "../../components/common/KakaoLoginButton.tsx";
 import Footer from "../../components/layouts/Footer.tsx";
 import LogoIcon from "../../components/icons/LogoIcon.tsx";
 import { useLayout } from "../../hooks/useLayout.ts";
-import { useEffect } from "react";
 
 const Login = () => {
   useLayout({
     headerVisible: false,
     bottomNavVisible: false,
   });
-
-  //Local 환경 Test Token 삽입
-  useEffect(() => {
-    if (import.meta.env.MODE === "development") {
-      const token = import.meta.env.VITE_TEST_TOKEN;
-      if (token) {
-        localStorage.setItem("accessToken", token);
-        localStorage.setItem("refreshToken", token); // 필요시 다른 값 분리 가능
-        console.log("[DEV] Test token이 localStorage에 삽입되었습니다.");
-      }
-    }
-  }, []);
 
   return (
     <div className="w-full h-full">
