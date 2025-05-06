@@ -41,6 +41,10 @@ export const getStoreInfo = async (storeId: number): Promise<StoreInfo> => {
 export interface UpdateStoreInfoRequest {
   address: string;
   storeType: "CAFE" | "RESTAURANT" | "CONVENIENCE_STORE";
+  gps: {
+    latitude: number;
+    longitude: number;
+  };
 }
 
 export const updateStoreInfo = async (
@@ -88,10 +92,6 @@ export type AttendanceMethod = "QR" | "GPS" | "BOTH";
 
 export interface AttendanceSettings {
   attendanceMethod: AttendanceMethod;
-  qrCode: string;
-  gpsRangeMeters: number;
-  gpsLatitude: number;
-  gpsLongitude: number;
 }
 
 export const getAttendanceSettings = async (

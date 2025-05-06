@@ -18,6 +18,7 @@ import StoreInfoPage from "./pages/store/StoreInfoPage.tsx";
 import AttendanceSettingPage from "./pages/store/AttendanceSettingPage.tsx";
 import SalarySettingPage from "./pages/store/SalarySettingPage.tsx";
 import NotificationSettingPage from "./pages/store/NotificationSettingPage.tsx";
+import StoreInfoEditPage from "./pages/store/StoreInfoEditPage.tsx";
 
 //Todo: 추후 페이지 별 Lazy Loading 적용 예정
 function App() {
@@ -37,6 +38,7 @@ function App() {
             <Route path="store" element={<Store />} />
             <Route path="/store/register" element={<StoreRegisterPage />} />
             <Route path="/store/info" element={<StoreInfoPage />} />
+            <Route path="/store/info/edit" element={<StoreInfoEditPage />} />
             <Route
               path="/store/attendance"
               element={<AttendanceSettingPage />}
