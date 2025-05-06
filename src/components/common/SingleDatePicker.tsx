@@ -3,8 +3,8 @@ import Calendar, { CalendarProps } from "react-calendar";
 import { formatFullDate } from "../../utils/date";
 import ArrowIcon from "../icons/ArrowIcon";
 import TextField from "./TextField.tsx";
-import CalendarIcon from "../icons/CalendarIcon.tsx";
 import "../../styles/datePickerCalendar.css";
+import { CalendarOn } from "../icons/CalendarIcon.tsx";
 
 interface SingleDatePickerProps {
   value: Date | null;
@@ -57,7 +57,7 @@ export default function SingleDatePicker({
         placeholder={placeholder}
         onClick={() => setOpen((prev) => !prev)}
         theme="icon"
-        icon={<CalendarIcon />}
+        icon={<CalendarOn />}
         handleIconClick={() => setOpen((prev) => !prev)}
       />
 
