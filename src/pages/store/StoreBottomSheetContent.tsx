@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/common/Button.tsx";
 import useBottomSheetStore from "../../stores/useBottomSheetStore.ts";
-import { getStoreList, StoreSummary } from "../../api/store.ts";
+import { getStoreList } from "../../api/store.ts";
 import { useEffect, useState } from "react";
 import ErrorIcon from "../../components/icons/ErrorIcon.tsx";
 import useStoreStore from "../../stores/storeStore.ts";
+import { StoreSummary } from "../../types/store.ts";
 
 const StoreBottomSheetContent = () => {
   const navigate = useNavigate();

@@ -7,10 +7,10 @@ import useBottomSheetStore from "../../stores/useBottomSheetStore";
 import useStoreStore from "../../stores/storeStore";
 import useScheduleStore from "../../stores/useScheduleStore";
 import { formatFullDate } from "../../utils/date";
-import { DailyAttendanceRecord } from "../../api/calendar";
 import SelectField from "../../components/common/SelectField";
 import { updateAttendance, deleteAttendance } from "../../api/schedule.ts";
 import { useEffect } from "react";
+import { DailyAttendanceRecord } from "../../types/calendar.ts";
 
 const schema = z.object({
   clockInStatus: z.enum(["NORMAL", "LATE", "ABSENT"]),

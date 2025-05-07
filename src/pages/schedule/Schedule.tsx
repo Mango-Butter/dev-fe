@@ -13,9 +13,9 @@ import { formatTimeRange } from "../../utils/time.ts";
 import { getClockInStyle } from "../../utils/attendance.ts";
 import { cn } from "../../libs";
 import SingleScheduleEditForm from "./SingleScheduleEditForm.tsx";
-import { DailyAttendanceRecord } from "../../api/calendar.ts";
 import AttendanceAddForm from "./AttendanceAddForm.tsx";
 import AttendanceEditForm from "./AttendanceEditForm.tsx";
+import { DailyAttendanceRecord } from "../../types/calendar.ts";
 
 const Schedule = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());

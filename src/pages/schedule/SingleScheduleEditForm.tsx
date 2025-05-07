@@ -9,7 +9,7 @@ import useStoreStore from "../../stores/storeStore";
 import useScheduleStore from "../../stores/useScheduleStore";
 import { formatDateToKSTString, formatFullDate } from "../../utils/date";
 import { updateSingleSchedule, deleteSingleSchedule } from "../../api/schedule";
-import { DailyAttendanceRecord } from "../../api/calendar";
+import { DailyAttendanceRecord } from "../../types/calendar.ts";
 
 interface SingleScheduleEditFormProps {
   schedule: DailyAttendanceRecord["schedule"];

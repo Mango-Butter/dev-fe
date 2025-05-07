@@ -2,11 +2,12 @@ import { useLayout } from "../../hooks/useLayout";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useStoreStore from "../../stores/storeStore";
-import { getStoreInfo, StoreInfo } from "../../api/store";
+import { getStoreInfo } from "../../api/store";
 import PinLocationIcon from "../../components/icons/PinLocationIcon.tsx";
 import { PersonOff } from "../../components/icons/PersonIcon.tsx";
 import MenuIcon from "../../components/icons/MenuIcon.tsx";
 import MailIcon from "../../components/icons/MailIcon.tsx";
+import { StoreInfo } from "../../types/store.ts";
 
 const StoreInfoPage = () => {
   useLayout({

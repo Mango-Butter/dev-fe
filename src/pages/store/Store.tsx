@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { getStoreList, StoreSummary } from "../../api/store";
+import { getStoreList } from "../../api/store";
 import ErrorIcon from "../../components/icons/ErrorIcon.tsx";
 import { useNavigate } from "react-router-dom";
 import ArrowIcon from "../../components/icons/ArrowIcon.tsx";
 import useBottomSheetStore from "../../stores/useBottomSheetStore.ts";
 import StoreBottomSheetContent from "./StoreBottomSheetContent.tsx";
-import useStoreStore from "../../stores/storeStore.ts"; // ✅ zustand store import
+import useStoreStore from "../../stores/storeStore.ts";
+import { StoreSummary } from "../../types/store.ts"; // ✅ zustand store import
 
 const Store = () => {
   const navigate = useNavigate();
