@@ -6,6 +6,16 @@ import SingleDatePicker from "../../components/common/SingleDatePicker";
 import { createSingleSchedule } from "../../api/schedule.ts";
 import { StaffBrief } from "../../types/staff";
 import { getStaffBriefList } from "../../api/staff.ts";
+import useBottomSheetStore from "../../stores/useBottomSheetStore.ts";
+import useStoreStore from "../../stores/storeStore.ts";
+import useScheduleStore from "../../stores/useScheduleStore.ts";
+import { formatDateToKSTString, formatFullDate } from "../../utils/date.ts";
+import { getDefaultScheduleTimes } from "../../utils/time.ts";
+import TextField from "../../components/common/TextField.tsx";
+
+interface SingleScheduleAddFormProps {
+  defaultDate?: Date;
+}
 
 const schema = z
   .object({
@@ -37,8 +47,14 @@ type FormData = {
   endTime: string;
 };
 
-const SingleScheduleAddForm = () => {
+const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
+  const { setBottomSheetOpen } = useBottomSheetStore();
+  const { selectedStore } = useStoreStore();
+  const storeId = selectedStore?.storeId;
+
   const [staffList, setStaffList] = useState<StaffBrief[]>([]);
+  const { startTime, endTime } = getDefaultScheduleTimes("half");
+
   const {
     register,
     handleSubmit,
@@ -49,9 +65,9 @@ const SingleScheduleAddForm = () => {
     resolver: zodResolver(schema),
     defaultValues: {
       staffId: 0,
-      date: null,
-      startTime: "",
-      endTime: "",
+      date: defaultDate ?? new Date(),
+      startTime,
+      endTime,
     },
   });
 
@@ -70,29 +86,43 @@ const SingleScheduleAddForm = () => {
   }, []);
 
   const onSubmit = async (data: FormData) => {
+    if (!storeId || !data.date) return;
+
+    const workDate = formatDateToKSTString(data.date);
+    const dateKey = formatFullDate(data.date);
+
     try {
-      await createSingleSchedule(1, {
+      await createSingleSchedule(storeId, {
         staffId: data.staffId,
-        workDate: data.date!.toISOString().slice(0, 10),
+        workDate,
         startTime: data.startTime,
         endTime: data.endTime,
       });
+
+      // 서버 등록 후 최신 상태 fetch로 동기화
+      await useScheduleStore.getState().syncScheduleAndDot(storeId, dateKey);
+
       alert("스케줄이 성공적으로 추가되었습니다!");
     } catch (err) {
       console.error("스케줄 추가 실패", err);
       alert("스케줄 추가 중 오류가 발생했습니다.");
+    } finally {
+      setBottomSheetOpen(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col h-full gap-4"
+    >
       <section>
         <h2 className="font-semibold text-sm text-gray-700">근무자</h2>
         <ul className="mt-2 flex gap-3 overflow-x-auto">
           {staffList.map((staff) => (
             <li
               key={staff.staffId}
-              className={`flex flex-col items-center cursor-pointer ${
+              className={`flex flex-col items-center cursor-pointer m-1 ${
                 selectedStaffId === staff.staffId
                   ? "font-bold text-yellow-500"
                   : ""
@@ -135,20 +165,24 @@ const SingleScheduleAddForm = () => {
       </section>
 
       <section>
-        <label className="text-sm font-medium">
+        <label className="text-sm font-medium block mb-2">
           근무 시간 <span className="text-red-500">*</span>
         </label>
-        <div className="mt-1 flex gap-2">
-          <input
+        <div className="flex gap-2">
+          <TextField
             type="time"
             {...register("startTime")}
-            className="flex-1 rounded-md border px-3 py-2 text-sm"
+            state={errors.startTime ? "warning" : "none"}
+            inputClassName="text-sm px-5 py-3"
+            required
           />
           <span className="self-center text-gray-400">~</span>
-          <input
+          <TextField
             type="time"
             {...register("endTime")}
-            className="flex-1 rounded-md border px-3 py-2 text-sm"
+            state={errors.endTime ? "warning" : "none"}
+            inputClassName="text-sm px-5 py-3"
+            required
           />
         </div>
         {(errors.startTime || errors.endTime) && (
@@ -160,7 +194,7 @@ const SingleScheduleAddForm = () => {
 
       <div
         data-footer
-        className="sticky bottom-0 mt-4 flex justify-between gap-3 border-t border-gray-200 bg-white px-4 py-3"
+        className="sticky bottom-0 mt-4 flex justify-between gap-3 bg-white"
       >
         <button
           type="button"

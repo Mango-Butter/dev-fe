@@ -4,7 +4,7 @@ import { formatFullDate } from "../../utils/date";
 import ArrowIcon from "../icons/ArrowIcon";
 import TextField from "./TextField.tsx";
 import "../../styles/datePickerCalendar.css";
-import { CalendarOn } from "../icons/CalendarIcon.tsx";
+import { CalendarOff } from "../icons/CalendarIcon.tsx";
 
 interface SingleDatePickerProps {
   value: Date | null;
@@ -57,7 +57,7 @@ export default function SingleDatePicker({
         placeholder={placeholder}
         onClick={() => setOpen((prev) => !prev)}
         theme="icon"
-        icon={<CalendarOn />}
+        icon={<CalendarOff />}
         handleIconClick={() => setOpen((prev) => !prev)}
       />
 
