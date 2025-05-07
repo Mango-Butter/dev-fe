@@ -107,8 +107,8 @@ const SingleScheduleEditForm = ({
       className="flex flex-col h-full gap-4"
     >
       <section>
-        <h2 className="font-semibold text-sm text-gray-700">근무자</h2>
-        <div className="flex items-center gap-3">
+        <h2 className="title-1 block mb-3">근무자</h2>
+        <div className="flex w-full items-start justify-center flex-col gap-3">
           <img
             src={staff.profileImageUrl}
             alt={staff.name}
@@ -119,7 +119,7 @@ const SingleScheduleEditForm = ({
       </section>
 
       <section>
-        <label className="text-sm font-medium block mb-2">
+        <label className="title-1 block mb-3">
           근무 일정 <span className="text-red-500">*</span>
         </label>
         <SingleDatePicker
@@ -138,15 +138,14 @@ const SingleScheduleEditForm = ({
       </section>
 
       <section>
-        <label className="text-sm font-medium block mb-2">
+        <label className="title-1 block mb-3">
           근무 시간 <span className="text-red-500">*</span>
         </label>
-        <div className="flex gap-2">
+        <div className="flex gap-2 overflow-y-auto">
           <TextField
             type="time"
             {...register("startTime")}
             state={errors.startTime ? "warning" : "none"}
-            inputClassName="text-sm px-5 py-3"
             required
           />
           <span className="self-center text-gray-400">~</span>
@@ -154,7 +153,6 @@ const SingleScheduleEditForm = ({
             type="time"
             {...register("endTime")}
             state={errors.endTime ? "warning" : "none"}
-            inputClassName="text-sm px-5 py-3"
             required
           />
         </div>
@@ -164,8 +162,6 @@ const SingleScheduleEditForm = ({
           </p>
         )}
       </section>
-
-      {/* TODO: 근태 정보 수정 UI */}
 
       <div className="sticky bottom-0 mt-4 flex justify-between gap-3 bg-white">
         <Button

@@ -14,6 +14,8 @@ import { getClockInStyle } from "../../utils/attendance.ts";
 import { cn } from "../../libs";
 import SingleScheduleEditForm from "./SingleScheduleEditForm.tsx";
 import { DailyAttendanceRecord } from "../../api/calendar.ts";
+import AttendanceAddForm from "./AttendanceAddForm.tsx";
+import AttendanceEditForm from "./AttendanceEditForm.tsx";
 
 const Schedule = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -29,6 +31,7 @@ const Schedule = () => {
 
   const isPast = selectedDate < new Date(new Date().setHours(0, 0, 0, 0));
 
+  // 스케줄 추가
   const openAddSingleScheduleSheet = () => {
     if (isPast) return;
     setBottomSheetContent(
@@ -54,6 +57,34 @@ const Schedule = () => {
       />,
       {
         title: "스케줄 상세",
+        closeOnClickOutside: true,
+      },
+    );
+  };
+
+  // 근태 추가
+  const openAddAttendanceSheet = () => {
+    if (!isPast) return;
+    setBottomSheetContent(<AttendanceAddForm defaultDate={selectedDate} />, {
+      title: "근태 추가",
+      closeOnClickOutside: true,
+    });
+  };
+
+  // 근태 상세 보기 바텀시트 오픈 함수
+  const handleOpenAttendanceDetail = (
+    schedule: DailyAttendanceRecord["schedule"],
+    staff: DailyAttendanceRecord["staff"],
+    attendance: DailyAttendanceRecord["attendance"],
+  ) => {
+    setBottomSheetContent(
+      <AttendanceEditForm
+        schedule={schedule}
+        staff={staff}
+        attendance={attendance}
+      />,
+      {
+        title: "근태 상세",
         closeOnClickOutside: true,
       },
     );
@@ -137,14 +168,7 @@ const Schedule = () => {
         <div className="flex w-full justify-between items-center">
           <h2 className="heading-2 mb-2">{dateKey}</h2>
           {isPast ? (
-            <Button
-              size="sm"
-              theme="outline"
-              onClick={() => {
-                // TODO: 근태 추가 바텀시트 오픈
-                alert("근태 추가 기능은 아직 구현되지 않았습니다.");
-              }}
-            >
+            <Button size="sm" theme="outline" onClick={openAddAttendanceSheet}>
               근태 추가
             </Button>
           ) : (
@@ -195,9 +219,13 @@ const Schedule = () => {
                   <li
                     key={schedule.scheduleId}
                     className="flex items-center justify-between rounded-xl bg-white p-4 cursor-pointer"
-                    onClick={() =>
-                      handleOpenScheduleDetail(schedule, staff, attendance)
-                    }
+                    onClick={() => {
+                      if (attendance === null) {
+                        handleOpenScheduleDetail(schedule, staff, attendance);
+                      } else {
+                        handleOpenAttendanceDetail(schedule, staff, attendance);
+                      }
+                    }}
                   >
                     <div className="flex items-center gap-3">
                       <img

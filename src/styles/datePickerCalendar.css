@@ -18,12 +18,12 @@
 
 /* ✅ 년/월 라벨에 패딩 + 라운드 + 배경색 추가 */
 .date-picker-calendar .react-calendar__navigation__label {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 600;
     color: #191919;
     background-color: #f9f9f9; /* 밝은 배경 */
-    padding: 0.375rem 1rem; /* y축 패딩 */
-    margin: 0 1.5rem 0 1.5rem !important;
+    padding: 0.375rem 0.8rem; /* y축 패딩 */
+    margin: 0 1rem 0 1rem !important;
     border-radius: 0.5rem;
     text-align: center;
 }
@@ -31,7 +31,7 @@
 /* ✅ 라운드 + 호버 배경 회색 */
 .date-picker-calendar .react-calendar__navigation__arrow {
     background-color: #f3f3f3;
-    border-radius: 9999px; /* rounded-full */
+    border-radius: 12px; /* rounded-full */
     width: 32px;
     height: 32px;
     display: flex;

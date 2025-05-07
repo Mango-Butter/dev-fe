@@ -12,6 +12,7 @@ import useScheduleStore from "../../stores/useScheduleStore.ts";
 import { formatDateToKSTString, formatFullDate } from "../../utils/date.ts";
 import { getDefaultScheduleTimes } from "../../utils/time.ts";
 import TextField from "../../components/common/TextField.tsx";
+import Button from "../../components/common/Button.tsx";
 
 interface SingleScheduleAddFormProps {
   defaultDate?: Date;
@@ -117,7 +118,10 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
       className="flex flex-col h-full gap-4"
     >
       <section>
-        <h2 className="font-semibold text-sm text-gray-700">근무자</h2>
+        <div className="flex items-center gap-1 mb-3">
+          <label className="title-1 text-grayscale-900">근무자</label>
+          <span className="title-1 text-warning">*</span>
+        </div>
         <ul className="mt-2 flex gap-3 overflow-x-auto">
           {staffList.map((staff) => (
             <li
@@ -150,7 +154,7 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
       </section>
 
       <section>
-        <label className="text-sm font-medium block mb-2">
+        <label className="title-1 block mb-3 text-grayscale-900">
           근무 일정 <span className="text-red-500">*</span>
         </label>
         <SingleDatePicker
@@ -165,15 +169,14 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
       </section>
 
       <section>
-        <label className="text-sm font-medium block mb-2">
+        <label className="title-1 block mb-3 text-grayscale-900">
           근무 시간 <span className="text-red-500">*</span>
         </label>
-        <div className="flex gap-2">
+        <div className="flex gap-2 overflow-y-auto">
           <TextField
             type="time"
             {...register("startTime")}
             state={errors.startTime ? "warning" : "none"}
-            inputClassName="text-sm px-5 py-3"
             required
           />
           <span className="self-center text-gray-400">~</span>
@@ -181,7 +184,6 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
             type="time"
             {...register("endTime")}
             state={errors.endTime ? "warning" : "none"}
-            inputClassName="text-sm px-5 py-3"
             required
           />
         </div>
@@ -192,22 +194,17 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
         )}
       </section>
 
-      <div
-        data-footer
-        className="sticky bottom-0 mt-4 flex justify-between gap-3 bg-white"
-      >
-        <button
+      <div className="sticky bottom-0 mt-4 flex justify-between gap-3 bg-white">
+        <Button
           type="button"
-          className="flex-1 rounded-lg border border-gray-300 py-2 text-sm"
+          onClick={() => setBottomSheetOpen(false)}
+          className="flex-1 border border-gray-300 bg-white"
         >
           취소
-        </button>
-        <button
-          type="submit"
-          className="flex-1 rounded-lg bg-yellow-400 py-2 text-sm font-semibold text-white"
-        >
-          추가
-        </button>
+        </Button>
+        <Button type="submit" className="flex-1 bg-yellow-400 text-white">
+          수정
+        </Button>
       </div>
     </form>
   );
