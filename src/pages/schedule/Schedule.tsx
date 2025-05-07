@@ -106,20 +106,28 @@ const Schedule = () => {
           if (view !== "month") return null;
 
           const dateStr = formatFullDate(date);
-          const dayData = dotMap[dateStr]; // ✅ store 사용
+          const summary = dotMap[dateStr];
 
-          const hasSchedule =
-            dayData &&
-            (dayData.normalCount > 0 ||
-              dayData.lateCount > 0 ||
-              dayData.absentCount > 0 ||
-              dayData.preScheduleCount > 0);
+          if (!summary) return null;
+
+          const dots: string[] = [];
+
+          if (summary.normalCount > 0) dots.push("NORMAL");
+          if (summary.lateCount > 0) dots.push("LATE");
+          if (summary.absentCount > 0) dots.push("ABSENT");
+          if (summary.preScheduleCount > 0) dots.push("");
 
           return (
-            <div className="calendar-dot-layer">
-              {hasSchedule && (
-                <span className="calendar-dot calendar-dot--schedule" />
-              )}
+            <div className="calendar-dot-layer flex gap-[2px] justify-center mt-[2px]">
+              {dots.slice(0, 4).map((status, idx) => {
+                const { dotClassName } = getClockInStyle(status as any, false);
+                return (
+                  <span
+                    key={idx}
+                    className={cn("w-1.5 h-1.5 rounded-full", dotClassName)}
+                  />
+                );
+              })}
             </div>
           );
         }}

@@ -95,7 +95,6 @@ const AttendanceSettingPage = () => {
       method.attendanceMethod === "BOTH"
     ) {
       const gps = await getGpsSettings(selectedStore.storeId);
-      console.log(gps);
       reset(gps);
     }
   };
@@ -152,12 +151,10 @@ const AttendanceSettingPage = () => {
   const onSubmit = async (data: GpsFormData) => {
     if (!selectedStore) return;
     try {
-      console.log(data);
       await updateGpsSettings(selectedStore.storeId, data);
       alert("GPS 설정이 저장되었습니다.");
     } catch (err) {
       alert("GPS 설정 저장 실패");
-      console.error(err);
     }
   };
 
