@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import BottomNav from "./BottomNav";
+import BottomSheet from "./BottomSheet.tsx";
 import Modal from "../common/Modal.tsx";
 
 const MobileLayout = () => {
@@ -10,8 +11,9 @@ const MobileLayout = () => {
         <Header />
         <main className="flex-1 overflow-auto overflow-x-hidden scrollbar-hide">
           <Outlet />
-          <Modal />
         </main>
+        <Modal />
+        <BottomSheet />
         <BottomNav />
       </div>
     </div>

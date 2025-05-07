@@ -6,7 +6,7 @@ import useClickOutside from "../../hooks/useClickOutside";
 import ArrowIcon from "../icons/ArrowIcon.tsx"; // 상대경로로 수정
 
 const selectFieldVariants = cva(
-  "pb-5 flex-col justify-start items-start gap-4 inline-flex w-full",
+  "flex-col justify-start items-start gap-4 inline-flex w-full",
   {
     variants: {
       size: {
