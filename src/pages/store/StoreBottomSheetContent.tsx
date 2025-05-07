@@ -85,21 +85,21 @@ const StoreBottomSheetContent = () => {
                       isSelected ? "shadow-blue-shadow" : "shadow-basic"
                     }`}
                   >
-                    <span className="body-3 text-grayscale-500">
+                    <span className="body-4 text-grayscale-500">
                       {store.storeType}
                     </span>
-                    <span className="heading-2">{store.storeName}</span>
+                    <span className="title-1">{store.storeName}</span>
                     <div className="flex gap-2">
-                      <span className="body-2 text-grayscale-900">주소</span>
-                      <span className="body-2 text-grayscale-600">
+                      <span className="body-3 text-grayscale-900">주소</span>
+                      <span className="body-3 text-grayscale-600">
                         {store.address}
                       </span>
                     </div>
                     <div className="flex gap-2">
-                      <span className="body-2 text-grayscale-900">
+                      <span className="body-3 text-grayscale-900">
                         초대코드
                       </span>
-                      <span className="body-2 text-grayscale-600">
+                      <span className="body-3 text-grayscale-600">
                         {store.inviteCode}
                       </span>
                     </div>
