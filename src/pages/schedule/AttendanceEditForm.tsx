@@ -120,7 +120,7 @@ const AttendanceEditForm = ({
 
       <section>
         <label className="title-1 block mb-3">근무 시간</label>
-        <div className="flex gap-2 overflow-y-auto">
+        <div className="flex gap-2 overflow-x-auto scrollbar-hide">
           <TextField
             type="time"
             value={schedule.startTime.slice(11, 16)}
@@ -155,7 +155,7 @@ const AttendanceEditForm = ({
       {clockInStatus !== "ABSENT" && (
         <section>
           <label className="title-1 block mb-3">근태 시간</label>
-          <div className="flex gap-2 overflow-y-auto">
+          <div className="flex gap-2 overflow-x-auto scrollbar-hide">
             <TextField
               type="time"
               {...register("clockInTime")}

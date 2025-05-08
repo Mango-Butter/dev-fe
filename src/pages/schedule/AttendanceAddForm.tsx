@@ -90,7 +90,7 @@ const AttendanceAddForm = ({ defaultDate }: AddAttendanceFormProps) => {
           <label className="title-1 text-grayscale-900">근무자</label>
           <span className="title-1 text-warning">*</span>
         </div>
-        <ul className="flex gap-3 overflow-x-auto">
+        <ul className="flex gap-3 overflow-x-auto scrollbar-hide">
           {staffList.map((staff) => (
             <li
               key={staff.staffId}
@@ -143,7 +143,7 @@ const AttendanceAddForm = ({ defaultDate }: AddAttendanceFormProps) => {
           <label className="title-1 text-grayscale-900">출근 / 퇴근 시간</label>
           <span className="title-1 text-warning">*</span>
         </div>
-        <div className="flex w-full gap-2 overflow-y-auto">
+        <div className="flex w-full gap-2 overflow-x-auto scrollbar-hide">
           <TextField type="time" {...register("clockInTime")} />
           <span className="self-center text-gray-400">~</span>
           <TextField type="time" {...register("clockOutTime")} />

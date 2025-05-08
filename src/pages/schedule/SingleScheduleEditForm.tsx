@@ -141,7 +141,7 @@ const SingleScheduleEditForm = ({
         <label className="title-1 block mb-3">
           근무 시간 <span className="text-red-500">*</span>
         </label>
-        <div className="flex gap-2 overflow-y-auto">
+        <div className="flex gap-2 overflow-x-auto scrollbar-hide">
           <TextField
             type="time"
             {...register("startTime")}

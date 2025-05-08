@@ -16,6 +16,8 @@ import SingleScheduleEditForm from "./SingleScheduleEditForm.tsx";
 import AttendanceAddForm from "./AttendanceAddForm.tsx";
 import AttendanceEditForm from "./AttendanceEditForm.tsx";
 import { DailyAttendanceRecord } from "../../types/calendar.ts";
+import ScheduleFilter from "./ScheduleFilter.tsx";
+import { useScheduleFilters } from "../../hooks/useScheduleFilters.ts";
 
 const Schedule = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -30,6 +32,24 @@ const Schedule = () => {
   const { setBottomSheetContent } = useBottomSheetStore();
 
   const isPast = selectedDate < new Date(new Date().setHours(0, 0, 0, 0));
+  const { filters } = useScheduleFilters();
+
+  const filteredRecords = scheduleMap[dateKey]?.filter(({ attendance }) => {
+    if (filters.has("all")) return true;
+
+    const filterKeys = Array.from(filters);
+    return filterKeys.some((key) => {
+      if (key.startsWith("clockIn:")) {
+        const status = key.split(":")[1];
+        return `${attendance?.clockInStatus}` === status;
+      }
+      if (key.startsWith("clockOut:")) {
+        const status = key.split(":")[1];
+        return `${attendance?.clockOutStatus}` === status;
+      }
+      return false;
+    });
+  });
 
   // 스케줄 추가
   const openAddSingleScheduleSheet = () => {
@@ -182,10 +202,14 @@ const Schedule = () => {
           )}
         </div>
 
+        <div className="mt-4">
+          <ScheduleFilter />
+        </div>
+
         <div className="mt-8 text-center">
           <ul className="space-y-2">
-            {scheduleMap[dateKey]?.length > 0 ? (
-              scheduleMap[dateKey].map(({ staff, schedule, attendance }) => {
+            {filteredRecords?.length > 0 ? (
+              filteredRecords.map(({ staff, schedule, attendance }) => {
                 const hasClockOut = attendance?.clockOutStatus !== null;
 
                 const {

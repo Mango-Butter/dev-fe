@@ -1,7 +1,7 @@
 // src/stores/storeStore.ts
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { StoreSummary } from "../api/store";
+import { StoreSummary } from "../types/store.ts";
 
 interface StoreState {
   selectedStore: StoreSummary | null;

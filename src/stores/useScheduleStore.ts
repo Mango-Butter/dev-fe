@@ -1,11 +1,10 @@
 import { create } from "zustand";
+import { fetchDailyAttendance, fetchCalendarSummary } from "../api/calendar.ts";
+import { getCalendarRange } from "../utils/date.ts";
 import {
   DailyAttendanceRecord,
-  fetchDailyAttendance,
   DailyCalendarSummary,
-  fetchCalendarSummary,
-} from "../api/calendar.ts";
-import { getCalendarRange } from "../utils/date.ts";
+} from "../types/calendar.ts";
 
 interface ScheduleStore {
   scheduleMap: Record<string, DailyAttendanceRecord[]>;
