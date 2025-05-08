@@ -5,6 +5,7 @@ import {
   StaffBrief,
 } from "../types/staff.ts";
 
+// 고정 스케줄 생성
 export const createRegularSchedules = async (
   storeId: number,
   staffId: number,
@@ -17,6 +18,7 @@ export const createRegularSchedules = async (
   return response.data;
 };
 
+// 고정 스케줄 조회
 export const getRegularSchedules = async (
   storeId: number,
   staffId: number,
@@ -27,6 +29,7 @@ export const getRegularSchedules = async (
   return response.data.result;
 };
 
+// 고정 스케줄 삭제
 export const deleteRegularSchedule = async (
   storeId: number,
   staffId: number,

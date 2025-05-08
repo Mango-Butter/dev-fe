@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/common/Button.tsx";
 import useBottomSheetStore from "../../stores/useBottomSheetStore.ts";
-import { getStoreList, StoreSummary } from "../../api/store.ts";
+import { getStoreList } from "../../api/store.ts";
 import { useEffect, useState } from "react";
 import ErrorIcon from "../../components/icons/ErrorIcon.tsx";
 import useStoreStore from "../../stores/storeStore.ts";
+import { StoreSummary } from "../../types/store.ts";
 
 const StoreBottomSheetContent = () => {
   const navigate = useNavigate();
@@ -85,21 +86,21 @@ const StoreBottomSheetContent = () => {
                       isSelected ? "shadow-blue-shadow" : "shadow-basic"
                     }`}
                   >
-                    <span className="body-3 text-grayscale-500">
+                    <span className="body-4 text-grayscale-500">
                       {store.storeType}
                     </span>
-                    <span className="heading-2">{store.storeName}</span>
+                    <span className="title-1">{store.storeName}</span>
                     <div className="flex gap-2">
-                      <span className="body-2 text-grayscale-900">주소</span>
-                      <span className="body-2 text-grayscale-600">
+                      <span className="body-3 text-grayscale-900">주소</span>
+                      <span className="body-3 text-grayscale-600">
                         {store.address}
                       </span>
                     </div>
                     <div className="flex gap-2">
-                      <span className="body-2 text-grayscale-900">
+                      <span className="body-3 text-grayscale-900">
                         초대코드
                       </span>
-                      <span className="body-2 text-grayscale-600">
+                      <span className="body-3 text-grayscale-600">
                         {store.inviteCode}
                       </span>
                     </div>

@@ -108,3 +108,37 @@ export const calculateDiffDaysWithStr = (
   const diffTime = Math.abs(end.getTime() - start.getTime());
   return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 };
+
+/**
+ * 문자열로 주어진 두 시간를 비교해서
+ * 시간 차이를 계산하는 함수
+ */
+export const getMinutesDiff = (a: string, b: string): number => {
+  const dateA = new Date(a);
+  const dateB = new Date(b);
+  return Math.abs(
+    Math.floor((dateA.getTime() - dateB.getTime()) / (1000 * 60)),
+  );
+};
+
+// 보고 있는 날짜의 달의 시작일과 종료일 반환
+export const getCalendarRange = (
+  viewDate: Date,
+): { start: string; end: string } => {
+  const start = new Date(viewDate.getFullYear(), viewDate.getMonth(), 1);
+  const end = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 0);
+
+  const format = (d: Date) => d.toISOString().split("T")[0]; // YYYY-MM-DD
+  return { start: format(start), end: format(end) };
+};
+
+/**
+ * 한국(KST) 기준으로 날짜를 'YYYY-MM-DD' 형식 문자열로 반환
+ * @param date Date 객체
+ * @returns KST 기준 YYYY-MM-DD 문자열
+ */
+export const formatDateToKSTString = (date: Date): string => {
+  const offset = date.getTimezoneOffset() * 60000;
+  const local = new Date(date.getTime() - offset); // 타임존 보정
+  return local.toISOString().slice(0, 10); // 잘라내기
+};

@@ -6,7 +6,6 @@ import TextField from "../../components/common/TextField.tsx";
 import { useEffect, useState } from "react";
 import useStoreStore from "../../stores/storeStore.ts";
 import {
-  AttendanceMethod,
   getAttendanceSettings,
   updateAttendanceSettings,
   getQrCodeSettings,
@@ -20,6 +19,7 @@ import { getCoordsFromAddress } from "../../utils/kakaoGeocoder.ts";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import GpsMapPreview from "../../components/common/GpsMapPreview.tsx";
+import { AttendanceMethod } from "../../types/store.ts";
 
 const gpsSchema = z.object({
   address: z.string().min(1, "주소를 입력해주세요."),
@@ -95,7 +95,6 @@ const AttendanceSettingPage = () => {
       method.attendanceMethod === "BOTH"
     ) {
       const gps = await getGpsSettings(selectedStore.storeId);
-      console.log(gps);
       reset(gps);
     }
   };
@@ -152,12 +151,10 @@ const AttendanceSettingPage = () => {
   const onSubmit = async (data: GpsFormData) => {
     if (!selectedStore) return;
     try {
-      console.log(data);
       await updateGpsSettings(selectedStore.storeId, data);
       alert("GPS 설정이 저장되었습니다.");
     } catch (err) {
       alert("GPS 설정 저장 실패");
-      console.error(err);
     }
   };
 
