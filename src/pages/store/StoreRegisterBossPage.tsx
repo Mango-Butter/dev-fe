@@ -14,7 +14,7 @@ import { registerStore, validateBusinessNumber } from "../../api/store.ts";
 import Spinner from "../../components/common/Spinner.tsx";
 import modalStore from "../../stores/modalStore.ts";
 
-const StoreRegisterPage = () => {
+const StoreRegisterBossPage = () => {
   useLayout({
     title: "매장 추가하기",
     theme: "plain",
@@ -260,4 +260,4 @@ const StoreRegisterPage = () => {
   );
 };
 
-export default StoreRegisterPage;
+export default StoreRegisterBossPage;
