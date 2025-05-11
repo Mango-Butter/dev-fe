@@ -19,6 +19,10 @@ import AttendanceSettingPage from "./pages/store/AttendanceSettingPage.tsx";
 import SalarySettingPage from "./pages/store/SalarySettingPage.tsx";
 import NotificationSettingPage from "./pages/store/NotificationSettingPage.tsx";
 import StoreInfoEditPage from "./pages/store/StoreInfoEditPage.tsx";
+import ContractPage from "./pages/contract/Contract.tsx";
+import ContractRegisterPage from "./pages/contract/ContractRegisterPage.tsx";
+import ContractDetailPage from "./pages/contract/ContractDetailPage.tsx";
+import ContractWritePage from "./pages/contract/ContractWritePage.tsx";
 
 //Todo: 추후 페이지 별 Lazy Loading 적용 예정
 function App() {
@@ -49,6 +53,14 @@ function App() {
               element={<NotificationSettingPage />}
             />
             <Route path="/address-search" element={<AddressSearchPopup />} />
+            {/*  근로계약서*/}
+            <Route path="/contract" element={<ContractPage />} />
+            <Route
+              path="/contract/register"
+              element={<ContractRegisterPage />}
+            />
+            <Route path="/contract/:id" element={<ContractDetailPage />} />
+            <Route path="/contract/write" element={<ContractWritePage />} />
           </Route>
 
           {/* ✅ 로그인된 사용자는 접근할 수 없는 라우트 (로그인 관련) */}
