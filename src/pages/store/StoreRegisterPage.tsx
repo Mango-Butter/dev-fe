@@ -116,14 +116,11 @@ const StoreRegisterPage = () => {
         storeType,
         gps: { latitude, longitude },
       };
-      console.log(payload);
-      const response = await registerStore(payload);
-      console.log("등록 완료 ✅", response.data);
+      await registerStore(payload);
       setModalOpen(true);
       navigate(-1);
     } catch (err) {
       alert("등록 실패");
-      console.error("등록 실패 ❌", err);
     }
   };
 

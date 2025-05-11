@@ -13,3 +13,10 @@ export const storeSchema = z.object({
 });
 
 export type StoreFormValues = z.infer<typeof storeSchema>;
+
+export const storeEditSchema = storeSchema.pick({
+  address: true,
+  storeType: true,
+});
+
+export type StoreEditFormValues = z.infer<typeof storeEditSchema>;

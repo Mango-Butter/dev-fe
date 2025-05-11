@@ -1,0 +1,175 @@
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
+import TextField from "../../components/common/TextField";
+import SingleDatePicker from "../../components/common/SingleDatePicker";
+import useBottomSheetStore from "../../stores/useBottomSheetStore";
+import useStoreStore from "../../stores/storeStore";
+import { getStaffBriefList } from "../../api/staff";
+import { StaffBrief } from "../../types/staff";
+import { formatDateToKSTString } from "../../utils/date";
+import Button from "../../components/common/Button";
+import { createAttendance } from "../../api/schedule.ts";
+
+interface AddAttendanceFormProps {
+  defaultDate?: Date;
+}
+
+const schema = z.object({
+  staffId: z.number({ required_error: "알바생을 선택해주세요" }),
+  date: z.date({ required_error: "날짜를 선택해주세요" }),
+  clockInTime: z.string().min(1, "출근 시간을 입력해주세요"),
+  clockOutTime: z.string().min(1, "퇴근 시간을 입력해주세요"),
+});
+
+type FormData = z.infer<typeof schema>;
+
+const AttendanceAddForm = ({ defaultDate }: AddAttendanceFormProps) => {
+  const { selectedStore } = useStoreStore();
+  const storeId = selectedStore?.storeId;
+  const { setBottomSheetOpen } = useBottomSheetStore();
+
+  const [staffList, setStaffList] = useState<StaffBrief[]>([]);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      staffId: 0,
+      date: defaultDate ?? new Date(),
+      clockInTime: "09:00",
+      clockOutTime: "15:00",
+    },
+  });
+
+  const selectedStaffId = watch("staffId");
+
+  useEffect(() => {
+    const fetchStaff = async () => {
+      try {
+        if (!storeId) return;
+        const data = await getStaffBriefList(storeId);
+        setStaffList(data);
+      } catch (err) {
+        console.error("알바생 목록 조회 실패", err);
+      }
+    };
+    fetchStaff();
+  }, [storeId]);
+
+  const onSubmit = async (data: FormData) => {
+    if (!storeId) return;
+
+    try {
+      await createAttendance(storeId, {
+        staffId: data.staffId,
+        workDate: formatDateToKSTString(data.date),
+        clockInTime: data.clockInTime,
+        clockOutTime: data.clockOutTime,
+      });
+
+      alert("근태가 성공적으로 추가되었습니다.");
+    } catch (err) {
+      console.error("근태 추가 실패", err);
+      alert("근태 추가 중 오류가 발생했습니다.");
+    } finally {
+      setBottomSheetOpen(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <section>
+        <div className="flex items-center gap-1 mb-3">
+          <label className="title-1 text-grayscale-900">근무자</label>
+          <span className="title-1 text-warning">*</span>
+        </div>
+        <ul className="flex gap-3 overflow-x-auto scrollbar-hide">
+          {staffList.map((staff) => (
+            <li
+              key={staff.staffId}
+              className={`flex flex-col items-center cursor-pointer m-1 ${
+                selectedStaffId === staff.staffId
+                  ? "text-yellow-500 font-bold"
+                  : ""
+              }`}
+              onClick={() =>
+                setValue("staffId", staff.staffId, { shouldValidate: true })
+              }
+            >
+              <img
+                src={staff.profileImageUrl}
+                alt={staff.name}
+                className={`h-12 w-12 rounded-full object-cover ring-4 ${
+                  selectedStaffId === staff.staffId
+                    ? "ring-yellow-400"
+                    : "ring-transparent"
+                }`}
+              />
+              <span className="text-xs mt-1">{staff.name}</span>
+            </li>
+          ))}
+        </ul>
+        {errors.staffId && (
+          <p className="text-xs text-red-500 mt-1">{errors.staffId.message}</p>
+        )}
+      </section>
+
+      <section>
+        <div className="flex items-center gap-1 mb-3">
+          <label className="title-1 text-grayscale-900">근무 일자</label>
+          <span className="title-1 text-warning">*</span>
+        </div>
+        <SingleDatePicker
+          value={watch("date")}
+          onChange={(date) =>
+            date && setValue("date", date, { shouldValidate: true })
+          }
+          mode="past"
+        />
+        {errors.date && (
+          <p className="text-xs text-red-500 mt-1">{errors.date.message}</p>
+        )}
+      </section>
+
+      <section>
+        <div className="flex items-center gap-1 mb-3">
+          <label className="title-1 text-grayscale-900">출근 / 퇴근 시간</label>
+          <span className="title-1 text-warning">*</span>
+        </div>
+        <div className="flex w-full gap-2 overflow-x-auto scrollbar-hide">
+          <TextField type="time" {...register("clockInTime")} />
+          <span className="self-center text-gray-400">~</span>
+          <TextField type="time" {...register("clockOutTime")} />
+        </div>
+        {(errors.clockInTime || errors.clockOutTime) && (
+          <p className="text-xs text-red-500 mt-1">
+            {errors.clockInTime?.message || errors.clockOutTime?.message}
+          </p>
+        )}
+      </section>
+
+      <div className="sticky bottom-0 mt-4 flex gap-3 bg-white">
+        <Button
+          type="button"
+          theme="outline"
+          className="flex-1"
+          onClick={() => setBottomSheetOpen(false)}
+        >
+          취소
+        </Button>
+        <Button type="submit" className="flex-1 bg-yellow-400 text-white">
+          추가
+        </Button>
+      </div>
+    </form>
+  );
+};
+
+export default AttendanceAddForm;
