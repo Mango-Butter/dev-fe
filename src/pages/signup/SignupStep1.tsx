@@ -3,6 +3,8 @@ import Footer from "../../components/layouts/Footer.tsx";
 import LogoIcon from "../../components/icons/LogoIcon.tsx";
 import Button from "../../components/common/Button.tsx";
 import { useLayout } from "../../hooks/useLayout.ts";
+import SignUpBoss from "../../components/icons/SignUpBoss.tsx";
+import SignUpStaff from "../../components/icons/SignUpStaff.tsx";
 
 interface SignupStep1Props {
   onSelectRole: (role: "BOSS" | "STAFF") => void;
@@ -33,11 +35,7 @@ const SignupStep1 = ({ onSelectRole }: SignupStep1Props) => {
           {/*<LogoIcon theme="icon" className="w-[104px] h-[115px]" />*/}
           <div className="w-full flex gap-5">
             <div className="w-full flex flex-col gap-4">
-              <img
-                src="/public/SignUpBoss.svg"
-                alt="signup-Boss"
-                className="w-full"
-              />
+              <SignUpBoss />
               <Button
                 theme="primary"
                 size="lg"
@@ -48,11 +46,7 @@ const SignupStep1 = ({ onSelectRole }: SignupStep1Props) => {
               </Button>
             </div>
             <div className="w-full flex flex-col gap-4">
-              <img
-                src="/public/SignUpStaff.svg"
-                alt="signup-Staff"
-                className="w-full"
-              />
+              <SignUpStaff />
               <Button
                 theme="secondary"
                 size="lg"
