@@ -18,7 +18,7 @@ const StoreBottomSheetContent = () => {
 
   const handleStoreRegister = () => {
     setBottomSheetOpen(false);
-    navigate("/boss/store/register");
+    navigate("/staff/store/register");
   };
 
   const handleSelectStore = (store: StoreSummaryBoss) => {

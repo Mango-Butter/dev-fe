@@ -6,13 +6,13 @@ import ArrowIcon from "../../../components/icons/ArrowIcon.tsx";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import StoreBottomSheetContent from "./StoreBottomSheetContent.tsx";
 import useStoreStore from "../../../stores/storeStore.ts";
-import { StoreSummary } from "../../../types/store.ts"; // ✅ zustand store import
+import { StoreSummaryBoss } from "../../../types/store.ts"; // ✅ zustand store import
 
 const Store = () => {
   const navigate = useNavigate();
   const { setBottomSheetContent } = useBottomSheetStore();
   const { selectedStore, setSelectedStore } = useStoreStore(); // ✅ store hook
-  const [storeList, setStoreList] = useState<StoreSummary[] | null>(null);
+  const [storeList, setStoreList] = useState<StoreSummaryBoss[] | null>(null);
   const [loading, setLoading] = useState(true);
 
   const openStoreSheet = () => {

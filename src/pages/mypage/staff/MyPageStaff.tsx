@@ -5,14 +5,14 @@ import { useNavigate } from "react-router-dom";
 import ArrowIcon from "../../../components/icons/ArrowIcon.tsx";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import useStoreStore from "../../../stores/storeStore.ts";
-import { StoreSummary } from "../../../types/store.ts";
+import { StoreSummaryBoss } from "../../../types/store.ts";
 import StoreBottomSheetContent from "../../store/boss/StoreBottomSheetContent.tsx"; // ✅ zustand store import
 
 const Store = () => {
   const navigate = useNavigate();
   const { setBottomSheetContent } = useBottomSheetStore();
   const { selectedStore, setSelectedStore } = useStoreStore(); // ✅ store hook
-  const [storeList, setStoreList] = useState<StoreSummary[] | null>(null);
+  const [storeList, setStoreList] = useState<StoreSummaryBoss[] | null>(null);
   const [loading, setLoading] = useState(true);
 
   const openStoreSheet = () => {

@@ -7,7 +7,7 @@ import {
   QrCodeSettings,
   ReissueInviteCodeResponse,
   StoreInfo,
-  StoreSummary,
+  StoreSummaryBoss,
   UpdateStoreInfoRequest,
 } from "../../types/store.ts";
 
@@ -52,7 +52,7 @@ export const updateStoreInfo = async (
 };
 
 // 사장 보유 매장 간단정보 리스트 가져오기
-export const getStoreList = async (): Promise<StoreSummary[]> => {
+export const getStoreList = async (): Promise<StoreSummaryBoss[]> => {
   const response = await axiosAuth.get("/api/boss/stores");
   return response.data.result;
 };
