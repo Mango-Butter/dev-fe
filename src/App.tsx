@@ -23,7 +23,7 @@ import ContractPage from "./pages/contract/Contract.tsx";
 import ContractRegisterPage from "./pages/contract/ContractRegisterPage.tsx";
 import ContractDetailPage from "./pages/contract/ContractDetailPage.tsx";
 import ContractWritePage from "./pages/contract/ContractWritePage.tsx";
-import Landing from "./pages/auth/Landing.tsx";
+import Landing from "./pages/auth/Landing";
 
 //Todo: 추후 페이지 별 Lazy Loading 적용 예정
 function App() {
