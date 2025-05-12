@@ -32,11 +32,11 @@ function App() {
       <AppInitializer />
       <Routes>
         <Route path="/" element={<MobileLayout />}>
-          <Route path="/landing" element={<Landing />} />
+          <Route index element={<Landing />} />
 
           {/* ✅ 로그인 된 사용자만 접근 가능한 라우트 */}
           <Route element={<ProtectedRoute />}>
-            <Route index element={<Home />} />
+            <Route path="boss/home" element={<Home />} />
             <Route path="schedule" element={<Schedule />} />
             <Route path="employees" element={<Employees />} />
             <Route path="task" element={<Task />} />
