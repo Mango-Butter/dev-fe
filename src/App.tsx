@@ -3,23 +3,22 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./routes/PublicRoute";
 import AppInitializer from "./routes/AppInitializer.tsx";
 import MobileLayout from "./components/layouts/MobileLayout";
-import Home from "./pages/Home";
-import Schedule from "./pages/schedule/Schedule.tsx";
-import Employees from "./pages/employee/Employees.tsx";
+import HomeBoss from "./pages/home/boss/HomeBoss.tsx";
+import Schedule from "./pages/schedule/boss/Schedule.tsx";
+import Employees from "./pages/employee/boss/Employees.tsx";
 import Task from "./pages/Task";
-import Store from "./pages/store/Store.tsx";
+import Store from "./pages/store/boss/Store.tsx";
 import NotFound from "./pages/NotFound";
-import LoginSuccess from "./pages/auth/LoginSuccess.tsx";
-import Login from "./pages/auth/Login.tsx";
+import LoginSuccess from "./pages/login/LoginSuccess.tsx";
+import Login from "./pages/login/Login.tsx";
 import Signup from "./pages/signup/Signup.tsx";
-import StoreRegisterBossPage from "./pages/store/StoreRegisterBossPage.tsx";
-import AddressSearchPopup from "./pages/store/AddressSearchPopup.tsx";
-import StoreInfoPage from "./pages/store/StoreInfoPage.tsx";
-import AttendanceSettingPage from "./pages/store/AttendanceSettingPage.tsx";
-import SalarySettingPage from "./pages/store/SalarySettingPage.tsx";
-import NotificationSettingPage from "./pages/store/NotificationSettingPage.tsx";
-import StoreInfoEditPage from "./pages/store/StoreInfoEditPage.tsx";
-import StaffRoute from "./routes/StaffRoute.tsx";
+import StoreRegisterBossPage from "./pages/store/boss/StoreRegisterBossPage.tsx";
+import AddressSearchPopup from "./pages/store/boss/AddressSearchPopup.tsx";
+import StoreInfoPage from "./pages/store/boss/StoreInfoPage.tsx";
+import AttendanceSettingPage from "./pages/store/boss/AttendanceSettingPage.tsx";
+import SalarySettingPage from "./pages/store/boss/SalarySettingPage.tsx";
+import NotificationSettingPage from "./pages/store/boss/NotificationSettingPage.tsx";
+import StoreInfoEditPage from "./pages/store/boss/StoreInfoEditPage.tsx";
 import StoreRegisterIntro from "./pages/store/staff/StoreRegisterIntro.tsx";
 import StoreRegisterStaffPage from "./pages/store/staff/StoreRegisterStaffPage.tsx";
 import ContractPage from "./pages/contract/Contract.tsx";
@@ -27,6 +26,9 @@ import ContractRegisterPage from "./pages/contract/ContractRegisterPage.tsx";
 import ContractDetailPage from "./pages/contract/ContractDetailPage.tsx";
 import ContractWritePage from "./pages/contract/ContractWritePage.tsx";
 import Landing from "./pages/auth/Landing.tsx";
+import RoleRoute from "./routes/RoleRoute.tsx";
+import HomeStaff from "./pages/home/staff/HomeStaff.tsx";
+import ScheduleStaff from "./pages/schedule/staff/ScheduleStaff.tsx";
 
 //Todo: 추후 페이지 별 Lazy Loading 적용 예정
 function App() {
@@ -34,34 +36,57 @@ function App() {
     <Router>
       <AppInitializer />
       <Routes>
+        {/* ✅ 로그인된 사용자는 접근할 수 없는 라우트 (로그인 관련) */}
+        <Route element={<PublicRoute />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/loginSuccess" element={<LoginSuccess />} />
+        </Route>
+        {/* ✅ 404 페이지 */}
+        <Route path="*" element={<NotFound />} />
+
+        {/*모바일 UI*/}
         <Route path="/" element={<MobileLayout />}>
           <Route index element={<Landing />} />
 
           {/* ✅ 로그인 된 사용자만 접근 가능한 라우트 */}
           <Route element={<ProtectedRoute />}>
+            {/*공용페이지*/}
             <Route path="/address-search" element={<AddressSearchPopup />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="boss/home" element={<Home />} />
-            <Route path="schedule" element={<Schedule />} />
-            <Route path="employees" element={<Employees />} />
-            <Route path="task" element={<Task />} />
-            <Route path="/signup" element={<Signup />} />
-            {/*매장페이지*/}
-            <Route path="store" element={<Store />} />
-            <Route path="/store/register" element={<StoreRegisterBossPage />} />
-            <Route path="/store/info" element={<StoreInfoPage />} />
-            <Route path="/store/info/edit" element={<StoreInfoEditPage />} />
-            <Route
-              path="/store/attendance"
-              element={<AttendanceSettingPage />}
-            />
-            <Route path="/store/salary" element={<SalarySettingPage />} />
-            <Route
-              path="/store/notification"
-              element={<NotificationSettingPage />}
-            />
-            {/*알바만 접근 가능*/}
-            <Route element={<StaffRoute />}>
+            {/* ✅ BOSS 전용 라우팅 */}
+            <Route element={<RoleRoute allowedRole="BOSS" />}>
+              <Route path="boss" element={<HomeBoss />} />
+              <Route path="boss/schedule" element={<Schedule />} />
+              <Route path="boss/employees" element={<Employees />} />
+              <Route path="boss/task" element={<Task />} />
+              <Route path="boss/store" element={<Store />} />
+              <Route
+                path="boss/store/register"
+                element={<StoreRegisterBossPage />}
+              />
+              <Route path="boss/store/info" element={<StoreInfoPage />} />
+              <Route
+                path="boss/store/info/edit"
+                element={<StoreInfoEditPage />}
+              />
+              <Route
+                path="boss/store/attendance"
+                element={<AttendanceSettingPage />}
+              />
+              <Route path="boss/store/salary" element={<SalarySettingPage />} />
+              <Route
+                path="boss/store/notification"
+                element={<NotificationSettingPage />}
+              />
+            </Route>
+
+            {/* ✅ STAFF 전용 라우팅 */}
+            <Route element={<RoleRoute allowedRole="STAFF" />}>
+              <Route path="staff" element={<HomeStaff />} />
+              <Route path="staff/schedule" element={<ScheduleStaff />} />
+              <Route path="staff/task" element={<NotFound />} />
+              <Route path="staff/payroll" element={<NotFound />} />
+              <Route path="staff/mypage" element={<NotFound />} />
               <Route
                 path="staff/store/intro"
                 element={<StoreRegisterIntro />}
