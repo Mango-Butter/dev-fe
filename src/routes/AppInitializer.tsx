@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../stores/authStore";
 import { useUserStore } from "../stores/userStore";
-import { fetchUserProfile } from "../api/user";
+import { fetchUserProfile } from "../api/common/user.ts";
 
 const AppInitializer = () => {
   const navigate = useNavigate();

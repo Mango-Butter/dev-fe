@@ -1,11 +1,11 @@
 // src/stores/storeStore.ts
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { StoreSummary } from "../types/store.ts";
+import { StoreSummaryBoss } from "../types/store.ts";
 
 interface StoreState {
-  selectedStore: StoreSummary | null;
-  setSelectedStore: (store: StoreSummary) => void;
+  selectedStore: StoreSummaryBoss | null;
+  setSelectedStore: (store: StoreSummaryBoss) => void;
 }
 
 const useStoreStore = create<StoreState>()(

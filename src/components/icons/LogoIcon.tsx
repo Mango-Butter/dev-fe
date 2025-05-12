@@ -3,6 +3,7 @@ import { useUserStore } from "../../stores/userStore.ts";
 
 type LogoIconProps = {
   theme: "icon" | "text" | "full";
+  type?: "BOSS" | "STAFF";
   className?: string;
 };
 
@@ -176,13 +177,13 @@ const StaffFullSvg: FC<{ className?: string }> = ({ className = "" }) => (
   </svg>
 );
 
-const LogoIcon: FC<LogoIconProps> = ({ theme, className }) => {
+const LogoIcon: FC<LogoIconProps> = ({ theme, type, className }) => {
   if (theme === "icon") {
     return <LogoSvg className={className} />;
   }
 
   const user = useUserStore((state) => state.user);
-  const role = user?.role;
+  const role = type ?? user?.role;
 
   if (theme === "text") {
     if (role === "BOSS") return <BossTextSvg className={className} />;

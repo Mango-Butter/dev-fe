@@ -11,7 +11,7 @@ import { useCameraPermission } from "../../hooks/useCameraPermission.ts";
 import { useLayout } from "../../hooks/useLayout.ts";
 import { useUserStore } from "../../stores/userStore.ts";
 import { useAuth } from "../../hooks/useAuth.ts";
-import { signup } from "../../api/auth.ts";
+import { signup } from "../../api/common/auth.ts";
 import { useAuthStore } from "../../stores/authStore.ts";
 
 interface SignupStep2Props {

@@ -5,12 +5,24 @@ import AlarmIcon from "../icons/AlarmIcon.tsx";
 import ArrowIcon from "../icons/ArrowIcon.tsx";
 import LogoIcon from "../icons/LogoIcon.tsx";
 import { useLayoutStore } from "../../stores/layoutStore.ts";
+import { useUserStore } from "../../stores/userStore.ts";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const { headerVisible, title, theme, rightIcon, onBack } = useLayoutStore();
+  const user = useUserStore((state) => state.user);
 
   const handleBack = onBack ?? (() => navigate(-1));
+
+  const handleHome = () => {
+    if (user?.role === "BOSS") {
+      navigate("/boss");
+    } else if (user?.role === "STAFF") {
+      navigate("/staff");
+    } else {
+      navigate("/");
+    }
+  };
 
   return (
     <header
@@ -21,7 +33,7 @@ const Header: React.FC = () => {
       {/* Left */}
       <div className="flex items-center">
         {theme === "default" ? (
-          <button onClick={() => navigate("/")} aria-label="홈">
+          <button onClick={handleHome} aria-label="홈">
             <LogoIcon theme="text" />
           </button>
         ) : (
