@@ -66,6 +66,8 @@ const config: Config = {
       },
 
       boxShadow: {
+        basic: "1px 1px 6px 0px rgba(215, 215, 215, 1)",
+        "blue-shadow": "1px 1px 6px 0px rgba(153, 189, 228, 1)",
         "input-box": "2px 2px 8px 0px rgba(0, 0, 0, 0.25)",
         "layout-box": "0px 8px 36px 0px rgba(0, 0, 0, 0.15)",
       },

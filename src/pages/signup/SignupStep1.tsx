@@ -19,35 +19,49 @@ const SignupStep1 = ({ onSelectRole }: SignupStep1Props) => {
       <div className="flex flex-col items-center justify-start min-h-screen gap-4 py-[3.75rem] px-5">
         <div className="w-full flex flex-col gap-5 mb-20">
           <LogoIcon theme="text" className="w-[162px] h-[31px]" />
-          <div className="heading-2">
+          <div className="heading-1">
             소상공인 사장님들을 위한
             <br />
             <span className="text-primary-900">알바생 관리</span>의 새로운 혁신
           </div>
-          <div className="body-2 text-grayscale-500">
+          <div className="body-1 text-grayscale-500">
             <span className="text-primary-900">1분</span>이면 간편하게 서비스를
             이용해 보세요!
           </div>
         </div>
         <div className="flex flex-col gap-8 w-full justify-center items-center">
-          <LogoIcon theme="icon" className="w-[104px] h-[115px]" />
-          <div className="w-full flex flex-col gap-4">
-            <Button
-              theme="primary"
-              size="md"
-              className="w-full text-grayscale-900"
-              onClick={() => onSelectRole("BOSS")}
-            >
-              사장님 회원가입하기
-            </Button>
-            <Button
-              theme="primary"
-              size="md"
-              className="w-full text-grayscale-900"
-              onClick={() => onSelectRole("STAFF")}
-            >
-              알바생 회원가입하기
-            </Button>
+          {/*<LogoIcon theme="icon" className="w-[104px] h-[115px]" />*/}
+          <div className="w-full flex gap-5">
+            <div className="w-full flex flex-col gap-4">
+              <img
+                src="/public/SignUpBoss.svg"
+                alt="signup-Boss"
+                className="w-full"
+              />
+              <Button
+                theme="primary"
+                size="lg"
+                className="w-full text-grayscale-900"
+                onClick={() => onSelectRole("BOSS")}
+              >
+                사장님 회원가입하기
+              </Button>
+            </div>
+            <div className="w-full flex flex-col gap-4">
+              <img
+                src="/public/SignUpStaff.svg"
+                alt="signup-Staff"
+                className="w-full"
+              />
+              <Button
+                theme="secondary"
+                size="lg"
+                className="w-full text-white"
+                onClick={() => onSelectRole("STAFF")}
+              >
+                알바생 회원가입하기
+              </Button>
+            </div>
           </div>
         </div>
       </div>

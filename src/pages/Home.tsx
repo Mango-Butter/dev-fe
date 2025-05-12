@@ -6,7 +6,6 @@ const Home = () => {
   const { setModalOpen, setModalContent } = modalStore();
 
   const openModal = () => {
-    console.log("Modal open");
     setModalContent(<StoreModalContent />);
     setModalOpen(true);
   };

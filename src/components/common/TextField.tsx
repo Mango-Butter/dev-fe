@@ -15,7 +15,7 @@ const textFieldVariants = cva(
         active:
           "[&_input]:text-grayscale-900 [&_input]:placeholder:text-grayscale-500 [&_input]:border-grayscale-500",
         disable:
-          "[&_input]:text-grayscale-600 [&_input]:placeholder:text-grayscale-600 [&_input]:border-grayscale-300 [&_input]:pointer-events-none",
+          "[&_input]:text-grayscale-600 [&_input]:placeholder:text-grayscale-600 [&_input]:border-grayscale-300",
       },
       size: {
         lg: "[&_input]:h-14 body-1 [&_input]:px-6",
@@ -92,8 +92,10 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
                 className={cn(
                   "w-full rounded-lg border px-5 py-3 body-1 transition-colors",
                   suffix && "pr-12",
+                  state === "disable" && "overflow-x-auto",
                   inputClassName,
                 )}
+                readOnly={state === "disable"}
                 placeholder={placeholder}
                 required={required}
                 value={value}
