@@ -23,6 +23,7 @@ import ContractPage from "./pages/contract/Contract.tsx";
 import ContractRegisterPage from "./pages/contract/ContractRegisterPage.tsx";
 import ContractDetailPage from "./pages/contract/ContractDetailPage.tsx";
 import ContractWritePage from "./pages/contract/ContractWritePage.tsx";
+import Landing from "./pages/auth/Landing.tsx";
 
 //Todo: 추후 페이지 별 Lazy Loading 적용 예정
 function App() {
@@ -31,9 +32,11 @@ function App() {
       <AppInitializer />
       <Routes>
         <Route path="/" element={<MobileLayout />}>
+          <Route index element={<Landing />} />
+
           {/* ✅ 로그인 된 사용자만 접근 가능한 라우트 */}
           <Route element={<ProtectedRoute />}>
-            <Route index element={<Home />} />
+            <Route path="boss/home" element={<Home />} />
             <Route path="schedule" element={<Schedule />} />
             <Route path="employees" element={<Employees />} />
             <Route path="task" element={<Task />} />
