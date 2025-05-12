@@ -58,7 +58,7 @@ const Landing = () => {
             </div>
             <div className="justify-center items-center grid grid-cols-2 gap-5 place-items-center content-center">
               <div className="p-5 bg-white rounded-xl inline-flex flex-col justify-center items-center aspect-square w-[160px]">
-                <div className="w-full h-full flex flex-col justify-center items-end gap-3">
+                <div className="w-full h-full flex flex-col justify-between items-end gap-3">
                   <div className="flex flex-col justify-start items-start gap-2">
                     <div className="justify-start text-grayscale-900 title-1">
                       출퇴근 관리
@@ -72,7 +72,7 @@ const Landing = () => {
               </div>
 
               <div className="p-5 bg-white rounded-xl inline-flex flex-col justify-center items-center aspect-square w-[160px]">
-                <div className="w-full h-full flex flex-col justify-center items-end gap-3">
+                <div className="w-full h-full flex flex-col justify-between items-end gap-3">
                   <div className="flex flex-col justify-start items-start gap-2">
                     <div className="justify-start text-grayscale-900 title-1">
                       자동 송금
@@ -85,7 +85,7 @@ const Landing = () => {
                 </div>
               </div>
               <div className="p-5 bg-white rounded-xl inline-flex flex-col justify-center items-center aspect-square w-[160px]">
-                <div className="w-full h-full flex flex-col justify-center items-end gap-3">
+                <div className="w-full h-full flex flex-col justify-between items-end gap-3">
                   <div className="flex flex-col justify-start items-start gap-2">
                     <div className="justify-start text-grayscale-900 title-1">
                       서류 관리
@@ -98,7 +98,7 @@ const Landing = () => {
                 </div>
               </div>
               <div className="p-5 bg-white rounded-xl inline-flex flex-col justify-center items-center aspect-square w-[160px]">
-                <div className="w-full h-full flex flex-col justify-center items-end gap-3">
+                <div className="w-full h-full flex flex-col justify-between items-end gap-3">
                   <div className="flex flex-col justify-start items-start gap-2">
                     <div className="justify-start text-grayscale-900 title-1">
                       스케줄 관리
