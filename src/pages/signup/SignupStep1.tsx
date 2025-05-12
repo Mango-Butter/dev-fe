@@ -3,6 +3,8 @@ import Footer from "../../components/layouts/Footer.tsx";
 import LogoIcon from "../../components/icons/LogoIcon.tsx";
 import Button from "../../components/common/Button.tsx";
 import { useLayout } from "../../hooks/useLayout.ts";
+import SignUpStaff from "../../components/icons/SignUpStaff.tsx";
+import SignUpBoss from "../../components/icons/SignUpBoss.tsx";
 
 interface SignupStep1Props {
   onSelectRole: (role: "BOSS" | "STAFF") => void;
@@ -30,14 +32,9 @@ const SignupStep1 = ({ onSelectRole }: SignupStep1Props) => {
           </div>
         </div>
         <div className="flex flex-col gap-8 w-full justify-center items-center">
-          {/*<LogoIcon theme="icon" className="w-[104px] h-[115px]" />*/}
           <div className="w-full flex gap-5">
-            <div className="w-full flex flex-col gap-4">
-              <LogoIcon
-                theme="text"
-                type="BOSS"
-                className="w-[104px] h-[115px]"
-              />
+            <div className="w-full flex flex-col gap-4 justify-between items-center">
+              <SignUpBoss className="w-full h-auto" />
               <Button
                 theme="primary"
                 size="lg"
@@ -48,11 +45,7 @@ const SignupStep1 = ({ onSelectRole }: SignupStep1Props) => {
               </Button>
             </div>
             <div className="w-full flex flex-col gap-4">
-              <LogoIcon
-                theme="text"
-                type="STAFF"
-                className="w-[104px] h-[115px]"
-              />
+              <SignUpStaff className="w-full h-auto" />
               <Button
                 theme="secondary"
                 size="lg"
