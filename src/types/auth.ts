@@ -1,4 +1,4 @@
-// src/types/auth.ts
+// src/types/login.ts
 export interface LoginResponse {
   accessToken: string;
   refreshToken: string;

@@ -1,5 +1,8 @@
 import { create } from "zustand";
-import { fetchDailyAttendance, fetchCalendarSummary } from "../api/calendar.ts";
+import {
+  fetchDailyAttendance,
+  fetchCalendarSummary,
+} from "../api/boss/calendar.ts";
 import { getCalendarRange } from "../utils/date.ts";
 import {
   DailyAttendanceRecord,

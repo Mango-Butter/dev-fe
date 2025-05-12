@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import LogoIcon from "../components/icons/LogoIcon.tsx";
+import { useUserStore } from "../stores/userStore.ts";
 
 const NotFound = () => {
   const navigate = useNavigate();
+  const user = useUserStore((state) => state.user);
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen bg-[#FFFCE1] font-sans text-black">
@@ -19,7 +21,15 @@ const NotFound = () => {
           찾으려는 페이지가 존재하지 않아요. 다시 돌아가볼까요?
         </p>
         <button
-          onClick={() => navigate("/")}
+          onClick={() =>
+            navigate(
+              user?.role === "BOSS"
+                ? "/boss"
+                : user?.role === "STAFF"
+                  ? "/staff"
+                  : "/",
+            )
+          }
           className="inline-block px-10 py-3 rounded-full text-white text-lg bg-[#FFB800] hover:bg-[#E5A500] transition duration-300"
         >
           홈으로 가기

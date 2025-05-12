@@ -15,13 +15,20 @@ export interface UpdateStoreInfoRequest {
   };
 }
 
-export interface StoreSummary {
+export interface StoreSummaryBoss {
   storeId: number;
   storeName: string;
   businessNumber: string;
   storeType: "CAFE" | "RESTAURANT" | "CONVENIENCE_STORE";
   address: string;
   inviteCode: string;
+}
+
+export interface StoreSummaryStaff {
+  storeId: number;
+  storeName: string;
+  storeType: "CAFE" | "RESTAURANT" | "CONVENIENCE_STORE";
+  address: string;
 }
 
 export interface ReissueInviteCodeResponse {

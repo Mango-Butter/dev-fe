@@ -1,62 +1,136 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { lazy, Suspense } from "react";
+
 import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./routes/PublicRoute";
 import AppInitializer from "./routes/AppInitializer.tsx";
 import MobileLayout from "./components/layouts/MobileLayout";
-import Home from "./pages/Home";
-import Schedule from "./pages/schedule/Schedule.tsx";
-import Employees from "./pages/employee/Employees.tsx";
-import Task from "./pages/Task";
-import Store from "./pages/store/Store.tsx";
 import NotFound from "./pages/NotFound";
-import LoginSuccess from "./pages/auth/LoginSuccess.tsx";
-import Login from "./pages/auth/Login.tsx";
+import LoginSuccess from "./pages/login/LoginSuccess.tsx";
+import Login from "./pages/login/Login.tsx";
 import Signup from "./pages/signup/Signup.tsx";
-import StoreRegisterPage from "./pages/store/StoreRegisterPage.tsx";
-import AddressSearchPopup from "./pages/store/AddressSearchPopup.tsx";
-import StoreInfoPage from "./pages/store/StoreInfoPage.tsx";
-import AttendanceSettingPage from "./pages/store/AttendanceSettingPage.tsx";
-import SalarySettingPage from "./pages/store/SalarySettingPage.tsx";
-import NotificationSettingPage from "./pages/store/NotificationSettingPage.tsx";
-import StoreInfoEditPage from "./pages/store/StoreInfoEditPage.tsx";
+import AddressSearchPopup from "./pages/store/boss/AddressSearchPopup.tsx";
 import ContractPage from "./pages/contract/Contract.tsx";
 import ContractRegisterPage from "./pages/contract/ContractRegisterPage.tsx";
 import ContractDetailPage from "./pages/contract/ContractDetailPage.tsx";
 import ContractWritePage from "./pages/contract/ContractWritePage.tsx";
-import Landing from "./pages/auth/Landing.tsx";
+import RoleRoute from "./routes/RoleRoute.tsx";
+import Landing from "./pages/Landing.tsx";
 
-//Todo: 추후 페이지 별 Lazy Loading 적용 예정
+// Lazy-loaded components (boss)
+const HomeBoss = lazy(() => import("./pages/home/boss/HomeBoss.tsx"));
+const Schedule = lazy(() => import("./pages/schedule/boss/Schedule.tsx"));
+const Employees = lazy(() => import("./pages/employee/boss/Employees.tsx"));
+const Task = lazy(() => import("./pages/Task"));
+const Store = lazy(() => import("./pages/store/boss/Store.tsx"));
+const StoreRegisterBossPage = lazy(
+  () => import("./pages/store/boss/StoreRegisterBossPage.tsx"),
+);
+const StoreInfoPage = lazy(
+  () => import("./pages/store/boss/StoreInfoPage.tsx"),
+);
+const StoreInfoEditPage = lazy(
+  () => import("./pages/store/boss/StoreInfoEditPage.tsx"),
+);
+const AttendanceSettingPage = lazy(
+  () => import("./pages/store/boss/AttendanceSettingPage.tsx"),
+);
+const SalarySettingPage = lazy(
+  () => import("./pages/store/boss/SalarySettingPage.tsx"),
+);
+const NotificationSettingPage = lazy(
+  () => import("./pages/store/boss/NotificationSettingPage.tsx"),
+);
+
+// Lazy-loaded components (staff)
+const HomeStaff = lazy(() => import("./pages/home/staff/HomeStaff.tsx"));
+const ScheduleStaff = lazy(
+  () => import("./pages/schedule/staff/ScheduleStaff.tsx"),
+);
+const StoreRegisterIntro = lazy(
+  () => import("./pages/store/staff/StoreRegisterIntro.tsx"),
+);
+const StoreRegisterStaffPage = lazy(
+  () => import("./pages/store/staff/StoreRegisterStaffPage.tsx"),
+);
+
+// Suspense Wrapper
+const withSuspense = (Component: React.LazyExoticComponent<any>) => (
+  <Suspense fallback={<div>로딩 중...</div>}>
+    <Component />
+  </Suspense>
+);
+
 function App() {
   return (
     <Router>
       <AppInitializer />
       <Routes>
+        <Route path="*" element={<NotFound />} />
+        <Route index element={<Landing />} />
+        <Route element={<PublicRoute />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/loginSuccess" element={<LoginSuccess />} />
+        </Route>
         <Route path="/" element={<MobileLayout />}>
-          <Route index element={<Landing />} />
-
-          {/* ✅ 로그인 된 사용자만 접근 가능한 라우트 */}
           <Route element={<ProtectedRoute />}>
-            <Route path="boss/home" element={<Home />} />
-            <Route path="schedule" element={<Schedule />} />
-            <Route path="employees" element={<Employees />} />
-            <Route path="task" element={<Task />} />
-            <Route path="/signup" element={<Signup />} />
-            {/*매장페이지*/}
-            <Route path="store" element={<Store />} />
-            <Route path="/store/register" element={<StoreRegisterPage />} />
-            <Route path="/store/info" element={<StoreInfoPage />} />
-            <Route path="/store/info/edit" element={<StoreInfoEditPage />} />
-            <Route
-              path="/store/attendance"
-              element={<AttendanceSettingPage />}
-            />
-            <Route path="/store/salary" element={<SalarySettingPage />} />
-            <Route
-              path="/store/notification"
-              element={<NotificationSettingPage />}
-            />
             <Route path="/address-search" element={<AddressSearchPopup />} />
-            {/*  근로계약서*/}
+            <Route path="/signup" element={<Signup />} />
+
+            {/* BOSS Routes */}
+            <Route element={<RoleRoute allowedRole="BOSS" />}>
+              <Route path="boss" element={withSuspense(HomeBoss)} />
+              <Route path="boss/schedule" element={withSuspense(Schedule)} />
+              <Route path="boss/employees" element={withSuspense(Employees)} />
+              <Route path="boss/task" element={withSuspense(Task)} />
+              <Route path="boss/store" element={withSuspense(Store)} />
+              <Route
+                path="boss/store/register"
+                element={withSuspense(StoreRegisterBossPage)}
+              />
+              <Route
+                path="boss/store/info"
+                element={withSuspense(StoreInfoPage)}
+              />
+              <Route
+                path="boss/store/info/edit"
+                element={withSuspense(StoreInfoEditPage)}
+              />
+              <Route
+                path="boss/store/attendance"
+                element={withSuspense(AttendanceSettingPage)}
+              />
+              <Route
+                path="boss/store/salary"
+                element={withSuspense(SalarySettingPage)}
+              />
+              <Route
+                path="boss/store/notification"
+                element={withSuspense(NotificationSettingPage)}
+              />
+            </Route>
+
+            {/* STAFF Routes */}
+            <Route element={<RoleRoute allowedRole="STAFF" />}>
+              <Route path="staff" element={withSuspense(HomeStaff)} />
+              <Route
+                path="staff/schedule"
+                element={withSuspense(ScheduleStaff)}
+              />
+              <Route path="staff/task" element={<NotFound />} />
+              <Route path="staff/payroll" element={<NotFound />} />
+              <Route path="staff/mypage" element={<NotFound />} />
+              <Route
+                path="staff/store/intro"
+                element={withSuspense(StoreRegisterIntro)}
+              />
+              <Route
+                path="staff/store/register"
+                element={withSuspense(StoreRegisterStaffPage)}
+              />
+            </Route>
+
+            {/* 계약서 */}
             <Route path="/contract" element={<ContractPage />} />
             <Route
               path="/contract/register"
@@ -65,15 +139,6 @@ function App() {
             <Route path="/contract/:id" element={<ContractDetailPage />} />
             <Route path="/contract/write" element={<ContractWritePage />} />
           </Route>
-
-          {/* ✅ 로그인된 사용자는 접근할 수 없는 라우트 (로그인 관련) */}
-          <Route element={<PublicRoute />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/loginSuccess" element={<LoginSuccess />} />
-          </Route>
-
-          {/* ✅ 404 페이지 */}
-          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </Router>
