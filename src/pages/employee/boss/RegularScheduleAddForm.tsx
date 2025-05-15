@@ -9,6 +9,7 @@ import {
   weekdayKorean,
 } from "../../../types/staff.ts";
 import { createRegularSchedules } from "../../../api/boss/staff.ts";
+import Button from "../../../components/common/Button.tsx";
 
 const schema = z.object({
   range: z
@@ -164,19 +165,13 @@ const ScheduleAddForm = () => {
         )}
       </section>
 
-      <div className="sticky bottom-0 mt-4 flex justify-between gap-3 border-t border-gray-200 bg-white px-4 py-3">
-        <button
-          type="button"
-          className="flex-1 rounded-lg border border-gray-300 py-2 text-sm"
-        >
+      <div className="sticky bottom-0 mt-4 flex justify-between gap-3 bg-white py-3">
+        <Button theme="outline" className="flex-1">
           취소
-        </button>
-        <button
-          type="submit"
-          className="flex-1 rounded-lg bg-yellow-400 py-2 text-sm font-semibold text-white"
-        >
+        </Button>
+        <Button type="submit" theme="primary" className="flex-1">
           추가
-        </button>
+        </Button>
       </div>
     </form>
   );

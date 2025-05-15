@@ -16,6 +16,7 @@ import ContractDetailPage from "./pages/contract/ContractDetailPage.tsx";
 import ContractWritePage from "./pages/contract/ContractWritePage.tsx";
 import RoleRoute from "./routes/RoleRoute.tsx";
 import Landing from "./pages/Landing.tsx";
+import EmployeeDetailPage from "./pages/employee/boss/EmployeeDetailPage.tsx";
 
 // Lazy-loaded components (boss)
 const HomeBoss = lazy(() => import("./pages/home/boss/HomeBoss.tsx"));
@@ -68,20 +69,26 @@ function App() {
       <Routes>
         <Route path="*" element={<NotFound />} />
         <Route index element={<Landing />} />
-        <Route element={<PublicRoute />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/loginSuccess" element={<LoginSuccess />} />
-        </Route>
         <Route path="/" element={<MobileLayout />}>
+          {/* PUBIC Routes */}
+          <Route element={<PublicRoute />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/loginSuccess" element={<LoginSuccess />} />
+          </Route>
+          {/* PROTECTED Routes */}
           <Route element={<ProtectedRoute />}>
+            {/* COMMON Routes */}
             <Route path="/address-search" element={<AddressSearchPopup />} />
             <Route path="/signup" element={<Signup />} />
-
             {/* BOSS Routes */}
             <Route element={<RoleRoute allowedRole="BOSS" />}>
               <Route path="boss" element={withSuspense(HomeBoss)} />
               <Route path="boss/schedule" element={withSuspense(Schedule)} />
               <Route path="boss/employees" element={withSuspense(Employees)} />
+              <Route
+                path="/boss/employee/:staffId"
+                element={<EmployeeDetailPage />}
+              />
               <Route path="boss/task" element={withSuspense(Task)} />
               <Route path="boss/store" element={withSuspense(Store)} />
               <Route

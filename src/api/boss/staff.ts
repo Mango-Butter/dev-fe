@@ -3,6 +3,7 @@ import {
   RegularSchedule,
   CreateRegularScheduleDto,
   StaffBrief,
+  StaffAttendance,
 } from "../../types/staff.ts";
 
 // 고정 스케줄 생성
@@ -46,6 +47,15 @@ export const getStaffBriefList = async (
 ): Promise<StaffBrief[]> => {
   const response = await axiosAuth.get(
     `/api/boss/stores/${storeId}/staffs/brief`,
+  );
+  return response.data.result;
+};
+
+export const getStaffAttendancesList = async (
+  storeId: number,
+): Promise<StaffAttendance[]> => {
+  const response = await axiosAuth.get(
+    `/api/boss/stores/${storeId}/staffs/attendances`,
   );
   return response.data.result;
 };
