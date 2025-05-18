@@ -7,7 +7,7 @@ export default function BriefCaseIcon({}: React.ComponentProps<"svg">) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_1377_12878)">
+      <g clipPath="url(#clip0_1377_12878)">
         <path
           d="M37.5 13.5088V25.3418H2.5V13.5088C2.5 11.6678 3.992 10.1758 5.833 10.1758H34.166C36.007 10.1758 37.5 11.6678 37.5 13.5088Z"
           fill="#C3846C"

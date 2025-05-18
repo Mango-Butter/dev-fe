@@ -21,7 +21,7 @@ export default function LandingTimeQR({
       {...restProps}
     >
       <g filter="url(#filter0_d_1364_12260)">
-        <g clip-path="url(#clip0_1364_12260)">
+        <g clipPath="url(#clip0_1364_12260)">
           <rect x="28" y="28" width="440" height="936" rx="20" fill="white" />
           <rect
             width="438"

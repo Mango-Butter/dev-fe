@@ -7,7 +7,7 @@ export default function WingMoneyIcon({}: React.ComponentProps<"svg">) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_1375_12680)">
+      <g clipPath="url(#clip0_1375_12680)">
         <path
           d="M33.6676 15.9461L5.14844 22.8761V20.0726L33.6676 13.1426V15.9461Z"
           fill="#03905A"

@@ -4,7 +4,6 @@ import clsx from "clsx";
 const tabItems = [
   { label: "근무", value: "attendance" },
   { label: "서류", value: "document" },
-  { label: "급여", value: "payroll" },
 ];
 
 const BossEmployeeTabBar = () => {
@@ -16,7 +15,7 @@ const BossEmployeeTabBar = () => {
   };
 
   return (
-    <div className="grid grid-cols-3 border-b border-grayscale-200">
+    <div className="grid grid-cols-2 border-b border-grayscale-200">
       {tabItems.map((tab) => (
         <button
           key={tab.value}

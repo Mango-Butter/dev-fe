@@ -21,7 +21,7 @@ export default function LandingSign({
       {...restProps}
     >
       <g filter="url(#filter0_d_1364_11970)">
-        <g clip-path="url(#clip0_1364_11970)">
+        <g clipPath="url(#clip0_1364_11970)">
           <rect x="28" y="28" width="440" height="936" rx="20" fill="white" />
           <rect
             width="440"

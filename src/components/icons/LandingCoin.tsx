@@ -21,7 +21,7 @@ export default function LandingCoin({
       {...restProps}
     >
       <g filter="url(#filter0_d_1364_12427)">
-        <g clip-path="url(#clip0_1364_12427)">
+        <g clipPath="url(#clip0_1364_12427)">
           <rect x="23" y="23" width="440" height="936" rx="20" fill="#FEF3D5" />
           <rect
             width="438"

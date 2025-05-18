@@ -19,7 +19,7 @@ function StaffCard({ staff, attendanceCount, workDays }: StaffAttendance) {
         className="w-14 h-14 rounded-full object-cover border border-gray-200"
       />
       <div className="flex flex-col justify-center flex-1">
-        <p className="title-2 text-black">{staff.name}</p>
+        <p className="title-1 text-black">{staff.name}</p>
         <p className="body-3 text-gray-500 mt-1">
           고정 근무 요일
           <span className="title-3 text-black ml-2">
