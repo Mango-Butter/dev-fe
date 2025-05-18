@@ -1,14 +1,16 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import RegularScheduleAddForm from "./RegularScheduleAddForm.tsx";
 import { StaffBrief } from "../../../types/staff.ts";
 import MailIcon from "../../../components/icons/MailIcon.tsx";
 import { BusinessOff } from "../../../components/icons/BusinessIcon.tsx";
+import useContractStore from "../../../stores/constractStore.ts";
 
 const EmployeeDetailPage = () => {
   const { staffId } = useParams();
   const id = Number(staffId);
   const { setBottomSheetContent } = useBottomSheetStore();
+  const navigate = useNavigate();
 
   const openAddRegularScheduleSheet = (staff: StaffBrief) => {
     setBottomSheetContent(<RegularScheduleAddForm />, {
@@ -17,7 +19,11 @@ const EmployeeDetailPage = () => {
     });
   };
 
-  const handleContractClick = () => {};
+  const handleContractClick = () => {
+    if (!staffId) return;
+    useContractStore.getState().setSelectedStaffId(staffId); // number로 저장
+    navigate("/boss/contract/register");
+  };
 
   const staff: StaffBrief = {
     staffId: id,

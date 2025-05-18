@@ -10,13 +10,17 @@ import LoginSuccess from "./pages/login/LoginSuccess.tsx";
 import Login from "./pages/login/Login.tsx";
 import Signup from "./pages/signup/Signup.tsx";
 import AddressSearchPopup from "./pages/store/boss/AddressSearchPopup.tsx";
-import ContractPage from "./pages/contract/Contract.tsx";
-import ContractRegisterPage from "./pages/contract/ContractRegisterPage.tsx";
-import ContractDetailPage from "./pages/contract/ContractDetailPage.tsx";
-import ContractWritePage from "./pages/contract/ContractWritePage.tsx";
+import ContractViewPage from "./pages/contract/boss/ContractViewPage.tsx";
+import ContractRegisterPage from "./pages/contract/boss/ContractRegisterPage.tsx";
 import RoleRoute from "./routes/RoleRoute.tsx";
 import Landing from "./pages/Landing.tsx";
 import EmployeeDetailPage from "./pages/employee/boss/EmployeeDetailPage.tsx";
+import ContractTemplateRegisterPage from "./pages/contract/boss/ContractTemplateRegisterPage.tsx";
+import ContractPage from "./pages/contract/boss/ContractPage.tsx";
+import ContractTemplatePage from "./pages/contract/boss/ContractTemplatePage.tsx";
+import ContractViewStaffPage from "./pages/contract/staff/ContractViewStaffPage.tsx";
+import StaffMyPage from "./pages/mypage/staff/StaffMyPage.tsx";
+import StaffDocumentPage from "./pages/document/staff/StaffDocumentPage.tsx";
 
 // Lazy-loaded components (boss)
 const HomeBoss = lazy(() => import("./pages/home/boss/HomeBoss.tsx"));
@@ -115,6 +119,17 @@ function App() {
                 path="boss/store/notification"
                 element={withSuspense(NotificationSettingPage)}
               />
+              <Route path="/boss/contract" element={<ContractPage />} />
+              <Route path="/boss/template" element={<ContractTemplatePage />} />
+              <Route
+                path="/boss/contract/template/register"
+                element={<ContractTemplateRegisterPage />}
+              />
+              <Route path="/boss/contract/:id" element={<ContractViewPage />} />
+              <Route
+                path="/boss/contract/register"
+                element={<ContractRegisterPage />}
+              />
             </Route>
 
             {/* STAFF Routes */}
@@ -126,7 +141,8 @@ function App() {
               />
               <Route path="staff/task" element={<NotFound />} />
               <Route path="staff/payroll" element={<NotFound />} />
-              <Route path="staff/mypage" element={<NotFound />} />
+              <Route path="staff/mypage" element={<StaffMyPage />} />
+              <Route path="staff/document" element={<StaffDocumentPage />} />
               <Route
                 path="staff/store/intro"
                 element={withSuspense(StoreRegisterIntro)}
@@ -135,16 +151,11 @@ function App() {
                 path="staff/store/register"
                 element={withSuspense(StoreRegisterStaffPage)}
               />
+              <Route
+                path="/staff/contract/:id"
+                element={<ContractViewStaffPage />}
+              />
             </Route>
-
-            {/* 계약서 */}
-            <Route path="/contract" element={<ContractPage />} />
-            <Route
-              path="/contract/register"
-              element={<ContractRegisterPage />}
-            />
-            <Route path="/contract/:id" element={<ContractDetailPage />} />
-            <Route path="/contract/write" element={<ContractWritePage />} />
           </Route>
         </Route>
       </Routes>

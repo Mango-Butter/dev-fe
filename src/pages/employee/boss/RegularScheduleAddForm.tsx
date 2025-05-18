@@ -95,14 +95,14 @@ const ScheduleAddForm = () => {
         <label className="text-sm font-medium block mb-2">
           근무 요일 선택 <span className="text-red-500">*</span>
         </label>
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-7 gap-2">
           {dayOfWeekList.map((day) => (
             <button
               type="button"
               key={day}
-              className={`rounded-full border px-3 py-1 text-sm ${
+              className={`rounded-lg border p-2 text-sm ${
                 selectedDays.includes(day)
-                  ? "bg-yellow-400 text-white"
+                  ? "border-yellow-300 bg-yellow-100 text-black"
                   : "text-gray-600"
               }`}
               onClick={() => toggleDay(day)}

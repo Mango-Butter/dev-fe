@@ -1,0 +1,88 @@
+// src/types/contract.ts
+
+export interface WorkSchedule {
+  dayOfWeek:
+    | "MONDAY"
+    | "TUESDAY"
+    | "WEDNESDAY"
+    | "THURSDAY"
+    | "FRIDAY"
+    | "SATURDAY"
+    | "SUNDAY";
+  startTime: string; // "HH:mm"
+  endTime: string; // "HH:mm"
+}
+
+export interface ContractDataInput {
+  contractName: string;
+  contractStart: string; // YYYY-MM-DD
+  contractEnd: string; // YYYY-MM-DD
+  duty: string;
+  workSchedules: WorkSchedule[];
+  hourlyWage: number;
+}
+
+export interface ContractCreateRequest {
+  staffId: number;
+  bossSignatureKey: string;
+  contractDataInput: ContractDataInput;
+}
+
+export interface ContractCreateResponse {
+  contractId: number;
+}
+
+export interface ContractData {
+  contractName: string;
+  storeName: string;
+  staffName: string;
+  contractStart: string; // ISO datetime
+  contractEnd: string; // ISO datetime
+  bossName: string;
+  storeAddress: string;
+  duty: string;
+  workSchedules: WorkSchedule[];
+  hourlyWage: number;
+  businessNumber: string;
+  staffPhone: string;
+}
+
+export interface ContractDetailResponse {
+  contractData: ContractData;
+  bossSignature: SignatureInfo;
+  staffSignature: SignatureInfo | null;
+}
+
+export interface WorkSchedule {
+  dayOfWeek:
+    | "MONDAY"
+    | "TUESDAY"
+    | "WEDNESDAY"
+    | "THURSDAY"
+    | "FRIDAY"
+    | "SATURDAY"
+    | "SUNDAY";
+  startTime: string; // "HH:mm"
+  endTime: string; // "HH:mm"
+}
+
+export interface SignatureInfo {
+  url: string;
+  expiresAt: string; // ISO datetime
+}
+
+export interface ContractPdfViewResponse {
+  url: string;
+  expiresAt: string; // ISO datetime
+}
+
+export interface ContractPdfDownloadResponse {
+  url: string;
+  expiresAt: string; // ISO datetime
+}
+
+export interface StaffContractSummary {
+  contractId: number;
+  createdAt: string; // ISO datetime string
+  isSigned: boolean;
+}
