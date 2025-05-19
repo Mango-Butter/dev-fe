@@ -10,16 +10,16 @@ export default function LandingArrow({}: React.ComponentProps<"svg">) {
       <path
         d="M8 8L37 24.7432L66 8"
         stroke="#FBC42E"
-        stroke-width="15"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="15"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M8 29L37 45.7432L66 29"
         stroke="#FDE7AB"
-        stroke-width="15"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="15"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

@@ -49,14 +49,14 @@ export default function LandingProblem({}: React.ComponentProps<"svg">) {
       </g>
       <g clipPath="url(#clip1_1378_12912)">
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M35.376 30.48V59.52C35.376 60.614 36.262 61.5 37.356 61.5H53.526L63.426 51.6V30.48C63.426 29.386 62.54 28.5 61.446 28.5H37.356C36.262 28.5 35.376 29.386 35.376 30.48Z"
           fill="#E5E9EE"
         />
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M55.5064 51.5996H63.4264L53.5264 61.4996V53.5796C53.5264 52.4856 54.4124 51.5996 55.5064 51.5996Z"
           fill="#C0C7D1"
         />

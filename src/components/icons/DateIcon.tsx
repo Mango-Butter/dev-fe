@@ -33,8 +33,8 @@ export default function DateIcon({}: React.ComponentProps<"svg">) {
           fill="#4B596A"
         />
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M27.163 25.2637H32.3992L25.417 32.2459V27.0097C25.417 26.0458 26.1982 25.2646 27.1621 25.2646L27.163 25.2637Z"
           fill="#C0C7D1"
         />
