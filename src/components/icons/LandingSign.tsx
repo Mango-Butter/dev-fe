@@ -446,13 +446,13 @@ export default function LandingSign({
             height="880"
             transform="translate(28 87)"
             fill="#131313"
-            fill-opacity="0.5"
+            fillOpacity="0.5"
           />
           <g filter="url(#filter1_d_1364_11970)">
             <path
               d="M28 566C28 561.582 31.5817 558 36 558H456C462.627 558 468 563.373 468 570V967H28V566Z"
               fill="white"
-              shape-rendering="crispEdges"
+              shapeRendering="crispEdges"
             />
             <rect x="211" y="582" width="74" height="4" rx="2" fill="#B3B3B3" />
             <path
@@ -474,13 +474,13 @@ export default function LandingSign({
               height="242"
               rx="11.5"
               stroke="#B3B3B3"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
             <path
               d="M166 794.169C204.48 779.857 278.509 744.109 266.782 715.608C252.123 679.981 179.743 827.055 234.715 794.169C289.687 761.283 241.128 816.093 282.358 786.861C323.587 757.629 326.335 750.321 330 786.861"
               stroke="#131313"
-              stroke-width="4"
+              strokeWidth="4"
             />
             <rect
               x="52"
@@ -503,7 +503,7 @@ export default function LandingSign({
           height="941"
           rx="22.5"
           stroke="#939393"
-          stroke-width="5"
+          strokeWidth="5"
         />
       </g>
       <defs>
@@ -514,9 +514,9 @@ export default function LandingSign({
           width="500"
           height="996"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -555,9 +555,9 @@ export default function LandingSign({
           width="452"
           height="421"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"

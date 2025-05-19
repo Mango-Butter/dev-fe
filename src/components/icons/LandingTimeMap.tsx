@@ -90,7 +90,7 @@ export default function LandingTimeMap({
                 height="118"
                 rx="12"
                 fill="white"
-                shape-rendering="crispEdges"
+                shapeRendering="crispEdges"
               />
               <rect
                 x="48.5"
@@ -99,7 +99,7 @@ export default function LandingTimeMap({
                 height="117"
                 rx="11.5"
                 stroke="#E7E7E7"
-                shape-rendering="crispEdges"
+                shapeRendering="crispEdges"
               />
             </g>
             <g filter="url(#filter2_d_1364_12303)">
@@ -110,7 +110,7 @@ export default function LandingTimeMap({
                 height="118"
                 rx="12"
                 fill="white"
-                shape-rendering="crispEdges"
+                shapeRendering="crispEdges"
               />
               <rect
                 x="48.5"
@@ -119,7 +119,7 @@ export default function LandingTimeMap({
                 height="117"
                 rx="11.5"
                 stroke="#669DD6"
-                shape-rendering="crispEdges"
+                shapeRendering="crispEdges"
               />
               <path
                 d="M80 242.893C81.1142 242.893 82.0593 242.504 82.8355 241.728C83.6118 240.952 84 240.007 84 238.893C84 237.778 83.6118 236.833 82.8355 236.057C82.0593 235.281 81.1142 234.893 80 234.893C78.8858 234.893 77.9407 235.281 77.1645 236.057C76.3882 236.833 76 237.778 76 238.893C76 240.007 76.3882 240.952 77.1645 241.728C77.9407 242.504 78.8858 242.893 80 242.893ZM80.0033 247.893C78.7588 247.893 77.5887 247.656 76.493 247.184C75.3975 246.712 74.4445 246.071 73.634 245.261C72.8235 244.451 72.1819 243.499 71.7092 242.405C71.2364 241.31 71 240.14 71 238.896C71 237.651 71.2362 236.481 71.7085 235.386C72.1808 234.29 72.8218 233.337 73.6315 232.527C74.4412 231.716 75.3933 231.074 76.488 230.602C77.5825 230.129 78.7521 229.893 79.9967 229.893C81.2413 229.893 82.4113 230.129 83.507 230.601C84.6025 231.073 85.5555 231.714 86.366 232.524C87.1765 233.334 87.8181 234.286 88.2908 235.381C88.7636 236.475 89 237.645 89 238.889C89 240.134 88.7638 241.304 88.2915 242.4C87.8192 243.495 87.1782 244.448 86.3685 245.259C85.5588 246.069 84.6067 246.711 83.512 247.183C82.4175 247.656 81.2479 247.893 80.0033 247.893ZM80 246.893C82.2333 246.893 84.125 246.118 85.675 244.568C87.225 243.018 88 241.126 88 238.893C88 236.659 87.225 234.768 85.675 233.218C84.125 231.668 82.2333 230.893 80 230.893C77.7667 230.893 75.875 231.668 74.325 233.218C72.775 234.768 72 236.659 72 238.893C72 241.126 72.775 243.018 74.325 244.568C75.875 246.118 77.7667 246.893 80 246.893Z"
@@ -142,7 +142,7 @@ export default function LandingTimeMap({
                 height="118"
                 rx="12"
                 fill="white"
-                shape-rendering="crispEdges"
+                shapeRendering="crispEdges"
               />
               <rect
                 x="48.5"
@@ -151,7 +151,7 @@ export default function LandingTimeMap({
                 height="117"
                 rx="11.5"
                 stroke="#E7E7E7"
-                shape-rendering="crispEdges"
+                shapeRendering="crispEdges"
               />
               <path
                 d="M80.0033 381.893C78.7588 381.893 77.5887 381.656 76.493 381.184C75.3975 380.712 74.4445 380.071 73.634 379.261C72.8235 378.451 72.1819 377.499 71.7092 376.405C71.2364 375.31 71 374.14 71 372.896C71 371.651 71.2362 370.481 71.7085 369.386C72.1808 368.29 72.8218 367.337 73.6315 366.527C74.4412 365.716 75.3933 365.074 76.488 364.602C77.5825 364.129 78.7521 363.893 79.9967 363.893C81.2413 363.893 82.4113 364.129 83.507 364.601C84.6025 365.073 85.5555 365.714 86.366 366.524C87.1765 367.334 87.8181 368.286 88.2908 369.381C88.7636 370.475 89 371.645 89 372.889C89 374.134 88.7638 375.304 88.2915 376.4C87.8192 377.495 87.1782 378.448 86.3685 379.259C85.5588 380.069 84.6067 380.711 83.512 381.183C82.4175 381.656 81.2479 381.893 80.0033 381.893ZM80 380.893C82.2333 380.893 84.125 380.118 85.675 378.568C87.225 377.018 88 375.126 88 372.893C88 370.659 87.225 368.768 85.675 367.218C84.125 365.668 82.2333 364.893 80 364.893C77.7667 364.893 75.875 365.668 74.325 367.218C72.775 368.768 72 370.659 72 372.893C72 375.126 72.775 377.018 74.325 378.568C75.875 380.118 77.7667 380.893 80 380.893Z"
@@ -240,7 +240,7 @@ export default function LandingTimeMap({
               rx="50.3597"
               ry="50.3597"
               fill="#131313"
-              fill-opacity="0.2"
+              fillOpacity="0.2"
             />
           </g>
           <rect
@@ -264,7 +264,7 @@ export default function LandingTimeMap({
           height="941"
           rx="22.5"
           stroke="#939393"
-          stroke-width="5"
+          strokeWidth="5"
         />
       </g>
       <defs>
@@ -275,9 +275,9 @@ export default function LandingTimeMap({
           width="500"
           height="996"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -316,9 +316,9 @@ export default function LandingTimeMap({
           width="412"
           height="130"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -351,9 +351,9 @@ export default function LandingTimeMap({
           width="412"
           height="130"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -386,9 +386,9 @@ export default function LandingTimeMap({
           width="412"
           height="130"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
