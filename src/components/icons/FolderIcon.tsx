@@ -7,14 +7,14 @@ export default function DateIcon({}: React.ComponentProps<"svg">) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_1375_12697)">
+      <g clipPath="url(#clip0_1375_12697)">
         <path
           d="M29.6853 7.14648H6.315C4.89839 7.14648 3.75 8.29487 3.75 9.71148V22.5815C3.75 23.9981 4.89839 25.1465 6.315 25.1465H29.6853C31.1019 25.1465 32.2503 23.9981 32.2503 22.5815V9.71148C32.2503 8.29487 31.1019 7.14648 29.6853 7.14648Z"
           fill="#D0D5DA"
         />
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M18.1504 7.1472H28.7578V5.4543C28.7578 4.4598 27.9523 3.6543 26.9578 3.6543H19.9504C18.9559 3.6543 18.1504 4.4598 18.1504 5.4543V7.1472Z"
           fill="#3182F6"
         />
@@ -23,20 +23,20 @@ export default function DateIcon({}: React.ComponentProps<"svg">) {
           fill="#E5E9EE"
         />
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M10.9502 9.84642H21.5576V8.15352C21.5576 7.15902 20.7521 6.35352 19.7576 6.35352H12.7502C11.7557 6.35352 10.9502 7.15902 10.9502 8.15352V9.84642Z"
           fill="#00BC79"
         />
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M3.75 12.5469V28.8819C3.75 30.2985 4.8984 31.4469 6.315 31.4469H29.6853C31.1019 31.4469 32.2503 30.2985 32.2503 28.8819V15.1119C32.2503 13.6953 31.1019 12.5469 29.6853 12.5469H3.75Z"
           fill="#FFC33A"
         />
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M3.75 12.5476H14.3574V10.8547C14.3574 9.86019 13.5519 9.05469 12.5574 9.05469H5.55C4.5555 9.05469 3.75 9.86019 3.75 10.8547V12.5476Z"
           fill="#EC4452"
         />

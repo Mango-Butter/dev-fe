@@ -7,7 +7,7 @@ export default function DateIcon({}: React.ComponentProps<"svg">) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_1375_12708)">
+      <g clipPath="url(#clip0_1375_12708)">
         <path
           d="M29.7815 4.31836H6.21771C4.77141 4.31836 3.59961 5.49016 3.59961 6.93646V29.6273C3.59961 31.0736 4.77141 32.2454 6.21771 32.2454H25.4174L32.3996 25.2632V6.93646C32.3996 5.49016 31.2278 4.31836 29.7815 4.31836Z"
           fill="#E5E9EE"
@@ -33,8 +33,8 @@ export default function DateIcon({}: React.ComponentProps<"svg">) {
           fill="#4B596A"
         />
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M27.163 25.2637H32.3992L25.417 32.2459V27.0097C25.417 26.0458 26.1982 25.2646 27.1621 25.2646L27.163 25.2637Z"
           fill="#C0C7D1"
         />

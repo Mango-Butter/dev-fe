@@ -7,7 +7,7 @@ export default function PartyIcon({}: React.ComponentProps<"svg">) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_1378_13997)">
+      <g clipPath="url(#clip0_1378_13997)">
         <path
           d="M6.16332 37.8848L29.4763 29.5057L10.2483 10.3438L1.90832 33.6348C0.961323 36.2808 3.51932 38.8348 6.16332 37.8848Z"
           fill="#EF4452"
