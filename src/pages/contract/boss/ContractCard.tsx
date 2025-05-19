@@ -6,13 +6,13 @@ import { BossContractSummary, statusLabelMap } from "../../../types/contract";
 import useClickOutside from "../../../hooks/useClickOutside";
 import MoreIcon from "../../../components/common/MoreIcon.tsx";
 import PaperAirplaneIcon from "../../../components/icons/PaperAirplainIcon.tsx";
-import useContractStore from "../../../stores/constractStore.ts";
 import useStoreStore from "../../../stores/storeStore.ts";
 import {
   fetchContractPdfDownloadUrl,
   fetchContractPdfViewUrl,
 } from "../../../api/boss/contract.ts";
 import { formatFullDateWithTime } from "../../../utils/date.ts";
+import useSelectedStaffStore from "../../../stores/selectedStaffStore.ts";
 
 interface Props {
   contract: BossContractSummary;
@@ -30,7 +30,7 @@ const ContractCard = ({ contract }: Props) => {
   const navigate = useNavigate();
   const [popupOpen, setPopupOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null);
-  const { setSelectedStaffId } = useContractStore();
+  const { setSelectedStaffId } = useSelectedStaffStore();
   const { selectedStore } = useStoreStore();
   const storeId = selectedStore?.storeId;
   useClickOutside(popupRef, () => setPopupOpen(false));

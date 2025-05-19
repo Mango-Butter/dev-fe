@@ -11,6 +11,7 @@ import {
   CheckboxFilled,
   CheckboxOff,
 } from "../../../components/icons/CheckboxIcon.tsx";
+import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 
 interface Props {
   initialSettings: RequiredDocumentSetting[];
@@ -27,7 +28,7 @@ const ALL_DOCUMENT_TYPES: BossRequiredDocumentType[] = [
 const RequiredDocumentSheet = ({ initialSettings, onSaveSuccess }: Props) => {
   const { selectedStore } = useStoreStore();
   const storeId = selectedStore?.storeId;
-
+  const { setBottomSheetOpen } = useBottomSheetStore();
   const [settings, setSettings] = useState<
     Record<BossRequiredDocumentType, boolean>
   >({} as Record<BossRequiredDocumentType, boolean>);
@@ -64,9 +65,11 @@ const RequiredDocumentSheet = ({ initialSettings, onSaveSuccess }: Props) => {
     try {
       await setRequiredDocuments(storeId, payload);
       onSaveSuccess();
+      setBottomSheetOpen(false);
     } catch (e) {
       console.error("필수 서류 설정 저장 실패", e);
       alert("저장에 실패했습니다.");
+      setBottomSheetOpen(false);
     }
   };
 

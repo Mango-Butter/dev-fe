@@ -5,7 +5,6 @@ import TextField from "../../../components/common/TextField.tsx";
 import { useLayout } from "../../../hooks/useLayout.ts";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import { StaffBrief } from "../../../types/staff.ts";
-import useContractStore from "../../../stores/constractStore.ts";
 import { getStaffBriefList } from "../../../api/boss/staff.ts";
 import useStoreStore from "../../../stores/storeStore.ts";
 import RangeDatePicker from "../../../components/common/RangeDatePicker.tsx";
@@ -22,6 +21,7 @@ import {
   fetchContractTemplateList,
 } from "../../../api/boss/contractTemplate.ts";
 import SelectField from "../../../components/common/SelectField.tsx";
+import useSelectedStaffStore from "../../../stores/selectedStaffStore.ts";
 
 interface ContractFormValues {
   staffId: string | null;
@@ -51,8 +51,8 @@ const ContractRegisterPage = () => {
   const [signatureImage, setSignatureImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { selectedStaffId, setSelectedStaffId, clearContractInfo } =
-    useContractStore();
+  const { selectedStaffId, setSelectedStaffId, clearSelectedStaff } =
+    useSelectedStaffStore();
   const { selectedStore } = useStoreStore();
 
   const {
@@ -124,7 +124,7 @@ const ContractRegisterPage = () => {
       const res = await createContract(selectedStore.storeId, payload);
       console.log("계약서 생성 성공", res);
 
-      clearContractInfo();
+      clearSelectedStaff();
       navigate(`/boss/contract/${res.contractId}`); // ✅ 이동
     } catch (err) {
       console.error("계약서 제출 실패", err);
