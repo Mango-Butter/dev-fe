@@ -16,7 +16,6 @@ import RoleRoute from "./routes/RoleRoute.tsx";
 import Landing from "./pages/Landing.tsx";
 import EmployeeDetailPage from "./pages/employee/boss/EmployeeDetailPage.tsx";
 import ContractTemplateRegisterPage from "./pages/contract/boss/ContractTemplateRegisterPage.tsx";
-import ContractPage from "./pages/contract/boss/ContractPage.tsx";
 import ContractTemplatePage from "./pages/contract/boss/ContractTemplatePage.tsx";
 import ContractViewStaffPage from "./pages/contract/staff/ContractViewStaffPage.tsx";
 import StaffMyPage from "./pages/mypage/staff/StaffMyPage.tsx";
@@ -120,8 +119,10 @@ function App() {
                 path="boss/store/notification"
                 element={withSuspense(NotificationSettingPage)}
               />
-              <Route path="/boss/contract" element={<ContractPage />} />
-              <Route path="/boss/template" element={<ContractTemplatePage />} />
+              <Route
+                path="/boss/contract/template"
+                element={<ContractTemplatePage />}
+              />
               <Route
                 path="/boss/contract/template/register"
                 element={<ContractTemplateRegisterPage />}

@@ -10,7 +10,7 @@ import {
   getRequiredDocuments,
   getStaffDocumentStatuses,
 } from "../../../api/boss/document.ts";
-import DocumentTypeCard from "./DocumentTypeCard.tsx";
+import BossDocumentEtcCard from "./BossDocumentEtcCard.tsx";
 import RequiredDocumentSheet from "./RequiredDocumentSheet.tsx";
 
 const BossDocumentEtcPage = () => {
@@ -81,19 +81,20 @@ const BossDocumentEtcPage = () => {
           필수 서류 설정
         </Button>
       </div>
-
-      {requiredDocs
-        .filter((doc) => doc.isRequired) // ← 필수 서류만 추림
-        .map((doc) => (
-          <DocumentTypeCard
-            key={doc.documentType}
-            documentType={doc.documentType}
-            isExpanded={expanded[doc.documentType]}
-            onToggle={() => handleToggle(doc.documentType)}
-            staffList={staffDocs[doc.documentType] || []}
-            loading={loadingDocType === doc.documentType}
-          />
-        ))}
+      <div className="w-full flex flex-col justify-center items-center gap-2">
+        {requiredDocs
+          .filter((doc) => doc.isRequired) // ← 필수 서류만 추림
+          .map((doc) => (
+            <BossDocumentEtcCard
+              key={doc.documentType}
+              documentType={doc.documentType}
+              isExpanded={expanded[doc.documentType]}
+              onToggle={() => handleToggle(doc.documentType)}
+              staffList={staffDocs[doc.documentType] || []}
+              loading={loadingDocType === doc.documentType}
+            />
+          ))}
+      </div>
     </div>
   );
 };

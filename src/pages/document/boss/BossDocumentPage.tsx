@@ -19,7 +19,7 @@ const BossDocumentPage = () => {
     title: "문서함",
     theme: "plain",
     headerVisible: true,
-    bottomNavVisible: true,
+    bottomNavVisible: false,
     onBack: () => history.back(),
     rightIcon: null,
   });

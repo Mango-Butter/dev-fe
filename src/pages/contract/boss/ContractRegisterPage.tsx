@@ -17,6 +17,11 @@ import {
 import SignaturePadSheet from "./SignaturePadSheet.tsx";
 import { createContract } from "../../../api/boss/contract.ts";
 import { useNavigate } from "react-router-dom";
+import {
+  fetchContractTemplateDetail,
+  fetchContractTemplateList,
+} from "../../../api/boss/contractTemplate.ts";
+import SelectField from "../../../components/common/SelectField.tsx";
 
 interface ContractFormValues {
   staffId: string | null;
@@ -39,6 +44,10 @@ const ContractRegisterPage = () => {
   });
 
   const [staffList, setStaffList] = useState<StaffBrief[]>([]);
+  const [templateOptions, setTemplateOptions] = useState<
+    { label: string; value: string }[]
+  >([]);
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string>("");
   const [signatureImage, setSignatureImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -51,6 +60,7 @@ const ContractRegisterPage = () => {
     handleSubmit,
     setValue,
     register,
+    reset,
     watch,
     formState: { isValid },
   } = useForm<ContractFormValues>({
@@ -140,6 +150,68 @@ const ContractRegisterPage = () => {
     }
   }, [localSelectedId, setValue]);
 
+  useEffect(() => {
+    const fetchTemplates = async () => {
+      if (!selectedStore) return;
+      const { result } = await fetchContractTemplateList(selectedStore.storeId);
+      setTemplateOptions([
+        { label: "-", value: "" },
+        ...result.map((tpl) => ({
+          label: tpl.title,
+          value: tpl.templateId.toString(),
+        })),
+      ]);
+    };
+    fetchTemplates();
+  }, [selectedStore]);
+
+  useEffect(() => {
+    const applyTemplate = async () => {
+      if (!selectedTemplateId || !selectedStore) return;
+
+      try {
+        const data = await fetchContractTemplateDetail(
+          selectedStore.storeId,
+          Number(selectedTemplateId),
+        );
+
+        const weekdays =
+          data.contractTemplateData.workSchedules
+            ?.map((s) => s.dayOfWeek)
+            .filter((d): d is DayOfWeek => d !== null && d !== undefined) ?? [];
+
+        const time = Object.fromEntries(
+          (data.contractTemplateData.workSchedules ?? []).map((s) => [
+            s.dayOfWeek,
+            { start: s.startTime ?? "", end: s.endTime ?? "" },
+          ]),
+        );
+
+        reset({
+          staffId: watch("staffId"),
+          range: [
+            data.contractTemplateData.contractStart
+              ? new Date(data.contractTemplateData.contractStart)
+              : null,
+            data.contractTemplateData.contractEnd
+              ? new Date(data.contractTemplateData.contractEnd)
+              : null,
+          ],
+          duty: data.contractTemplateData.duty ?? "",
+          weekdays,
+          time,
+          hourlyWage: data.contractTemplateData.hourlyWage ?? 10030,
+          bossSignatureKey: "",
+        });
+      } catch (err) {
+        console.error("템플릿 적용 실패", err);
+        alert("템플릿을 불러오는 데 실패했습니다.");
+      }
+    };
+
+    applyTemplate();
+  }, [selectedTemplateId, selectedStore]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="w-full h-full flex flex-col gap-6 p-6">
@@ -187,6 +259,28 @@ const ContractRegisterPage = () => {
             </div>
           )}
         />
+
+        {templateOptions.length <= 1 ? (
+          <div className="flex-col justify-start items-start gap-4 inline-flex w-full">
+            <div className="flex items-center gap-2 self-stretch">
+              <label className="title-1 text-grayscale-900">
+                근로계약서 템플릿
+              </label>
+            </div>
+            <div className="w-full rounded-lg bg-grayscale-100 border border-grayscale-300 text-grayscale-600 px-4 py-3.5 text-sm">
+              등록된 템플릿이 없습니다.
+            </div>
+          </div>
+        ) : (
+          <SelectField
+            title="근로계약서 템플릿"
+            placeholder="근로계약서 템플릿을 선택해주세요"
+            options={templateOptions}
+            value={selectedTemplateId}
+            onChange={(val) => setSelectedTemplateId(val)}
+            size="md"
+          />
+        )}
 
         <Controller
           name="range"

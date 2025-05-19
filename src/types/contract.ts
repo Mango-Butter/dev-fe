@@ -86,3 +86,20 @@ export interface StaffContractSummary {
   createdAt: string; // ISO datetime string
   isSigned: boolean;
 }
+
+export interface BossContractSummary {
+  contractId?: number;
+  modifiedAt?: string;
+  status: "PENDING_STAFF_SIGNATURE" | "NOT_CREATED" | "COMPLETED";
+  staff: {
+    staffId: number;
+    name: string;
+    profileImageUrl: string;
+  };
+}
+
+export const statusLabelMap: Record<BossContractSummary["status"], string> = {
+  COMPLETED: "서명 완료",
+  PENDING_STAFF_SIGNATURE: "서명 대기",
+  NOT_CREATED: "미작성",
+};

@@ -21,7 +21,7 @@ interface Props {
   staffList: StaffDocumentStatus[];
 }
 
-const DocumentTypeCard = ({
+const BossDocumentEtcCard = ({
   documentType,
   isExpanded,
   onToggle,
@@ -64,23 +64,19 @@ const DocumentTypeCard = ({
   };
 
   return (
-    <div className="bg-white border border-grayscale-200 rounded-xl shadow-sm overflow-hidden">
+    <div className="w-full bg-white border border-grayscale-200 rounded-xl shadow-sm overflow-hidden">
       {/* 상단 */}
       <button
         onClick={onToggle}
-        className="w-full flex justify-between items-center px-4 py-3"
+        className="w-full flex justify-between items-center px-4 py-5"
       >
-        <div className="flex gap-2 items-center">
-          <span className="text-base">
-            {documentTypeLabelMap[documentType]}
-          </span>
-        </div>
+        <span className="body-2">{documentTypeLabelMap[documentType]}</span>
         <ArrowIcon direction={isExpanded ? "up" : "down"} className="w-4 h-4" />
       </button>
 
       {/* 내용 */}
       {isExpanded && (
-        <div className="px-4 pb-3">
+        <div className="px-4 pb-1">
           {loading ? (
             <span className="text-sm text-gray-400">불러오는 중...</span>
           ) : staffList.length === 0 ? (
@@ -125,4 +121,4 @@ const DocumentTypeCard = ({
   );
 };
 
-export default DocumentTypeCard;
+export default BossDocumentEtcCard;

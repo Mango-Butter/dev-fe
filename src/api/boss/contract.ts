@@ -1,6 +1,7 @@
 // src/apis/contract.ts
 import axiosAuth from "../common/axiosAuth.ts";
 import {
+  BossContractSummary,
   ContractCreateRequest,
   ContractCreateResponse,
   ContractDetailResponse,
@@ -53,6 +54,18 @@ export const fetchContractDetail = async (
     `/api/boss/stores/${storeId}/contracts/${contractId}`,
   );
   return response.data;
+};
+
+/**
+ * 근로계약서 리스트 조회 (사장용)
+ * @param storeId 매장 ID
+ * @returns 근로계약서 요약 목록
+ */
+export const fetchBossContractList = async (
+  storeId: number,
+): Promise<BossContractSummary[]> => {
+  const response = await axiosAuth.get(`/api/boss/stores/${storeId}/contracts`);
+  return response.data.result;
 };
 
 /**
