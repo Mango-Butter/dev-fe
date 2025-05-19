@@ -6,7 +6,7 @@ import WingMoneyIcon from "../components/icons/WingMoneyIcon.tsx";
 import FolderIcon from "../components/icons/FolderIcon.tsx";
 import DateIcon from "../components/icons/DateIcon.tsx";
 import LandingProblem from "../components/icons/LandingProblem.tsx";
-import LandingArrow from "../components/icons/LandingArror.tsx";
+import LandingArrow from "../components/icons/LandingArrow.tsx";
 import LandingGroup from "../components/icons/LandingGroup.tsx";
 import WatchIcon from "../components/icons/WatchIcon.tsx";
 import LandingTimeMap from "../components/icons/LandingTimeMap.tsx";

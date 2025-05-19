@@ -21,7 +21,7 @@ export default function LandingDoc({
       {...restProps}
     >
       <g filter="url(#filter0_d_1364_12105)">
-        <g clip-path="url(#clip0_1364_12105)">
+        <g clipPath="url(#clip0_1364_12105)">
           <rect x="28" y="28" width="440" height="936" rx="20" fill="white" />
           <rect
             width="438"
@@ -450,7 +450,7 @@ export default function LandingDoc({
           height="941"
           rx="22.5"
           stroke="#939393"
-          stroke-width="5"
+          strokeWidth="5"
         />
       </g>
       <defs>
@@ -461,9 +461,9 @@ export default function LandingDoc({
           width="500"
           height="996"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
