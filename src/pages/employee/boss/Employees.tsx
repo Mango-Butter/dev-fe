@@ -1,94 +1,75 @@
-import Button from "../../../components/common/Button.tsx";
-import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
-import RegularScheduleAddForm from "./RegularScheduleAddForm.tsx";
-
-interface Staff {
-  staffId: number;
-  name: string;
-  phone: string;
-  role: "STAFF" | "BOSS";
-  profileImageUrl: string;
-}
-
-const dummyStaffList: Staff[] = [
-  {
-    staffId: 1,
-    name: "알바생 1",
-    phone: "010-1234-5678",
-    role: "STAFF",
-    profileImageUrl: "https://i.pravatar.cc/48?img=1",
-  },
-  {
-    staffId: 2,
-    name: "알바생 2",
-    phone: "010-2345-6789",
-    role: "STAFF",
-    profileImageUrl: "https://i.pravatar.cc/48?img=2",
-  },
-  {
-    staffId: 3,
-    name: "알바생 3",
-    phone: "010-3456-7890",
-    role: "STAFF",
-    profileImageUrl: "https://i.pravatar.cc/48?img=3",
-  },
-  {
-    staffId: 4,
-    name: "알바생 4",
-    phone: "010-4567-8901",
-    role: "STAFF",
-    profileImageUrl: "https://i.pravatar.cc/48?img=4",
-  },
-  {
-    staffId: 5,
-    name: "알바생 5",
-    phone: "010-5678-9012",
-    role: "STAFF",
-    profileImageUrl: "https://i.pravatar.cc/48?img=5",
-  },
-];
+import { useEffect, useState } from "react";
+import StaffCard from "./StaffCard";
+import { getStaffAttendancesList } from "../../../api/boss/staff.ts";
+import { StaffAttendance } from "../../../types/staff.ts";
+import useStoreStore from "../../../stores/storeStore.ts";
+import { useSearchParams } from "react-router-dom";
+import BossEmployeeTabBar from "./BossEmployeeTabBar.tsx";
 
 const Employees = () => {
-  const { setBottomSheetContent } = useBottomSheetStore();
+  const { selectedStore } = useStoreStore();
+  const [staffAttendanceList, setStaffAttendanceList] = useState<
+    StaffAttendance[]
+  >([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchParams] = useSearchParams();
+  const currentTab = searchParams.get("type") || "attendance";
 
-  const openAddRegularScheduleSheet = (staff: Staff) => {
-    setBottomSheetContent(<RegularScheduleAddForm />, {
-      title: `${staff.name} 고정 스케줄 추가`,
-      closeOnClickOutside: true,
-    });
-  };
+  useEffect(() => {
+    if (!selectedStore || currentTab !== "attendance") return;
+
+    const fetchStaff = async () => {
+      setIsLoading(true);
+      try {
+        const data = await getStaffAttendancesList(selectedStore.storeId);
+        setStaffAttendanceList(data);
+      } catch (error) {
+        console.error("출결 데이터 불러오기 실패:", error);
+        setStaffAttendanceList([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchStaff();
+  }, [selectedStore, currentTab]);
 
   return (
-    <div className="flex w-full h-full flex-col gap-6 px-4 py-8">
-      <h1 className="text-xl font-semibold text-center">
-        직원별 고정 스케줄 추가
-      </h1>
-      {dummyStaffList.map((staff) => (
-        <div
-          key={staff.staffId}
-          className="flex items-center justify-between border rounded-2xl p-4 shadow-sm"
-        >
-          <div className="flex items-center gap-4">
-            <img
-              src={staff.profileImageUrl}
-              alt={`${staff.name} 프로필`}
-              className="w-12 h-12 rounded-full object-cover"
-            />
-            <div>
-              <p className="text-base font-medium">{staff.name}</p>
-              <p className="text-sm text-gray-500">{staff.phone}</p>
-            </div>
-          </div>
-          <Button
-            size="sm"
-            onClick={() => openAddRegularScheduleSheet(staff)}
-            theme="outline"
-            state="default"
-          >
-            고정 근무 추가
-          </Button>
-        </div>
-      ))}
+    <div className="flex flex-col w-full h-full">
+      <BossEmployeeTabBar />
+
+      <div className="flex flex-col gap-5 px-5 py-6 flex-1 self-stretch">
+        {currentTab === "attendance" ? (
+          !selectedStore ? (
+            <p className="text-center text-gray-400 mt-10">
+              선택된 매장이 없습니다.
+            </p>
+          ) : isLoading ? (
+            <p className="text-center text-gray-400 mt-10">
+              근무 정보를 불러오는 중...
+            </p>
+          ) : staffAttendanceList.length === 0 ? (
+            <p className="text-center text-gray-400 mt-10">
+              등록된 직원이 없습니다.
+            </p>
+          ) : (
+            staffAttendanceList.map((staffAttendance) => (
+              <StaffCard
+                key={staffAttendance.staff.staffId}
+                staff={staffAttendance.staff}
+                workDays={staffAttendance.workDays}
+                attendanceCount={staffAttendance.attendanceCount}
+              />
+            ))
+          )
+        ) : (
+          <p className="text-center text-gray-400 mt-10">
+            {currentTab === "document"
+              ? "서류 기능은 준비 중입니다."
+              : "급여 기능은 준비 중입니다."}
+          </p>
+        )}
+      </div>
     </div>
   );
 };

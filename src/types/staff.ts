@@ -44,3 +44,15 @@ export interface StaffBrief {
   name: string;
   profileImageUrl: string;
 }
+
+interface AttendanceCount {
+  normalCount: number;
+  lateCount: number;
+  absentCount: number;
+}
+
+export interface StaffAttendance {
+  staff: StaffBrief;
+  workDays: DayOfWeek[];
+  attendanceCount: AttendanceCount;
+}

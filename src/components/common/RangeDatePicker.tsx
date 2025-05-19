@@ -3,7 +3,7 @@ import Calendar, { CalendarProps } from "react-calendar";
 import { formatFullDate } from "../../utils/date";
 import ArrowIcon from "../icons/ArrowIcon";
 import TextField from "./TextField.tsx";
-import { CalendarOn } from "../icons/CalendarIcon.tsx";
+import { CalendarOff } from "../icons/CalendarIcon.tsx";
 import "../../styles/datePickerCalendar.css";
 
 interface RangeDatePickerProps {
@@ -69,7 +69,7 @@ export default function RangeDatePicker({
           value={endDate ? formatFullDate(endDate) : ""}
           placeholder="종료일"
           theme="icon"
-          icon={<CalendarOn />}
+          icon={<CalendarOff />}
           onClick={() => setOpen(true)}
           handleIconClick={() => setOpen(true)}
         />

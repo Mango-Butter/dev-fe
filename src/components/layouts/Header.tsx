@@ -45,7 +45,7 @@ const Header: React.FC = () => {
 
       {/* Center */}
       {theme === "plain" && title && (
-        <h1 className="text-black heading-1">{title}</h1>
+        <h1 className="text-black heading-2">{title}</h1>
       )}
 
       {/* Right */}

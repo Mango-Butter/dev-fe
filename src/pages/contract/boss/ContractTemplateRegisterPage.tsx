@@ -1,0 +1,364 @@
+import { useForm, Controller } from "react-hook-form";
+import { useEffect, useState } from "react";
+import Button from "../../../components/common/Button.tsx";
+import TextField from "../../../components/common/TextField.tsx";
+import { useLayout } from "../../../hooks/useLayout.ts";
+import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
+import useStoreStore from "../../../stores/storeStore.ts";
+import RangeDatePicker from "../../../components/common/RangeDatePicker.tsx";
+import {
+  dayOfWeekList,
+  weekdayKorean,
+  DayOfWeek,
+} from "../../../types/staff.ts";
+import SignaturePadSheet from "./SignaturePadSheet.tsx";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  createContractTemplate,
+  deleteContractTemplate,
+  fetchContractTemplateDetail,
+  updateContractTemplate,
+} from "../../../api/boss/contractTemplate.ts";
+import {
+  ContractTemplateFormValues,
+  contractTemplateSchema,
+} from "../../../schemas/contractTemplateSchema.ts";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const ContractTemplateRegisterPage = () => {
+  useLayout({
+    title: "근로계약서 템플릿 생성",
+    theme: "plain",
+    headerVisible: true,
+    bottomNavVisible: false,
+    onBack: () => history.back(),
+    rightIcon: null,
+  });
+
+  const [signatureImage, setSignatureImage] = useState<string | null>(null);
+  const [searchParams] = useSearchParams();
+  const templateId = searchParams.get("templateId"); // string | null
+
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { selectedStore } = useStoreStore();
+
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    register,
+    reset,
+    watch,
+    formState: { isValid },
+  } = useForm<ContractTemplateFormValues>({
+    mode: "onChange",
+    resolver: zodResolver(contractTemplateSchema),
+    defaultValues: {
+      title: "",
+      range: [null, null],
+      duty: "",
+      weekdays: [],
+      time: {} as any,
+      hourlyWage: undefined,
+      bossSignatureKey: "",
+    },
+  });
+
+  const selectedDays = watch("weekdays") ?? [];
+  const { setBottomSheetContent, setBottomSheetOpen } = useBottomSheetStore();
+
+  useEffect(() => {
+    const fetchTemplate = async () => {
+      if (!templateId || !selectedStore) return;
+
+      try {
+        const data = await fetchContractTemplateDetail(
+          selectedStore.storeId,
+          Number(templateId),
+        );
+
+        reset({
+          title: data.title,
+          range: [
+            data.contractTemplateData.contractStart
+              ? new Date(data.contractTemplateData.contractStart)
+              : null,
+            data.contractTemplateData.contractEnd
+              ? new Date(data.contractTemplateData.contractEnd)
+              : null,
+          ],
+          duty: data.contractTemplateData.duty ?? "",
+          weekdays:
+            data.contractTemplateData.workSchedules
+              ?.map((s) => s.dayOfWeek)
+              .filter((d): d is DayOfWeek => d !== null && d !== undefined) ??
+            [],
+          time: Object.fromEntries(
+            (data.contractTemplateData.workSchedules ?? []).map((s) => [
+              s.dayOfWeek,
+              { start: s.startTime ?? "", end: s.endTime ?? "" },
+            ]),
+          ),
+          hourlyWage: data.contractTemplateData.hourlyWage ?? undefined,
+          bossSignatureKey: "",
+        });
+      } catch (err) {
+        console.error("템플릿 불러오기 실패", err);
+        alert("템플릿을 불러오지 못했습니다.");
+      }
+    };
+
+    fetchTemplate();
+  }, [templateId, selectedStore]);
+
+  const toggleDay = (day: DayOfWeek) => {
+    const updated = selectedDays.includes(day)
+      ? selectedDays.filter((d) => d !== day)
+      : [...selectedDays, day];
+    setValue("weekdays", updated, { shouldValidate: true });
+  };
+
+  const onSubmit = async (data: ContractTemplateFormValues) => {
+    if (!selectedStore) return;
+
+    try {
+      setLoading(true);
+
+      const [contractStart, contractEnd] = data.range;
+
+      const workSchedules =
+        selectedDays.length > 0
+          ? selectedDays.map((day) => {
+              const timeForDay = data.time?.[day];
+              return {
+                dayOfWeek: day,
+                startTime: timeForDay?.start ?? null,
+                endTime: timeForDay?.end ?? null,
+              };
+            })
+          : null;
+
+      const payload = {
+        title: data.title,
+        contractTemplateData: {
+          contractStart: contractStart
+            ? contractStart.toISOString().split("T")[0]
+            : null,
+          contractEnd: contractEnd
+            ? contractEnd.toISOString().split("T")[0]
+            : null,
+          duty: data.duty || null,
+          hourlyWage:
+            typeof data.hourlyWage === "number" ? data.hourlyWage : null,
+          workSchedules,
+        },
+      };
+
+      if (templateId) {
+        await updateContractTemplate(
+          selectedStore.storeId,
+          Number(templateId),
+          payload,
+        );
+        alert("템플릿이 성공적으로 수정되었습니다.");
+      } else {
+        await createContractTemplate(selectedStore.storeId, payload);
+        alert("템플릿이 성공적으로 등록되었습니다.");
+      }
+
+      navigate("/boss/contract/template"); // 공통 이동
+    } catch (err) {
+      console.error("템플릿 저장 실패", err);
+      alert("템플릿 저장에 실패했습니다.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="w-full h-full flex flex-col gap-6 p-6">
+        <Controller
+          name="title"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              title="템플릿 이름"
+              placeholder="기본 초급 템플릿"
+              required
+              {...field}
+            />
+          )}
+        />
+
+        <Controller
+          name="range"
+          control={control}
+          render={({ field }) => (
+            <section>
+              <label className="title-1 block mb-2">근로계약 기간</label>
+              <RangeDatePicker
+                value={field.value}
+                onChange={field.onChange}
+                mode="future"
+              />
+            </section>
+          )}
+        />
+
+        <Controller
+          name="duty"
+          control={control}
+          render={({ field }) => (
+            <TextField title="업무" placeholder="예) 홀 서빙" {...field} />
+          )}
+        />
+
+        <section>
+          <label className="title-1 block mb-2">근무 요일 선택</label>
+          <div className="grid grid-cols-7 gap-2">
+            {dayOfWeekList.map((day) => (
+              <button
+                type="button"
+                key={day}
+                className={`rounded-lg border p-2 text-sm ${
+                  selectedDays.includes(day)
+                    ? "border-yellow-300 bg-yellow-100 text-black"
+                    : "text-gray-600"
+                }`}
+                onClick={() => toggleDay(day)}
+              >
+                {weekdayKorean[day]}
+              </button>
+            ))}
+          </div>
+        </section>
+
+        {selectedDays.map((day) => (
+          <section key={day}>
+            <label className="text-sm font-medium">
+              {weekdayKorean[day]} 근무 시간{" "}
+            </label>
+            <div className="mt-1 flex gap-2">
+              <input
+                type="time"
+                {...register(`time.${day}.start`)}
+                className="flex-1 rounded-md border px-3 py-2 text-sm"
+              />
+              <span className="self-center text-gray-400">~</span>
+              <input
+                type="time"
+                {...register(`time.${day}.end`)}
+                className="flex-1 rounded-md border px-3 py-2 text-sm"
+              />
+            </div>
+          </section>
+        ))}
+
+        <Controller
+          name="hourlyWage"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              value={field.value as number}
+              title="시급"
+              min={1}
+              placeholder="10,030"
+              description="현재 최저시급은 10,030원 입니다."
+              type="number"
+              theme="suffix"
+              suffix="원"
+            />
+          )}
+        />
+
+        <Controller
+          name="bossSignatureKey"
+          control={control}
+          render={() => (
+            <div className="flex flex-col gap-2">
+              <div className="flex title-1 text-black gap-1">서명</div>
+              <div
+                className="h-44 px-6 py-4 border border-gray-300 rounded-lg flex items-center justify-center text-gray-500 cursor-pointer bg-white"
+                onClick={() => {
+                  setBottomSheetContent(
+                    <SignaturePadSheet
+                      onComplete={({ base64, signatureKey }) => {
+                        setSignatureImage(base64); // ✅ 이미지 상태에 저장
+                        setValue("bossSignatureKey", signatureKey); // ✅ 폼에는 key만 저장
+                        setBottomSheetOpen(false);
+                      }}
+                    />,
+                    { title: "서명 그리기" },
+                  );
+                }}
+              >
+                {signatureImage ? (
+                  <img
+                    src={signatureImage}
+                    alt="서명 이미지"
+                    className="h-full object-contain"
+                  />
+                ) : (
+                  "근로계약서에 적용할 서명을 진행해주세요."
+                )}
+              </div>
+            </div>
+          )}
+        />
+        {templateId ? (
+          <div className="w-full flex gap-3 mt-6">
+            <Button
+              size="lg"
+              theme="primary"
+              type="submit"
+              disabled={!isValid || loading}
+              state={loading ? "disabled" : isValid ? "default" : "disabled"}
+              className="flex-1"
+            >
+              {loading ? "저장 중..." : "저장"}
+            </Button>
+            <Button
+              size="lg"
+              theme="outline"
+              type="button"
+              onClick={async () => {
+                if (!selectedStore || !templateId) return;
+                if (!confirm("정말 삭제하시겠습니까?")) return;
+                try {
+                  await deleteContractTemplate(
+                    selectedStore.storeId,
+                    Number(templateId),
+                  );
+                  alert("삭제 완료");
+                  navigate("/boss/contract/template");
+                } catch (err) {
+                  console.error("삭제 실패", err);
+                  alert("삭제 중 오류가 발생했습니다.");
+                }
+              }}
+              className="flex-1"
+            >
+              삭제
+            </Button>
+          </div>
+        ) : (
+          <Button
+            size="lg"
+            theme="primary"
+            type="submit"
+            disabled={!isValid || loading}
+            state={loading ? "disabled" : isValid ? "default" : "disabled"}
+            className="w-full my-6"
+          >
+            {loading ? "작성 중..." : "작성"}
+          </Button>
+        )}
+      </div>
+    </form>
+  );
+};
+
+export default ContractTemplateRegisterPage;
