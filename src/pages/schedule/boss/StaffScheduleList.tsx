@@ -1,4 +1,7 @@
-import { getClockInStyle } from "../../../utils/attendance.ts";
+import {
+  getClockInStyle,
+  getClockOutStyle,
+} from "../../../utils/attendance.ts";
 import { DailyAttendanceRecord } from "../../../types/calendar.ts";
 import { getMinutesDiff } from "../../../utils/date.ts";
 import { formatTimeRange } from "../../../utils/time.ts";
@@ -31,10 +34,16 @@ const StaffScheduleList = ({ records, onClick, emptyMessage }: Props) => {
         const {
           label: clockInLabel,
           className: clockInClass,
-          dotClassName,
+          dotClassName: clockInDot,
         } = getClockInStyle(attendance?.clockInStatus, hasClockOut);
 
-        let clockOutLabel = "";
+        const {
+          label: clockOutLabel,
+          className: clockOutClass,
+          dotClassName: clockOutDot,
+        } = getClockOutStyle(attendance?.clockOutStatus);
+
+        let extraLabel = "";
         if (
           attendance?.clockOutStatus === "EARLY_LEAVE" &&
           attendance.clockOutTime
@@ -43,7 +52,7 @@ const StaffScheduleList = ({ records, onClick, emptyMessage }: Props) => {
             schedule.endTime,
             attendance.clockOutTime,
           );
-          clockOutLabel = `조퇴 ${early}분`;
+          extraLabel = `(${early}분 조퇴)`;
         } else if (
           attendance?.clockOutStatus === "OVERTIME" &&
           attendance.clockOutTime
@@ -52,7 +61,7 @@ const StaffScheduleList = ({ records, onClick, emptyMessage }: Props) => {
             attendance.clockOutTime,
             schedule.endTime,
           );
-          clockOutLabel = `추가근무 ${overtime}분`;
+          extraLabel = `(${overtime}분 연장)`;
         }
 
         return (
@@ -74,23 +83,32 @@ const StaffScheduleList = ({ records, onClick, emptyMessage }: Props) => {
                     {formatTimeRange(schedule.startTime, schedule.endTime)}
                   </p>
                 </div>
-                <div className="flex self-stretch gap-2 mt-1">
+                <div className="flex self-stretch gap-3 mt-1">
+                  {/* 출근 상태 */}
                   <span
                     className={cn("body-3 flex items-center", clockInClass)}
                   >
                     <span
                       className={cn(
-                        "w-1.5 h-1.5 rounded-full mr-1 align-middle",
-                        dotClassName,
+                        "w-1.5 h-1.5 rounded-full mr-1",
+                        clockInDot,
                       )}
                     />
                     {clockInLabel}
                   </span>
-                  {clockOutLabel && (
-                    <span className="body-3 text-purple-500">
-                      {clockOutLabel}
-                    </span>
-                  )}
+
+                  {/* 퇴근 상태 */}
+                  <span
+                    className={cn("body-3 flex items-center", clockOutClass)}
+                  >
+                    <span
+                      className={cn(
+                        "w-1.5 h-1.5 rounded-full mr-1",
+                        clockOutDot,
+                      )}
+                    />
+                    {clockOutLabel} {extraLabel}
+                  </span>
                 </div>
               </div>
             </div>

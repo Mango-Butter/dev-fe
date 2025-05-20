@@ -4,20 +4,18 @@ import "react-calendar/dist/Calendar.css";
 import ArrowIcon from "../../../components/icons/ArrowIcon.tsx";
 import { formatFullDate } from "../../../utils/date.ts";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
-import useStoreStore from "../../../stores/storeStore.ts";
-import SingleScheduleAddForm from "./SingleScheduleAddForm.tsx";
 import "../../../styles/schedulePageCalendar.css";
-import Button from "../../../components/common/Button.tsx";
-import useScheduleStore from "../../../stores/useScheduleStore.ts";
 import { getClockInStyle } from "../../../utils/attendance.ts";
 import { cn } from "../../../libs";
-import SingleScheduleEditForm from "./SingleScheduleEditForm.tsx";
-import AttendanceAddForm from "./AttendanceAddForm.tsx";
-import AttendanceEditForm from "./AttendanceEditForm.tsx";
+
 import { DailyAttendanceRecord } from "../../../types/calendar.ts";
-import ScheduleFilter from "./ScheduleFilter.tsx";
 import { useScheduleFilters } from "../../../hooks/useScheduleFilters.ts";
-import StaffScheduleList from "./StaffScheduleList.tsx";
+import ScheduleFilter from "../boss/ScheduleFilter.tsx";
+import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
+import useStaffScheduleStore from "../../../stores/staff/useStaffScheduleStore.ts";
+import StaffScheduleList from "../boss/StaffScheduleList.tsx";
+import SingleScheduleEditForm from "../boss/SingleScheduleEditForm.tsx";
+import AttendanceEditForm from "../boss/AttendanceEditForm.tsx";
 
 const ScheduleStaff = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -25,9 +23,9 @@ const ScheduleStaff = () => {
   const dateKey = formatFullDate(selectedDate);
 
   const { scheduleMap, dotMap, fetchDailySchedule, fetchDotRange } =
-    useScheduleStore();
+    useStaffScheduleStore();
 
-  const { selectedStore } = useStoreStore();
+  const { selectedStore } = useStaffStoreStore();
   const storeId = selectedStore?.storeId;
   const { setBottomSheetContent } = useBottomSheetStore();
 
@@ -54,18 +52,7 @@ const ScheduleStaff = () => {
     });
   });
 
-  // 스케줄 추가
-  const openAddSingleScheduleSheet = () => {
-    if (isPast) return;
-    setBottomSheetContent(
-      <SingleScheduleAddForm defaultDate={selectedDate} />,
-      {
-        title: "스케줄 추가",
-        closeOnClickOutside: true,
-      },
-    );
-  };
-
+  // TODO: 알바생 바텀시트 따로 만들어야 함
   // 스케줄 상세 보기 바텀시트 오픈 함수
   const handleOpenScheduleDetail = (
     schedule: DailyAttendanceRecord["schedule"],
@@ -83,15 +70,6 @@ const ScheduleStaff = () => {
         closeOnClickOutside: true,
       },
     );
-  };
-
-  // 근태 추가
-  const openAddAttendanceSheet = () => {
-    if (!isPast) return;
-    setBottomSheetContent(<AttendanceAddForm defaultDate={selectedDate} />, {
-      title: "근태 추가",
-      closeOnClickOutside: true,
-    });
   };
 
   // 근태 상세 보기 바텀시트 오픈 함수
@@ -188,23 +166,6 @@ const ScheduleStaff = () => {
       />
 
       <div className="flex w-full h-full flex-col bg-grayscale-100 px-5 py-4">
-        <div className="flex w-full justify-between items-center">
-          <h2 className="heading-2 mb-2">{dateKey}</h2>
-          {isPast ? (
-            <Button size="sm" theme="outline" onClick={openAddAttendanceSheet}>
-              근태 추가
-            </Button>
-          ) : (
-            <Button
-              size="sm"
-              onClick={openAddSingleScheduleSheet}
-              theme="outline"
-            >
-              스케줄 추가
-            </Button>
-          )}
-        </div>
-
         <div className="mt-4">
           <ScheduleFilter />
         </div>
