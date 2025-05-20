@@ -40,3 +40,15 @@ export const documentTypeLabelMap: Record<BossRequiredDocumentType, string> = {
   ID_CARD: "신분증 사본",
   HEALTH_CERTIFICATE: "보건증",
 };
+
+export interface StaffDocumentSummary {
+  documentType:
+    | "RESIDENT_REGISTRATION"
+    | "HEALTH_CERTIFICATE"
+    | "BANK_ACCOUNT"
+    | "ID_CARD";
+  isSubmitted: boolean;
+  isRequired: boolean;
+  expiresAt: string | null;
+  documentId: number | null;
+}

@@ -6,6 +6,16 @@ import {
   StaffAttendance,
 } from "../../types/staff.ts";
 
+export const getStaffDetail = async (
+  storeId: number,
+  staffId: number,
+): Promise<StaffBrief> => {
+  const res = await axiosAuth.get(
+    `/api/boss/stores/${storeId}/staffs/${staffId}`,
+  );
+  return res.data;
+};
+
 // 고정 스케줄 생성
 export const createRegularSchedules = async (
   storeId: number,

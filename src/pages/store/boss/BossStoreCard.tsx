@@ -51,7 +51,7 @@ const BossStoreCard = () => {
 
   if (!storeList || storeList.length === 0) {
     return (
-      <div className="flex flex-1 self-stretch p-5 flex-col items-center justify-start h-full">
+      <div className="flex flex-1 self-stretch flex-col items-center justify-start h-full">
         <div className="flex p-4 border border-grayscale-300 bg-white shadow-basic rounded-xl flex-col justify-center items-center gap-2.5 self-stretch">
           <ErrorIcon className="w-9 h-9" />
           <div className="body-2 text-center text-grayscale-700">
