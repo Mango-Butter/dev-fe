@@ -2,6 +2,7 @@
 import axiosAuth from "../common/axiosAuth.ts";
 import {
   BossContractSummary,
+  BossStaffContractSummary,
   ContractCreateRequest,
   ContractCreateResponse,
   ContractDetailResponse,
@@ -98,4 +99,20 @@ export const fetchContractPdfDownloadUrl = async (
     `/api/boss/stores/${storeId}/contracts/${contractId}/download-url`,
   );
   return response.data;
+};
+
+/**
+ * 특정 알바생 계약서 목록 조회 (사장용)
+ * @param storeId 매장 ID
+ * @param staffId 알바생 ID
+ * @returns 계약서 요약 목록
+ */
+export const fetchBossStaffContracts = async (
+  storeId: number,
+  staffId: number,
+): Promise<BossStaffContractSummary[]> => {
+  const res = await axiosAuth.get<{ result: BossStaffContractSummary[] }>(
+    `/api/boss/stores/${storeId}/contracts/staffs/${staffId}`,
+  );
+  return res.data.result;
 };

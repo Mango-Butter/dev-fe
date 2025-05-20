@@ -1,30 +1,32 @@
 import { useEffect, useState } from "react";
-import { getStaffDocumentSummary } from "../../../api/boss/document";
-import { fetchBossStaffContracts } from "../../../api/boss/contract";
+import { getStaffDocumentSummary } from "../../../api/staff/document";
+import { fetchStaffContracts } from "../../../api/staff/constract.ts";
 import {
   StaffDocumentSummary,
   documentTypeLabelMap,
 } from "../../../types/document";
-import { BossStaffContractSummary } from "../../../types/contract";
-import { BusinessOff } from "../../../components/icons/BusinessIcon.tsx";
+import { StaffContractSummary } from "../../../types/contract";
 import MailIcon from "../../../components/icons/MailIcon.tsx";
+import { BusinessOff } from "../../../components/icons/BusinessIcon.tsx";
+import useStoreStore from "../../../stores/storeStore";
+import { useNavigate } from "react-router-dom";
 
-interface Props {
-  storeId: number;
-  staffId: number;
-  onClickContract: () => void;
-}
+const StaffDocumentContainer = () => {
+  const navigate = useNavigate();
+  const { selectedStore } = useStoreStore();
+  const storeId = selectedStore?.storeId;
 
-const DocumentContainer = ({ storeId, staffId, onClickContract }: Props) => {
   const [documents, setDocuments] = useState<StaffDocumentSummary[]>([]);
-  const [contracts, setContracts] = useState<BossStaffContractSummary[]>([]);
+  const [contracts, setContracts] = useState<StaffContractSummary[]>([]);
 
   useEffect(() => {
+    if (!storeId) return;
+
     const fetch = async () => {
       try {
         const [docs, contractData] = await Promise.all([
-          getStaffDocumentSummary(storeId, staffId),
-          fetchBossStaffContracts(storeId, staffId),
+          getStaffDocumentSummary(storeId),
+          fetchStaffContracts(storeId),
         ]);
         setDocuments(docs.filter((doc) => doc.isRequired));
         setContracts(contractData);
@@ -34,29 +36,36 @@ const DocumentContainer = ({ storeId, staffId, onClickContract }: Props) => {
     };
 
     fetch();
-  }, [storeId, staffId]);
+  }, [storeId]);
 
-  // 상태별 카운트 계산
+  const handleClickContract = () => {
+    navigate("/staff/contract");
+  };
+
+  // 상태별 계약서 수 계산
   const contractCounts = contracts.reduce(
     (acc, contract) => {
-      acc[contract.status]++;
+      if (contract.isSigned) {
+        acc.COMPLETED++;
+      } else {
+        acc.NOT_SIGNED++;
+      }
       return acc;
     },
     {
       COMPLETED: 0,
-      PENDING_STAFF_SIGNATURE: 0,
-      NOT_CREATED: 0,
+      NOT_SIGNED: 0,
     },
   );
 
   return (
     <div>
-      <p className="title-1 mb-3">근무 서류 관리</p>
+      <p className="title-1 mb-3">제출 서류 현황</p>
       <div className="grid grid-cols-2 gap-3">
         {/* 근로계약서 카드 */}
         <div
           className="bg-white border rounded-xl p-3 flex flex-col items-center text-sm"
-          onClick={onClickContract}
+          onClick={handleClickContract}
         >
           <BusinessOff />
           <p>근로계약서</p>
@@ -66,14 +75,9 @@ const DocumentContainer = ({ storeId, staffId, onClickContract }: Props) => {
                 작성완료 {contractCounts.COMPLETED}
               </span>
             )}
-            {contractCounts.PENDING_STAFF_SIGNATURE > 0 && (
-              <span className="body-3 text-delay">
-                서명대기 {contractCounts.PENDING_STAFF_SIGNATURE}
-              </span>
-            )}
-            {contractCounts.NOT_CREATED > 0 && (
+            {contractCounts.NOT_SIGNED > 0 && (
               <span className="body-3 text-warning">
-                미작성 {contractCounts.NOT_CREATED}
+                미작성 {contractCounts.NOT_SIGNED}
               </span>
             )}
           </div>
@@ -101,4 +105,4 @@ const DocumentContainer = ({ storeId, staffId, onClickContract }: Props) => {
   );
 };
 
-export default DocumentContainer;
+export default StaffDocumentContainer;

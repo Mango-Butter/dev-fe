@@ -52,3 +52,24 @@ export interface StaffDocumentSummary {
   expiresAt: string | null;
   documentId: number | null;
 }
+
+export interface UploadDocumentRequest {
+  documentType: BossRequiredDocumentType;
+  documentData: string; // base64 string
+}
+
+export interface UploadDocumentResponse {
+  documentData: string;
+  documentType:
+    | "HEALTH_CERTIFICATE"
+    | "ENUMRESIDENT_REGISTRATION"
+    | "BANK_ACCOUNT"
+    | "IDENTIFICATION";
+  expiresAt: string | null;
+}
+
+export interface StaffContractSummary {
+  contractId: number;
+  modifiedAt: string; // ISO datetime
+  status: "PENDING_STAFF_SIGNATURE" | "COMPLETED" | "NOT_CREATED";
+}
