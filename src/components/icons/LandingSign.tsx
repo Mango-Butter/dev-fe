@@ -21,7 +21,7 @@ export default function LandingSign({
       {...restProps}
     >
       <g filter="url(#filter0_d_1364_11970)">
-        <g clip-path="url(#clip0_1364_11970)">
+        <g clipPath="url(#clip0_1364_11970)">
           <rect x="28" y="28" width="440" height="936" rx="20" fill="white" />
           <rect
             width="440"
@@ -430,14 +430,14 @@ export default function LandingSign({
             fill="black"
           />
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M382.968 57.104C385.455 57.1041 387.847 58.0262 389.649 59.6796C389.785 59.8073 390.002 59.8057 390.136 59.676L391.433 58.4126C391.501 58.3468 391.539 58.2577 391.538 58.165C391.538 58.0724 391.499 57.9837 391.43 57.9187C386.699 53.544 379.236 53.544 374.505 57.9187C374.436 57.9837 374.397 58.0723 374.396 58.165C374.396 58.2577 374.434 58.3468 374.501 58.4126L375.799 59.676C375.933 59.8059 376.15 59.8075 376.285 59.6796C378.088 58.0261 380.48 57.104 382.968 57.104ZM382.964 61.3243C384.322 61.3242 385.631 61.8359 386.637 62.76C386.773 62.8912 386.987 62.8883 387.12 62.7536L388.407 61.4343C388.475 61.3651 388.513 61.2712 388.512 61.1737C388.511 61.0761 388.471 60.9831 388.402 60.9153C385.338 58.0244 380.593 58.0244 377.53 60.9153C377.46 60.9831 377.421 61.0762 377.42 61.1738C377.419 61.2714 377.457 61.3652 377.525 61.4343L378.812 62.7536C378.944 62.8883 379.159 62.8912 379.295 62.76C380.3 61.8365 381.608 61.3248 382.964 61.3243ZM385.489 64.1178C385.491 64.2232 385.454 64.3247 385.386 64.3985L383.21 66.8533C383.146 66.9254 383.059 66.966 382.968 66.966C382.877 66.966 382.79 66.9254 382.727 66.8533L380.55 64.3985C380.482 64.3247 380.445 64.2231 380.447 64.1177C380.449 64.0124 380.49 63.9126 380.56 63.842C381.95 62.5281 383.986 62.5281 385.376 63.842C385.446 63.9127 385.487 64.0125 385.489 64.1178Z"
             fill="black"
           />
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M366.897 55.6824C366.897 55.0493 366.42 54.5361 365.831 54.5361H364.764C364.175 54.5361 363.697 55.0493 363.697 55.6824V65.6163C363.697 66.2494 364.175 66.7625 364.764 66.7625H365.831C366.42 66.7625 366.897 66.2494 366.897 65.6163V55.6824ZM359.463 56.9814H360.53C361.119 56.9814 361.596 57.5069 361.596 58.1552V65.5888C361.596 66.237 361.119 66.7625 360.53 66.7625H359.463C358.874 66.7625 358.396 66.237 358.396 65.5888V58.1552C358.396 57.5069 358.874 56.9814 359.463 56.9814ZM355.131 59.6305H354.065C353.476 59.6305 352.998 60.1627 352.998 60.8191V65.5739C352.998 66.2303 353.476 66.7625 354.065 66.7625H355.131C355.72 66.7625 356.198 66.2303 356.198 65.5739V60.8191C356.198 60.1627 355.72 59.6305 355.131 59.6305ZM349.831 62.0758H348.764C348.175 62.0758 347.697 62.6003 347.697 63.2475V65.5909C347.697 66.238 348.175 66.7625 348.764 66.7625H349.831C350.42 66.7625 350.897 66.238 350.897 65.5909V63.2475C350.897 62.6003 350.42 62.0758 349.831 62.0758Z"
             fill="black"
           />
@@ -446,13 +446,13 @@ export default function LandingSign({
             height="880"
             transform="translate(28 87)"
             fill="#131313"
-            fill-opacity="0.5"
+            fillOpacity="0.5"
           />
           <g filter="url(#filter1_d_1364_11970)">
             <path
               d="M28 566C28 561.582 31.5817 558 36 558H456C462.627 558 468 563.373 468 570V967H28V566Z"
               fill="white"
-              shape-rendering="crispEdges"
+              shapeRendering="crispEdges"
             />
             <rect x="211" y="582" width="74" height="4" rx="2" fill="#B3B3B3" />
             <path
@@ -474,13 +474,13 @@ export default function LandingSign({
               height="242"
               rx="11.5"
               stroke="#B3B3B3"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
             <path
               d="M166 794.169C204.48 779.857 278.509 744.109 266.782 715.608C252.123 679.981 179.743 827.055 234.715 794.169C289.687 761.283 241.128 816.093 282.358 786.861C323.587 757.629 326.335 750.321 330 786.861"
               stroke="#131313"
-              stroke-width="4"
+              strokeWidth="4"
             />
             <rect
               x="52"
@@ -503,7 +503,7 @@ export default function LandingSign({
           height="941"
           rx="22.5"
           stroke="#939393"
-          stroke-width="5"
+          strokeWidth="5"
         />
       </g>
       <defs>
@@ -514,9 +514,9 @@ export default function LandingSign({
           width="500"
           height="996"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -555,9 +555,9 @@ export default function LandingSign({
           width="452"
           height="421"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"

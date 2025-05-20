@@ -52,3 +52,11 @@ export interface GpsSettings {
   gpsLatitude: number;
   gpsLongitude: number;
 }
+
+export interface StaffStore {
+  storeId: number;
+  storeName: string;
+  address: string;
+  storeType: "CAFE" | "RESTAURANT" | "CONVENIENCE_STORE";
+  attendanceMethod: string;
+}

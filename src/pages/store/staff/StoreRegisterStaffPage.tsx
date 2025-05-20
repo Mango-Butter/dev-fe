@@ -74,7 +74,7 @@ const StoreRegisterStaffPage = () => {
   const onSubmit = async (data: InviteCodeForm) => {
     try {
       await joinStoreAsStaff(data.inviteCode);
-      navigate("/"); // ✅ 성공 시 홈으로 이동
+      navigate("/staff");
     } catch (error: any) {
       const code = error?.response?.data?.errorCode;
       if (code === "ALREADY_JOIN_STAFF") {

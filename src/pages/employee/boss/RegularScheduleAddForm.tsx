@@ -9,6 +9,10 @@ import {
   weekdayKorean,
 } from "../../../types/staff.ts";
 import { createRegularSchedules } from "../../../api/boss/staff.ts";
+import Button from "../../../components/common/Button.tsx";
+import useStoreStore from "../../../stores/storeStore.ts";
+import useSelectedStaffStore from "../../../stores/selectedStaffStore.ts";
+import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 
 const schema = z.object({
   range: z
@@ -38,7 +42,11 @@ type FormData = {
   timeMap: Partial<Record<DayOfWeek, { startTime: string; endTime: string }>>;
 };
 
-const ScheduleAddForm = () => {
+interface Props {
+  onSuccess?: () => void;
+}
+
+const RegularScheduleAddForm = ({ onSuccess }: Props) => {
   const {
     register,
     handleSubmit,
@@ -56,7 +64,6 @@ const ScheduleAddForm = () => {
   });
 
   const selectedDays = watch("selectedDays");
-
   const toggleDay = (day: DayOfWeek) => {
     const current = watch("selectedDays");
     const updated = current.includes(day)
@@ -75,7 +82,6 @@ const ScheduleAddForm = () => {
     const payload: CreateRegularScheduleDto[] = data.selectedDays.map((day) => {
       const time = data.timeMap[day];
       if (!time) throw new Error(`${day} 요일에 대한 시간 정보가 없습니다`);
-
       return {
         dayOfWeek: day,
         startDate,
@@ -85,7 +91,28 @@ const ScheduleAddForm = () => {
       };
     });
 
-    await createRegularSchedules(1, 1, payload);
+    const { selectedStore } = useStoreStore.getState();
+    const { selectedStaffId } = useSelectedStaffStore.getState();
+    const { setBottomSheetOpen } = useBottomSheetStore.getState();
+
+    if (!selectedStore || !selectedStaffId) {
+      alert("매장 또는 알바생 정보가 없습니다.");
+      return;
+    }
+
+    try {
+      await createRegularSchedules(
+        selectedStore.storeId,
+        Number(selectedStaffId),
+        payload,
+      );
+      onSuccess?.();
+    } catch (err) {
+      console.error("고정 스케줄 생성 실패", err);
+      alert("스케줄 추가 중 오류가 발생했습니다.");
+    } finally {
+      setBottomSheetOpen(false);
+    }
   };
 
   return (
@@ -94,14 +121,14 @@ const ScheduleAddForm = () => {
         <label className="text-sm font-medium block mb-2">
           근무 요일 선택 <span className="text-red-500">*</span>
         </label>
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-7 gap-2">
           {dayOfWeekList.map((day) => (
             <button
               type="button"
               key={day}
-              className={`rounded-full border px-3 py-1 text-sm ${
+              className={`rounded-lg border p-2 text-sm ${
                 selectedDays.includes(day)
-                  ? "bg-yellow-400 text-white"
+                  ? "border-yellow-300 bg-yellow-100 text-black"
                   : "text-gray-600"
               }`}
               onClick={() => toggleDay(day)}
@@ -164,22 +191,16 @@ const ScheduleAddForm = () => {
         )}
       </section>
 
-      <div className="sticky bottom-0 mt-4 flex justify-between gap-3 border-t border-gray-200 bg-white px-4 py-3">
-        <button
-          type="button"
-          className="flex-1 rounded-lg border border-gray-300 py-2 text-sm"
-        >
+      <div className="sticky bottom-0 mt-4 flex justify-between gap-3 bg-white py-3">
+        <Button theme="outline" className="flex-1">
           취소
-        </button>
-        <button
-          type="submit"
-          className="flex-1 rounded-lg bg-yellow-400 py-2 text-sm font-semibold text-white"
-        >
+        </Button>
+        <Button type="submit" theme="primary" className="flex-1">
           추가
-        </button>
+        </Button>
       </div>
     </form>
   );
 };
 
-export default ScheduleAddForm;
+export default RegularScheduleAddForm;

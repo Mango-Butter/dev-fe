@@ -41,14 +41,14 @@ export function CoinOn({ className, ...props }: React.ComponentProps<"svg">) {
       <path
         d="M7.5 9L9.75 16.2L12 9L14.25 16.2L16.5 9"
         stroke="white"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M12 11.55H7.05005H16.95"
         stroke="white"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

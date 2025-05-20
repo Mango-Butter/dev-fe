@@ -21,7 +21,7 @@ export default function LandingTimeQR({
       {...restProps}
     >
       <g filter="url(#filter0_d_1364_12260)">
-        <g clip-path="url(#clip0_1364_12260)">
+        <g clipPath="url(#clip0_1364_12260)">
           <rect x="28" y="28" width="440" height="936" rx="20" fill="white" />
           <rect
             width="438"
@@ -56,14 +56,14 @@ export default function LandingTimeQR({
             fill="black"
           />
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M381.683 57.104C384.17 57.1041 386.562 58.0262 388.364 59.6796C388.5 59.8073 388.717 59.8057 388.851 59.676L390.148 58.4126C390.216 58.3468 390.254 58.2577 390.253 58.165C390.252 58.0724 390.214 57.9837 390.145 57.9187C385.414 53.544 377.95 53.544 373.219 57.9187C373.151 57.9837 373.112 58.0723 373.111 58.165C373.111 58.2577 373.148 58.3468 373.216 58.4126L374.514 59.676C374.647 59.8059 374.865 59.8075 375 59.6796C376.803 58.0261 379.195 57.104 381.683 57.104ZM381.679 61.3243C383.037 61.3242 384.345 61.8359 385.352 62.76C385.488 62.8912 385.702 62.8883 385.835 62.7536L387.122 61.4343C387.19 61.3651 387.227 61.2712 387.226 61.1737C387.225 61.0761 387.186 60.9831 387.117 60.9153C384.053 58.0244 379.308 58.0244 376.244 60.9153C376.175 60.9831 376.136 61.0762 376.135 61.1738C376.134 61.2714 376.172 61.3652 376.24 61.4343L377.526 62.7536C377.659 62.8883 377.873 62.8912 378.01 62.76C379.015 61.8365 380.323 61.3248 381.679 61.3243ZM384.204 64.1178C384.206 64.2232 384.169 64.3247 384.101 64.3985L381.925 66.8533C381.861 66.9254 381.774 66.966 381.683 66.966C381.592 66.966 381.505 66.9254 381.441 66.8533L379.264 64.3985C379.197 64.3247 379.16 64.2231 379.162 64.1177C379.164 64.0124 379.205 63.9126 379.275 63.842C380.665 62.5281 382.701 62.5281 384.091 63.842C384.161 63.9127 384.202 64.0125 384.204 64.1178Z"
             fill="black"
           />
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M365.612 55.6824C365.612 55.0493 365.135 54.5361 364.545 54.5361H363.479C362.89 54.5361 362.412 55.0493 362.412 55.6824V65.6163C362.412 66.2494 362.89 66.7625 363.479 66.7625H364.545C365.135 66.7625 365.612 66.2494 365.612 65.6163V55.6824ZM358.178 56.9814H359.245C359.834 56.9814 360.311 57.5069 360.311 58.1552V65.5888C360.311 66.237 359.834 66.7625 359.245 66.7625H358.178C357.589 66.7625 357.111 66.237 357.111 65.5888V58.1552C357.111 57.5069 357.589 56.9814 358.178 56.9814ZM353.846 59.6305H352.78C352.19 59.6305 351.713 60.1627 351.713 60.8191V65.5739C351.713 66.2303 352.19 66.7625 352.78 66.7625H353.846C354.435 66.7625 354.913 66.2303 354.913 65.5739V60.8191C354.913 60.1627 354.435 59.6305 353.846 59.6305ZM348.545 62.0758H347.479C346.89 62.0758 346.412 62.6003 346.412 63.2475V65.5909C346.412 66.238 346.89 66.7625 347.479 66.7625H348.545C349.135 66.7625 349.612 66.238 349.612 65.5909V63.2475C349.612 62.6003 349.135 62.0758 348.545 62.0758Z"
             fill="black"
           />
@@ -89,7 +89,7 @@ export default function LandingTimeQR({
               height="118"
               rx="12"
               fill="white"
-              shape-rendering="crispEdges"
+              shapeRendering="crispEdges"
             />
             <rect
               x="48.5"
@@ -98,7 +98,7 @@ export default function LandingTimeQR({
               height="117"
               rx="11.5"
               stroke="#669DD6"
-              shape-rendering="crispEdges"
+              shapeRendering="crispEdges"
             />
             <path
               d="M80 211.13C81.1142 211.13 82.0593 210.742 82.8355 209.965C83.6118 209.189 84 208.244 84 207.13C84 206.016 83.6118 205.071 82.8355 204.294C82.0593 203.518 81.1142 203.13 80 203.13C78.8858 203.13 77.9407 203.518 77.1645 204.294C76.3882 205.071 76 206.016 76 207.13C76 208.244 76.3882 209.189 77.1645 209.965C77.9407 210.742 78.8858 211.13 80 211.13ZM80.0033 216.13C78.7588 216.13 77.5887 215.894 76.493 215.421C75.3975 214.949 74.4445 214.308 73.634 213.498C72.8235 212.689 72.1819 211.737 71.7092 210.642C71.2364 209.547 71 208.378 71 207.133C71 205.889 71.2362 204.719 71.7085 203.623C72.1808 202.527 72.8218 201.574 73.6315 200.764C74.4412 199.953 75.3933 199.312 76.488 198.839C77.5825 198.366 78.7521 198.13 79.9967 198.13C81.2413 198.13 82.4113 198.366 83.507 198.838C84.6025 199.311 85.5555 199.952 86.366 200.761C87.1765 201.571 87.8181 202.523 88.2908 203.618C88.7636 204.712 89 205.882 89 207.127C89 208.371 88.7638 209.541 88.2915 210.637C87.8192 211.732 87.1782 212.685 86.3685 213.496C85.5588 214.306 84.6067 214.948 83.512 215.421C82.4175 215.893 81.2479 216.13 80.0033 216.13ZM80 215.13C82.2333 215.13 84.125 214.355 85.675 212.805C87.225 211.255 88 209.363 88 207.13C88 204.897 87.225 203.005 85.675 201.455C84.125 199.905 82.2333 199.13 80 199.13C77.7667 199.13 75.875 199.905 74.325 201.455C72.775 203.005 72 204.897 72 207.13C72 209.363 72.775 211.255 74.325 212.805C75.875 214.355 77.7667 215.13 80 215.13Z"
@@ -121,7 +121,7 @@ export default function LandingTimeQR({
               height="118"
               rx="12"
               fill="white"
-              shape-rendering="crispEdges"
+              shapeRendering="crispEdges"
             />
             <rect
               x="48.5"
@@ -130,7 +130,7 @@ export default function LandingTimeQR({
               height="117"
               rx="11.5"
               stroke="#E7E7E7"
-              shape-rendering="crispEdges"
+              shapeRendering="crispEdges"
             />
             <path
               d="M80.0033 350.13C78.7588 350.13 77.5887 349.894 76.493 349.421C75.3975 348.949 74.4445 348.308 73.634 347.498C72.8235 346.689 72.1819 345.737 71.7092 344.642C71.2364 343.547 71 342.378 71 341.133C71 339.889 71.2362 338.719 71.7085 337.623C72.1808 336.527 72.8218 335.574 73.6315 334.764C74.4412 333.953 75.3933 333.312 76.488 332.839C77.5825 332.366 78.7521 332.13 79.9967 332.13C81.2413 332.13 82.4113 332.366 83.507 332.838C84.6025 333.311 85.5555 333.952 86.366 334.761C87.1765 335.571 87.8181 336.523 88.2908 337.618C88.7636 338.712 89 339.882 89 341.127C89 342.371 88.7638 343.541 88.2915 344.637C87.8192 345.732 87.1782 346.685 86.3685 347.496C85.5588 348.306 84.6067 348.948 83.512 349.421C82.4175 349.893 81.2479 350.13 80.0033 350.13ZM80 349.13C82.2333 349.13 84.125 348.355 85.675 346.805C87.225 345.255 88 343.363 88 341.13C88 338.897 87.225 337.005 85.675 335.455C84.125 333.905 82.2333 333.13 80 333.13C77.7667 333.13 75.875 333.905 74.325 335.455C72.775 337.005 72 338.897 72 341.13C72 343.363 72.775 345.255 74.325 346.805C75.875 348.355 77.7667 349.13 80 349.13Z"
@@ -153,7 +153,7 @@ export default function LandingTimeQR({
               height="118"
               rx="12"
               fill="white"
-              shape-rendering="crispEdges"
+              shapeRendering="crispEdges"
             />
             <rect
               x="48.5"
@@ -162,7 +162,7 @@ export default function LandingTimeQR({
               height="117"
               rx="11.5"
               stroke="#E7E7E7"
-              shape-rendering="crispEdges"
+              shapeRendering="crispEdges"
             />
             <path
               d="M80.0033 484.13C78.7588 484.13 77.5887 483.894 76.493 483.421C75.3975 482.949 74.4445 482.308 73.634 481.498C72.8235 480.689 72.1819 479.737 71.7092 478.642C71.2364 477.547 71 476.378 71 475.133C71 473.889 71.2362 472.719 71.7085 471.623C72.1808 470.527 72.8218 469.574 73.6315 468.764C74.4412 467.953 75.3933 467.312 76.488 466.839C77.5825 466.366 78.7521 466.13 79.9967 466.13C81.2413 466.13 82.4113 466.366 83.507 466.838C84.6025 467.311 85.5555 467.952 86.366 468.761C87.1765 469.571 87.8181 470.523 88.2908 471.618C88.7636 472.712 89 473.882 89 475.127C89 476.371 88.7638 477.541 88.2915 478.637C87.8192 479.732 87.1782 480.685 86.3685 481.496C85.5588 482.306 84.6067 482.948 83.512 483.421C82.4175 483.893 81.2479 484.13 80.0033 484.13ZM80 483.13C82.2333 483.13 84.125 482.355 85.675 480.805C87.225 479.255 88 477.363 88 475.13C88 472.897 87.225 471.005 85.675 469.455C84.125 467.905 82.2333 467.13 80 467.13C77.7667 467.13 75.875 467.905 74.325 469.455C72.775 471.005 72 472.897 72 475.13C72 477.363 72.775 479.255 74.325 480.805C75.875 482.355 77.7667 483.13 80 483.13Z"
@@ -209,7 +209,7 @@ export default function LandingTimeQR({
               height="408"
               rx="12"
               fill="white"
-              shape-rendering="crispEdges"
+              shapeRendering="crispEdges"
             />
             <rect
               x="48.5"
@@ -218,7 +218,7 @@ export default function LandingTimeQR({
               height="407"
               rx="11.5"
               stroke="#E7E7E7"
-              shape-rendering="crispEdges"
+              shapeRendering="crispEdges"
             />
             <rect
               x="80"
@@ -249,7 +249,7 @@ export default function LandingTimeQR({
           height="941"
           rx="22.5"
           stroke="#939393"
-          stroke-width="5"
+          strokeWidth="5"
         />
       </g>
       <defs>
@@ -260,9 +260,9 @@ export default function LandingTimeQR({
           width="500"
           height="996"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -301,9 +301,9 @@ export default function LandingTimeQR({
           width="412"
           height="130"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -336,9 +336,9 @@ export default function LandingTimeQR({
           width="412"
           height="130"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -371,9 +371,9 @@ export default function LandingTimeQR({
           width="412"
           height="130"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -406,9 +406,9 @@ export default function LandingTimeQR({
           width="412"
           height="420"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"

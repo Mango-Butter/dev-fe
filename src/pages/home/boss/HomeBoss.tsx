@@ -1,21 +1,42 @@
-import modalStore from "../../../stores/modalStore.ts";
-import Button from "../../../components/common/Button.tsx";
-import StoreModalContent from "../../store/boss/StoreModalContent.tsx";
+import { formatFullDate } from "../../../utils/date.ts";
+import useStoreStore from "../../../stores/storeStore.ts";
+import useScheduleStore from "../../../stores/useScheduleStore.ts";
+import { useEffect } from "react";
+import BossStoreCard from "../../store/boss/BossStoreCard.tsx";
+import StaffScheduleList from "../../schedule/boss/StaffScheduleList.tsx";
+import DocumentContainer from "./DocumentContainer.tsx";
 
 const HomeBoss = () => {
-  const { setModalOpen, setModalContent } = modalStore();
+  const today = new Date();
+  const dateKey = formatFullDate(today);
 
-  const openModal = () => {
-    setModalContent(<StoreModalContent />);
-    setModalOpen(true);
-  };
+  const { selectedStore } = useStoreStore();
+  const storeId = selectedStore?.storeId;
+
+  const { scheduleMap, fetchDailySchedule } = useScheduleStore();
+  const todayRecords = scheduleMap[dateKey] || [];
+
+  useEffect(() => {
+    if (storeId) {
+      fetchDailySchedule(storeId, dateKey);
+    }
+  }, [storeId, dateKey, fetchDailySchedule]);
 
   return (
-    <div className="flex flex-col items-center justify-center h-full">
-      <h1 className="text-center text-xl mb-6">홈 페이지</h1>
-      <Button size="lg" theme="primary" onClick={openModal}>
-        매장 추가
-      </Button>
+    <div className="flex flex-col items-center justify-start h-full py-4 px-5 gap-6">
+      <BossStoreCard />
+
+      <div className="w-full">
+        <p className="title-1 mb-3">오늘 근무자</p>
+        <div className="pb-7 border border-grayscale-300 bg-white shadow-basic rounded-xl">
+          <StaffScheduleList
+            records={todayRecords}
+            onClick={() => {}}
+            emptyMessage="오늘 출근 예정인 알바생이 없습니다."
+          />
+        </div>
+      </div>
+      <DocumentContainer />
     </div>
   );
 };

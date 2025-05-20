@@ -114,8 +114,8 @@ const BossFullSvg: FC<{ className?: string }> = ({ className = "" }) => (
     <ellipse cx="15.9999" cy="15.5" rx="4.66667" ry="4.76923" fill="#131313" />
     <ellipse cx="5.49992" cy="15.5" rx="4.66667" ry="4.76923" fill="#131313" />
     <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
+      fillRule="evenodd"
+      clipRule="evenodd"
       d="M15.2092 20.2011L17.2303 10.8983C18.0452 11.1253 18.7712 11.5723 19.3436 12.173L17.6513 19.9621C17.138 20.1606 16.5814 20.2693 16 20.2693C15.7305 20.2693 15.4663 20.2459 15.2092 20.2011Z"
       fill="#6B6B6B"
     />
@@ -157,8 +157,8 @@ const StaffFullSvg: FC<{ className?: string }> = ({ className = "" }) => (
     <ellipse cx="15.9999" cy="15.5" rx="4.66667" ry="4.76923" fill="#131313" />
     <ellipse cx="5.49992" cy="15.5" rx="4.66667" ry="4.76923" fill="#131313" />
     <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
+      fillRule="evenodd"
+      clipRule="evenodd"
       d="M15.2092 20.2011L17.2303 10.8983C18.0452 11.1253 18.7712 11.5723 19.3436 12.173L17.6513 19.9621C17.138 20.1606 16.5814 20.2693 16 20.2693C15.7305 20.2693 15.4663 20.2459 15.2092 20.2011Z"
       fill="#6B6B6B"
     />
