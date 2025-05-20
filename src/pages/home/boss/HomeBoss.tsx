@@ -4,9 +4,7 @@ import useScheduleStore from "../../../stores/useScheduleStore.ts";
 import { useEffect } from "react";
 import BossStoreCard from "../../store/boss/BossStoreCard.tsx";
 import StaffScheduleList from "../../schedule/boss/StaffScheduleList.tsx";
-import { useNavigate } from "react-router-dom";
-import { BusinessOff } from "../../../components/icons/BusinessIcon.tsx";
-import MailIcon from "../../../components/icons/MailIcon.tsx";
+import DocumentContainer from "./DocumentContainer.tsx";
 
 const HomeBoss = () => {
   const today = new Date();
@@ -17,8 +15,6 @@ const HomeBoss = () => {
 
   const { scheduleMap, fetchDailySchedule } = useScheduleStore();
   const todayRecords = scheduleMap[dateKey] || [];
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (storeId) {
@@ -40,32 +36,7 @@ const HomeBoss = () => {
           />
         </div>
       </div>
-      <div className="flex flex-col w-full">
-        <p className="title-1 mb-3">문서함</p>
-        <div className="grid grid-cols-2 gap-3">
-          <div
-            className="bg-white border rounded-xl p-3 flex flex-col items-center text-sm"
-            onClick={() => navigate("/boss/document?type=contract")}
-          >
-            <BusinessOff />
-            <p>근로계약서</p>
-            <span className="text-center body-4 text-grayscale-500 mt-1">
-              알바생 별 근로계약서를 <br />한 눈에 확인해 보세요
-            </span>
-          </div>
-          <div
-            className="bg-white border rounded-xl p-3 flex flex-col items-center text-sm"
-            onClick={() => navigate("/boss/document?type=etc")}
-          >
-            <MailIcon />
-            <p>기타 문서</p>
-            <span className="body-4 text-center text-grayscale-500 mt-1">
-              필수 문서들을 <br />
-              관리 해 보세요
-            </span>
-          </div>
-        </div>
-      </div>
+      <DocumentContainer />
     </div>
   );
 };

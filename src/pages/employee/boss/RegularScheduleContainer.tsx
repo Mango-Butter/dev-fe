@@ -5,11 +5,11 @@ import {
   weekdayKorean,
 } from "../../../types/staff";
 import { deleteRegularSchedule } from "../../../api/boss/staff";
-import useStoreStore from "../../../stores/storeStore";
-import useSelectedStaffStore from "../../../stores/selectedStaffStore";
 import Button from "../../../components/common/Button";
 
 interface Props {
+  storeId: number;
+  staffId: number;
   selectedDays: DayOfWeek[];
   availableDays: DayOfWeek[];
   schedules: RegularSchedule[];
@@ -19,6 +19,8 @@ interface Props {
 }
 
 const RegularScheduleContainer = ({
+  storeId,
+  staffId,
   selectedDays,
   availableDays,
   schedules,
@@ -26,21 +28,14 @@ const RegularScheduleContainer = ({
   onClickAdd,
   onDeleteSuccess,
 }: Props) => {
-  const { selectedStore } = useStoreStore();
-  const { selectedStaffId } = useSelectedStaffStore();
-
   const handleDelete = async (regularGroupId: number) => {
-    if (!selectedStore || !selectedStaffId) return;
+    if (!storeId || !staffId) return;
 
     const confirmed = window.confirm("정말 이 스케줄을 삭제하시겠습니까?");
     if (!confirmed) return;
 
     try {
-      await deleteRegularSchedule(
-        selectedStore.storeId,
-        Number(selectedStaffId),
-        regularGroupId,
-      );
+      await deleteRegularSchedule(storeId, staffId, regularGroupId);
       onDeleteSuccess?.();
     } catch (err) {
       console.error("고정 스케줄 삭제 실패", err);

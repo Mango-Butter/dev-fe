@@ -1,7 +1,6 @@
 // src/types/attendance.ts
 
-export type ClockInStatus = "NORMAL" | "LATE" | "ABSENT";
-export type ClockOutStatus = "NORMAL" | "EARLY_LEAVE" | "OVERTIME" | "ABSENT";
+import { ClockInStatus, ClockOutStatus } from "./calendar.ts";
 
 export interface StaffAttendanceRecord {
   scheduleId: number;

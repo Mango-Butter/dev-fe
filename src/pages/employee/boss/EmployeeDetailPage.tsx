@@ -6,10 +6,9 @@ import useSelectedStaffStore from "../../../stores/selectedStaffStore";
 import RegularScheduleAddForm from "./RegularScheduleAddForm";
 import { DayOfWeek, RegularSchedule, StaffBrief } from "../../../types/staff";
 import { getRegularSchedules, getStaffDetail } from "../../../api/boss/staff";
-import MailIcon from "../../../components/icons/MailIcon";
-import { BusinessOff } from "../../../components/icons/BusinessIcon";
 import RegularScheduleContainer from "./RegularScheduleContainer";
 import AttendanceRecordContainer from "./AttendanceRecordContainer.tsx";
+import DocumentContainer from "./DocumentContainer.tsx";
 
 const EmployeeDetailPage = () => {
   const { staffId } = useParams();
@@ -97,37 +96,32 @@ const EmployeeDetailPage = () => {
         </div>
       )}
 
-      {/* 고정 스케줄 */}
-      <RegularScheduleContainer
-        selectedDays={selectedDays}
-        availableDays={availableDays}
-        schedules={regularSchedules}
-        onToggleDay={toggleDay}
-        onClickAdd={openAddRegularScheduleSheet}
-        onDeleteSuccess={fetchStaffAndSchedules}
-      />
-
-      {/* 서류 관리 */}
-      <div>
-        <p className="title-1 mb-3">근무 서류 관리</p>
-        <div className="grid grid-cols-2 gap-3">
-          <div
-            className="bg-white border rounded-xl p-3 flex flex-col items-center text-sm"
-            onClick={handleContractClick}
-          >
-            <BusinessOff />
-            <p>근로계약서</p>
-            <span className="body-3 text-positive mt-1">작성완료</span>
-          </div>
-          <div className="bg-white border rounded-xl p-3 flex flex-col items-center text-sm">
-            <MailIcon />
-            <p>기타 문서</p>
-            <span className="body-3 text-warning mt-1">미제출 4</span>
-          </div>
-        </div>
-      </div>
-
-      {staff && <AttendanceRecordContainer staffId={staff.staffId} />}
+      {staff && selectedStore && (
+        <>
+          {/* 고정 스케줄 */}
+          <RegularScheduleContainer
+            storeId={selectedStore.storeId}
+            staffId={staff.staffId}
+            selectedDays={selectedDays}
+            availableDays={availableDays}
+            schedules={regularSchedules}
+            onToggleDay={toggleDay}
+            onClickAdd={openAddRegularScheduleSheet}
+            onDeleteSuccess={fetchStaffAndSchedules}
+          />
+          {/* 서류 관리 */}
+          <DocumentContainer
+            storeId={selectedStore.storeId}
+            staffId={staff.staffId}
+            onClickContract={handleContractClick}
+          />
+          {/*근태 관리*/}
+          <AttendanceRecordContainer
+            storeId={selectedStore.storeId}
+            staff={staff}
+          />
+        </>
+      )}
     </div>
   );
 };

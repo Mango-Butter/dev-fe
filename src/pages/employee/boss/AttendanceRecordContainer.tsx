@@ -3,17 +3,26 @@
 import { useEffect, useState } from "react";
 import { getStaffAttendanceRecords } from "../../../api/boss/attendance";
 import { StaffAttendanceRecord } from "../../../types/attendance";
-import useStoreStore from "../../../stores/storeStore";
+import { cn } from "../../../libs";
+import useBottomSheetStore from "../../../stores/useBottomSheetStore";
+import AttendanceEditForm from "../../schedule/boss/AttendanceEditForm.tsx";
 
 interface Props {
-  staffId: number;
+  staff: {
+    staffId: number;
+    name: string;
+    profileImageUrl: string;
+  };
+  storeId: number;
 }
 
-const AttendanceRecordContainer = ({ staffId }: Props) => {
-  const { selectedStore } = useStoreStore();
+const AttendanceRecordContainer = ({ staff, storeId }: Props) => {
+  const { staffId } = staff;
+  const { setBottomSheetContent } = useBottomSheetStore();
+
   const [selectedYearMonth, setSelectedYearMonth] = useState(() => {
     const now = new Date();
-    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`; // YYYY-MM
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
   });
 
   const [records, setRecords] = useState<StaffAttendanceRecord[]>([]);
@@ -22,20 +31,44 @@ const AttendanceRecordContainer = ({ staffId }: Props) => {
   const getStartAndEndDates = (ym: string) => {
     const [year, month] = ym.split("-").map(Number);
     const start = new Date(year, month - 1, 1);
-    const end = new Date(year, month, 0); // 마지막 날짜
-    const format = (d: Date) => d.toISOString().slice(0, 10); // YYYY-MM-DD
+    const end = new Date(year, month, 0);
+    const format = (d: Date) => d.toISOString().slice(0, 10);
     return [format(start), format(end)];
   };
 
+  const handleClickRecord = (record: StaffAttendanceRecord) => {
+    setBottomSheetContent(
+      <AttendanceEditForm
+        schedule={{
+          scheduleId: record.scheduleId,
+          workDate: record.workDate,
+          startTime: record.startTime,
+          endTime: record.endTime,
+        }}
+        staff={staff}
+        attendance={{
+          clockInTime: record.clockInTime,
+          clockOutTime: record.clockOutTime,
+          clockInStatus: record.clockInStatus,
+          clockOutStatus: record.clockOutStatus,
+        }}
+      />,
+      {
+        title: "근태 상세",
+        closeOnClickOutside: true,
+      },
+    );
+  };
+
   useEffect(() => {
-    if (!selectedStore) return;
+    if (!storeId) return;
 
     const fetch = async () => {
       setLoading(true);
       try {
         const [startDate, endDate] = getStartAndEndDates(selectedYearMonth);
         const data = await getStaffAttendanceRecords(
-          selectedStore.storeId,
+          storeId,
           staffId,
           startDate,
           endDate,
@@ -50,13 +83,12 @@ const AttendanceRecordContainer = ({ staffId }: Props) => {
     };
 
     fetch();
-  }, [selectedStore, staffId, selectedYearMonth]);
+  }, [storeId, staffId, selectedYearMonth]);
 
   return (
     <div>
       <p className="title-1 mb-3">근태 기록 관리</p>
 
-      {/* 월 선택 */}
       <div className="flex gap-1 items-center mb-2">
         <input
           type="month"
@@ -66,7 +98,6 @@ const AttendanceRecordContainer = ({ staffId }: Props) => {
         />
       </div>
 
-      {/* 표 */}
       <div className="rounded-xl overflow-hidden border border-gray-200">
         <div className="grid grid-cols-3 bg-gray-100 text-sm font-semibold px-4 py-3 text-gray-500">
           <span>날짜</span>
@@ -86,13 +117,22 @@ const AttendanceRecordContainer = ({ staffId }: Props) => {
           records.map((record) => (
             <div
               key={record.scheduleId}
-              className="grid grid-cols-3 px-4 py-3 border-t border-gray-100 items-center text-sm"
+              className="grid grid-cols-3 px-4 py-3 border-t border-gray-100 items-center text-sm cursor-pointer hover:bg-gray-50 transition"
+              onClick={() => handleClickRecord(record)}
             >
               <span>{record.workDate}</span>
               <span>
                 {record.startTime.slice(11, 16)}~{record.endTime.slice(11, 16)}
               </span>
-              <span className="text-center text-green-600">
+              <span
+                className={cn("text-center", {
+                  "text-positive": record.clockInStatus === "NORMAL",
+                  "text-delay": record.clockInStatus === "LATE",
+                  "text-warning":
+                    record.clockInStatus !== "NORMAL" &&
+                    record.clockInStatus !== "LATE",
+                })}
+              >
                 {record.clockInStatus === "NORMAL"
                   ? "출근"
                   : record.clockInStatus === "LATE"

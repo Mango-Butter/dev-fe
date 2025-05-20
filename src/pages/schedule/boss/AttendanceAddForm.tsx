@@ -8,9 +8,10 @@ import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import useStoreStore from "../../../stores/storeStore.ts";
 import { getStaffBriefList } from "../../../api/boss/staff.ts";
 import { StaffBrief } from "../../../types/staff.ts";
-import { formatDateToKSTString } from "../../../utils/date.ts";
+import { formatDateToKSTString, formatFullDate } from "../../../utils/date.ts";
 import Button from "../../../components/common/Button.tsx";
 import { createAttendance } from "../../../api/boss/schedule.ts";
+import useScheduleStore from "../../../stores/useScheduleStore.ts";
 
 interface AddAttendanceFormProps {
   defaultDate?: Date;
@@ -66,13 +67,18 @@ const AttendanceAddForm = ({ defaultDate }: AddAttendanceFormProps) => {
   const onSubmit = async (data: FormData) => {
     if (!storeId) return;
 
+    const workDate = formatDateToKSTString(data.date);
+    const dateKey = formatFullDate(data.date); // YYYY-MM-DD 형식 문자열
+
     try {
       await createAttendance(storeId, {
         staffId: data.staffId,
-        workDate: formatDateToKSTString(data.date),
+        workDate,
         clockInTime: data.clockInTime,
         clockOutTime: data.clockOutTime,
       });
+
+      await useScheduleStore.getState().syncScheduleAndDot(storeId, dateKey);
 
       alert("근태가 성공적으로 추가되었습니다.");
     } catch (err) {

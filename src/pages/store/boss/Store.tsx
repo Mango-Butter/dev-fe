@@ -7,7 +7,6 @@ const Store = () => {
   return (
     <div className="flex flex-1 self-stretch p-5 flex-col items-center justify-start h-full gap-6">
       <BossStoreCard />
-
       {/* 메뉴 카드들 */}
       <div className="flex flex-col items-start gap-3 self-stretch">
         <div

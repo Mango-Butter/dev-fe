@@ -4,6 +4,7 @@ import {
   RequiredDocumentResponse,
   RequiredDocumentSetting,
   StaffDocumentStatusResponse,
+  StaffDocumentSummary,
 } from "../../types/document.ts";
 import axiosAuth from "../common/axiosAuth.ts";
 
@@ -96,4 +97,20 @@ export const deleteDocument = async (
   documentId: number,
 ): Promise<void> => {
   await axiosAuth.delete(`/api/boss/stores/${storeId}/documents/${documentId}`);
+};
+
+/**
+ * 특정 알바생의 제출 서류 현황 조회
+ * @param storeId 매장 ID
+ * @param staffId 알바생 ID
+ * @returns 각 서류 타입별 제출 여부 및 문서 정보
+ */
+export const getStaffDocumentSummary = async (
+  storeId: number,
+  staffId: number,
+): Promise<StaffDocumentSummary[]> => {
+  const res = await axiosAuth.get(
+    `/api/boss/stores/${storeId}/documents/staffs/${staffId}`,
+  );
+  return res.data.result;
 };
