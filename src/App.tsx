@@ -21,6 +21,7 @@ import ContractViewStaffPage from "./pages/contract/staff/ContractViewStaffPage.
 import StaffMyPage from "./pages/mypage/staff/StaffMyPage.tsx";
 import StaffDocumentPage from "./pages/document/staff/StaffDocumentPage.tsx";
 import BossDocumentPage from "./pages/document/boss/BossDocumentPage.tsx";
+import StaffAttendancePage from "./pages/attendance/staff/StaffAttendancePage.tsx";
 
 // Lazy-loaded components (boss)
 const HomeBoss = lazy(() => import("./pages/home/boss/HomeBoss.tsx"));
@@ -72,10 +73,10 @@ function App() {
       <AppInitializer />
       <Routes>
         <Route path="*" element={<NotFound />} />
-        <Route index element={<Landing />} />
         <Route path="/" element={<MobileLayout />}>
           {/* PUBIC Routes */}
           <Route element={<PublicRoute />}>
+            <Route index element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/loginSuccess" element={<LoginSuccess />} />
           </Route>
@@ -157,6 +158,10 @@ function App() {
               <Route
                 path="/staff/contract/:id"
                 element={<ContractViewStaffPage />}
+              />
+              <Route
+                path="/staff/attendance"
+                element={<StaffAttendancePage />}
               />
             </Route>
           </Route>

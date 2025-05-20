@@ -22,31 +22,32 @@ const GpsMapPreview = ({
 
     const map = new kakao.maps.Map(mapRef.current, {
       center,
-      level: 3, // 1(가장 확대) ~ 14(가장 축소)
+      level: 3,
     });
 
-    // 마커 표시
-    new kakao.maps.Marker({
-      position: center,
-      map,
-    });
+    new kakao.maps.Marker({ position: center, map });
 
-    // 반지름 원 표시
-    new kakao.maps.Circle({
-      center,
-      radius: radiusMeters, // 단위: 미터
-      strokeWeight: 2,
-      strokeColor: "#4A90E2",
-      strokeOpacity: 0.8,
-      fillColor: "#4A90E2",
-      fillOpacity: 0.2,
-      map,
-    });
+    if (radiusMeters > 0) {
+      new kakao.maps.Circle({
+        center,
+        radius: radiusMeters,
+        strokeWeight: 2,
+        strokeColor: "#4A90E2",
+        strokeOpacity: 0.8,
+        fillColor: "#4A90E2",
+        fillOpacity: 0.2,
+        map,
+      });
+    }
 
-    map.setCenter(center);
+    // 🚨 DOM 사이즈 변화가 있었을 경우 강제로 다시 그리기
+    setTimeout(() => {
+      map.relayout();
+      map.setCenter(center);
+    }, 100); // DOM 완성 후 약간의 딜레이
   }, [latitude, longitude, radiusMeters]);
 
-  return <div ref={mapRef} className="w-full h-80 rounded-lg border" />;
+  return <div ref={mapRef} className="w-full h-full rounded-lg border" />;
 };
 
 export default GpsMapPreview;
