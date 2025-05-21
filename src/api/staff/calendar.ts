@@ -1,7 +1,6 @@
 // src/apis/calendar.ts
 import axiosAuth from "../common/axiosAuth.ts";
 import {
-  AttendanceDetail,
   CalendarSummaryResponse,
   DailyAttendanceResponse,
 } from "../../types/calendar.ts";
@@ -13,7 +12,7 @@ export const fetchCalendarSummary = async (
   end: string, // YYYY-MM-DD
 ): Promise<CalendarSummaryResponse> => {
   const response = await axiosAuth.get(
-    `/api/staff/stores/${storeId}/calender`,
+    `/api/staff/stores/${storeId}/calendar`,
     {
       params: { start, end },
     },
@@ -27,21 +26,10 @@ export const fetchDailyAttendance = async (
   date: string, // YYYY-MM-DD
 ): Promise<DailyAttendanceResponse> => {
   const response = await axiosAuth.get(
-    `/api/staff/stores/${storeId}/calender/daily`,
+    `/api/staff/stores/${storeId}/calendar/daily`,
     {
       params: { date },
     },
-  );
-  return response.data;
-};
-
-// 특정 근태 기록 상세 조회
-export const fetchAttendanceDetail = async (
-  storeId: number,
-  scheduleId: number,
-): Promise<AttendanceDetail> => {
-  const response = await axiosAuth.get(
-    `/api/staff/stores/${storeId}/schedules/${scheduleId}/attendance`,
   );
   return response.data;
 };

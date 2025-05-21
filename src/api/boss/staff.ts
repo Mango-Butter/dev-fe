@@ -63,9 +63,14 @@ export const getStaffBriefList = async (
 
 export const getStaffAttendancesList = async (
   storeId: number,
+  start: string,
+  end: string,
 ): Promise<StaffAttendance[]> => {
   const response = await axiosAuth.get(
     `/api/boss/stores/${storeId}/staffs/attendances`,
+    {
+      params: { start, end },
+    },
   );
   return response.data.result;
 };
