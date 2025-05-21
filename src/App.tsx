@@ -22,6 +22,7 @@ import StaffMyPage from "./pages/mypage/staff/StaffMyPage.tsx";
 import StaffDocumentPage from "./pages/document/staff/StaffDocumentPage.tsx";
 import BossDocumentPage from "./pages/document/boss/BossDocumentPage.tsx";
 import StaffAttendancePage from "./pages/attendance/staff/StaffAttendancePage.tsx";
+import ContractTemplateEditPage from "./pages/contract/boss/ContractTemplateEditPage.tsx";
 
 // Lazy-loaded components (boss)
 const HomeBoss = lazy(() => import("./pages/home/boss/HomeBoss.tsx"));
@@ -127,6 +128,10 @@ function App() {
               <Route
                 path="/boss/contract/template/register"
                 element={<ContractTemplateRegisterPage />}
+              />
+              <Route
+                path="/boss/contract/template/:id"
+                element={<ContractTemplateEditPage />}
               />
               <Route path="/boss/contract/:id" element={<ContractViewPage />} />
               <Route

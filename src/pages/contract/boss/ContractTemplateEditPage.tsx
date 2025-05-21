@@ -1,5 +1,6 @@
 import { useForm, Controller } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import Button from "../../../components/common/Button.tsx";
 import TextField from "../../../components/common/TextField.tsx";
 import { useLayout } from "../../../hooks/useLayout.ts";
@@ -12,17 +13,20 @@ import {
   DayOfWeek,
 } from "../../../types/staff.ts";
 import SignaturePadSheet from "./SignaturePadSheet.tsx";
-import { useNavigate } from "react-router-dom";
-import { createContractTemplate } from "../../../api/boss/contractTemplate.ts";
+import {
+  deleteContractTemplate,
+  fetchContractTemplateDetail,
+  updateContractTemplate,
+} from "../../../api/boss/contractTemplate.ts";
 import {
   ContractTemplateFormValues,
   contractTemplateSchema,
 } from "../../../schemas/contractTemplateSchema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-const ContractTemplateRegisterPage = () => {
+const ContractTemplateEditPage = () => {
   useLayout({
-    title: "근로계약서 템플릿 생성",
+    title: "근로계약서 템플릿 수정",
     theme: "plain",
     headerVisible: true,
     bottomNavVisible: false,
@@ -34,14 +38,16 @@ const ContractTemplateRegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { selectedStore } = useStoreStore();
+  const { id: templateId } = useParams();
 
   const {
     control,
     handleSubmit,
     setValue,
     register,
+    reset,
     watch,
-    formState: { isValid },
+    formState: { isValid, isDirty },
   } = useForm<ContractTemplateFormValues>({
     mode: "onChange",
     resolver: zodResolver(contractTemplateSchema),
@@ -59,6 +65,51 @@ const ContractTemplateRegisterPage = () => {
   const selectedDays = watch("weekdays") ?? [];
   const { setBottomSheetContent, setBottomSheetOpen } = useBottomSheetStore();
 
+  useEffect(() => {
+    const fetchTemplate = async () => {
+      if (!templateId || !selectedStore) return;
+
+      try {
+        const data = await fetchContractTemplateDetail(
+          selectedStore.storeId,
+          Number(templateId),
+        );
+
+        reset({
+          title: data.title,
+          range: [
+            data.contractTemplateData.contractStart
+              ? new Date(data.contractTemplateData.contractStart)
+              : null,
+            data.contractTemplateData.contractEnd
+              ? new Date(data.contractTemplateData.contractEnd)
+              : null,
+          ],
+          duty: data.contractTemplateData.duty ?? "",
+          weekdays:
+            data.contractTemplateData.workSchedules
+              ?.map((s) => s.dayOfWeek)
+              .filter((d): d is DayOfWeek => d !== null && d !== undefined) ??
+            [],
+          time: Object.fromEntries(
+            (data.contractTemplateData.workSchedules ?? []).map((s) => [
+              s.dayOfWeek,
+              { start: s.startTime ?? "", end: s.endTime ?? "" },
+            ]),
+          ),
+          hourlyWage: data.contractTemplateData.hourlyWage ?? undefined,
+          bossSignatureKey: "",
+        });
+      } catch (err) {
+        console.error("템플릿 불러오기 실패", err);
+        alert("템플릿을 불러오지 못했습니다.");
+        navigate("/boss/contract/template");
+      }
+    };
+
+    fetchTemplate();
+  }, [templateId, selectedStore]);
+
   const toggleDay = (day: DayOfWeek) => {
     const updated = selectedDays.includes(day)
       ? selectedDays.filter((d) => d !== day)
@@ -67,7 +118,7 @@ const ContractTemplateRegisterPage = () => {
   };
 
   const onSubmit = async (data: ContractTemplateFormValues) => {
-    if (!selectedStore) return;
+    if (!selectedStore || !templateId) return;
 
     try {
       setLoading(true);
@@ -102,12 +153,16 @@ const ContractTemplateRegisterPage = () => {
         },
       };
 
-      await createContractTemplate(selectedStore.storeId, payload);
-      alert("템플릿이 성공적으로 등록되었습니다.");
+      await updateContractTemplate(
+        selectedStore.storeId,
+        Number(templateId),
+        payload,
+      );
+      alert("템플릿이 성공적으로 수정되었습니다.");
       navigate("/boss/contract/template");
     } catch (err) {
-      console.error("템플릿 저장 실패", err);
-      alert("템플릿 저장에 실패했습니다.");
+      console.error("템플릿 수정 실패", err);
+      alert("템플릿 수정에 실패했습니다.");
     } finally {
       setLoading(false);
     }
@@ -246,19 +301,44 @@ const ContractTemplateRegisterPage = () => {
           )}
         />
 
-        <Button
-          size="lg"
-          theme="primary"
-          type="submit"
-          disabled={!isValid || loading}
-          state={loading ? "disabled" : isValid ? "default" : "disabled"}
-          className="w-full my-6"
-        >
-          {loading ? "작성 중..." : "작성"}
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            size="md"
+            theme="outline"
+            type="button"
+            onClick={async () => {
+              if (!selectedStore || !templateId) return;
+              if (!confirm("정말 삭제하시겠습니까?")) return;
+              try {
+                await deleteContractTemplate(
+                  selectedStore.storeId,
+                  Number(templateId),
+                );
+                alert("삭제 완료");
+                navigate("/boss/contract/template");
+              } catch (err) {
+                console.error("삭제 실패", err);
+                alert("삭제 중 오류가 발생했습니다.");
+              }
+            }}
+            className="w-full"
+          >
+            삭제
+          </Button>
+          <Button
+            size="md"
+            theme="primary"
+            type="submit"
+            disabled={!isValid || !isDirty || loading}
+            state={!isValid || !isDirty || loading ? "disabled" : "default"}
+            className="w-full"
+          >
+            {loading ? "저장 중..." : "저장"}
+          </Button>
+        </div>
       </div>
     </form>
   );
 };
 
-export default ContractTemplateRegisterPage;
+export default ContractTemplateEditPage;
