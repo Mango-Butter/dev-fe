@@ -25,18 +25,21 @@ const HomeBoss = () => {
   return (
     <div className="flex flex-col items-center justify-start h-full py-4 px-5 gap-6">
       <BossStoreCard />
-
-      <div className="w-full">
-        <p className="title-1 mb-3">오늘 근무자</p>
-        <div className="pb-7 border border-grayscale-300 bg-white shadow-basic rounded-xl">
-          <StaffScheduleList
-            records={todayRecords}
-            onClick={() => {}}
-            emptyMessage="오늘 출근 예정인 알바생이 없습니다."
-          />
-        </div>
-      </div>
-      <DocumentContainer />
+      {selectedStore && (
+        <>
+          <div className="w-full">
+            <p className="title-1 mb-3">오늘 근무자</p>
+            <div className="p-2 border border-grayscale-300 bg-white shadow-basic rounded-xl">
+              <StaffScheduleList
+                records={todayRecords}
+                onClick={() => {}}
+                emptyMessage="오늘 출근 예정인 알바생이 없습니다."
+              />
+            </div>
+          </div>
+          <DocumentContainer />
+        </>
+      )}
     </div>
   );
 };
