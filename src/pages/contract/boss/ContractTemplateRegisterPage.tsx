@@ -199,14 +199,14 @@ const ContractTemplateRegisterPage = () => {
           render={({ field }) => (
             <TextField
               {...field}
-              value={field.value as number}
               title="시급"
-              min={1}
               placeholder="10,030"
               description="현재 최저시급은 10,030원 입니다."
               type="number"
               theme="suffix"
               suffix="원"
+              required
+              {...register("hourlyWage", { valueAsNumber: true })}
             />
           )}
         />
