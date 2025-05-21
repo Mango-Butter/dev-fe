@@ -146,3 +146,18 @@ input[type="number"] {
     -moz-appearance: textfield;
     appearance: textfield;
 }
+
+#qr-reader video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block;
+}
+
+#qr-reader .qr-shaded-region {
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    border: 2px dashed #3b82f6 !important;
+    box-sizing: border-box !important;
+}

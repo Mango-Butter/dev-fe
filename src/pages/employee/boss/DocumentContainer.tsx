@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { getStaffDocumentSummary } from "../../../api/boss/document";
+import { fetchBossStaffContracts } from "../../../api/boss/contract";
 import {
   StaffDocumentSummary,
   documentTypeLabelMap,
 } from "../../../types/document";
+import { BossStaffContractSummary } from "../../../types/contract";
 import { BusinessOff } from "../../../components/icons/BusinessIcon.tsx";
 import MailIcon from "../../../components/icons/MailIcon.tsx";
 
@@ -15,20 +17,37 @@ interface Props {
 
 const DocumentContainer = ({ storeId, staffId, onClickContract }: Props) => {
   const [documents, setDocuments] = useState<StaffDocumentSummary[]>([]);
+  const [contracts, setContracts] = useState<BossStaffContractSummary[]>([]);
 
   useEffect(() => {
     const fetch = async () => {
       try {
-        const res = await getStaffDocumentSummary(storeId, staffId);
-        const requiredDocs = res.filter((doc) => doc.isRequired);
-        setDocuments(requiredDocs);
+        const [docs, contractData] = await Promise.all([
+          getStaffDocumentSummary(storeId, staffId),
+          fetchBossStaffContracts(storeId, staffId),
+        ]);
+        setDocuments(docs.filter((doc) => doc.isRequired));
+        setContracts(contractData);
       } catch (err) {
-        console.error("서류 현황 조회 실패", err);
+        console.error("서류 또는 계약서 조회 실패", err);
       }
     };
 
     fetch();
   }, [storeId, staffId]);
+
+  // 상태별 카운트 계산
+  const contractCounts = contracts.reduce(
+    (acc, contract) => {
+      acc[contract.status]++;
+      return acc;
+    },
+    {
+      COMPLETED: 0,
+      PENDING_STAFF_SIGNATURE: 0,
+      NOT_CREATED: 0,
+    },
+  );
 
   return (
     <div>
@@ -41,7 +60,23 @@ const DocumentContainer = ({ storeId, staffId, onClickContract }: Props) => {
         >
           <BusinessOff />
           <p>근로계약서</p>
-          <span className="body-3 text-positive mt-1">작성완료</span>
+          <div className="flex w-full items-center justify-center gap-1 mt-1">
+            {contractCounts.COMPLETED > 0 && (
+              <span className="body-3 text-positive">
+                작성완료 {contractCounts.COMPLETED}
+              </span>
+            )}
+            {contractCounts.PENDING_STAFF_SIGNATURE > 0 && (
+              <span className="body-3 text-delay">
+                서명대기 {contractCounts.PENDING_STAFF_SIGNATURE}
+              </span>
+            )}
+            {contractCounts.NOT_CREATED > 0 && (
+              <span className="body-3 text-warning">
+                미작성 {contractCounts.NOT_CREATED}
+              </span>
+            )}
+          </div>
         </div>
 
         {/* 제출 서류 카드 */}

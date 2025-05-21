@@ -3,16 +3,16 @@ import { useEffect } from "react";
 import clsx from "clsx";
 import { useLayout } from "../../../hooks/useLayout.ts";
 import StaffContractListPage from "./StaffContractListPage.tsx";
+import StaffDocumentListPage from "./StaffDocumentListPage.tsx";
 
 const tabItems = [
-  { label: "급여명세서", value: "payroll" },
   { label: "근로계약서", value: "contract" },
   { label: "기타 문서", value: "etc" },
 ];
 
 const StaffDocumentPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentTab = searchParams.get("type") || "payroll";
+  const currentTab = searchParams.get("type") || "contract";
 
   useLayout({
     title: "내 문서",
@@ -25,7 +25,7 @@ const StaffDocumentPage = () => {
 
   useEffect(() => {
     if (!searchParams.get("type")) {
-      setSearchParams({ type: "payroll" });
+      setSearchParams({ type: "contract" });
     }
   }, [searchParams, setSearchParams]);
 
@@ -36,7 +36,7 @@ const StaffDocumentPage = () => {
   return (
     <div className="flex flex-col">
       {/* 탭 영역 */}
-      <div className="grid grid-cols-3 border-b border-grayscale-200">
+      <div className="grid grid-cols-2 border-b border-grayscale-200">
         {tabItems.map((tab) => (
           <button
             key={tab.value}
@@ -55,9 +55,8 @@ const StaffDocumentPage = () => {
 
       {/* 탭별 내용 영역 (API 연결 예정) */}
       <div className="p-4">
-        {currentTab === "payroll" && <div>급여명세서 목록 불러오기 예정</div>}
         {currentTab === "contract" && <StaffContractListPage />}
-        {currentTab === "etc" && <div>기타 문서 목록 불러오기 예정</div>}
+        {currentTab === "etc" && <StaffDocumentListPage />}
       </div>
     </div>
   );

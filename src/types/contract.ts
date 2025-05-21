@@ -103,3 +103,11 @@ export const statusLabelMap: Record<BossContractSummary["status"], string> = {
   PENDING_STAFF_SIGNATURE: "서명 대기",
   NOT_CREATED: "미작성",
 };
+
+export interface BossStaffContractSummary {
+  contractId: number;
+  createdAt: string; // ISO datetime
+  bossSignedAt: string;
+  staffSignedAt: string | null;
+  status: "PENDING_STAFF_SIGNATURE" | "COMPLETED" | "NOT_CREATED";
+}

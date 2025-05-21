@@ -19,3 +19,15 @@ export const fetchStaffStores = async (): Promise<StaffStore[]> => {
   );
   return response.data.result;
 };
+
+/**
+ * 알바생 - 특정 매장의 정보 조회
+ * @param storeId 매장 ID
+ * @returns StaffStore (storeId, storeName, address, storeType, attendanceMethod)
+ */
+export const getStaffStoreInfo = async (
+  storeId: number,
+): Promise<StaffStore> => {
+  const res = await axiosAuth.get(`/api/staff/stores/${storeId}/store-info`);
+  return res.data;
+};

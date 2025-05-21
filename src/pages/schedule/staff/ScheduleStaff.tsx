@@ -2,22 +2,20 @@ import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import ArrowIcon from "../../../components/icons/ArrowIcon.tsx";
-import { formatFullDate, getMinutesDiff } from "../../../utils/date.ts";
+import { formatFullDate } from "../../../utils/date.ts";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
-import useStoreStore from "../../../stores/storeStore.ts";
 import "../../../styles/schedulePageCalendar.css";
-import Button from "../../../components/common/Button.tsx";
-import useScheduleStore from "../../../stores/useScheduleStore.ts";
-import { formatTimeRange } from "../../../utils/time.ts";
 import { getClockInStyle } from "../../../utils/attendance.ts";
 import { cn } from "../../../libs";
+
 import { DailyAttendanceRecord } from "../../../types/calendar.ts";
 import { useScheduleFilters } from "../../../hooks/useScheduleFilters.ts";
-import SingleScheduleAddForm from "../boss/SingleScheduleAddForm.tsx";
-import SingleScheduleEditForm from "../boss/SingleScheduleEditForm.tsx";
-import AttendanceAddForm from "../boss/AttendanceAddForm.tsx";
-import AttendanceEditForm from "../boss/AttendanceEditForm.tsx";
 import ScheduleFilter from "../boss/ScheduleFilter.tsx";
+import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
+import useStaffScheduleStore from "../../../stores/staff/useStaffScheduleStore.ts";
+import StaffScheduleList from "../boss/StaffScheduleList.tsx";
+import SingleScheduleEditForm from "../boss/SingleScheduleEditForm.tsx";
+import AttendanceEditForm from "../boss/AttendanceEditForm.tsx";
 
 const ScheduleStaff = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -25,9 +23,9 @@ const ScheduleStaff = () => {
   const dateKey = formatFullDate(selectedDate);
 
   const { scheduleMap, dotMap, fetchDailySchedule, fetchDotRange } =
-    useScheduleStore();
+    useStaffScheduleStore();
 
-  const { selectedStore } = useStoreStore();
+  const { selectedStore } = useStaffStoreStore();
   const storeId = selectedStore?.storeId;
   const { setBottomSheetContent } = useBottomSheetStore();
 
@@ -37,32 +35,24 @@ const ScheduleStaff = () => {
   const filteredRecords = scheduleMap[dateKey]?.filter(({ attendance }) => {
     if (filters.has("all")) return true;
 
-    const filterKeys = Array.from(filters);
-    return filterKeys.some((key) => {
-      if (key.startsWith("clockIn:")) {
-        const status = key.split(":")[1];
-        return `${attendance?.clockInStatus}` === status;
+    return Array.from(filters).some((key) => {
+      const [type, value] = key.split(":");
+
+      if (type === "clockIn") {
+        if (value === "null") return attendance?.clockInStatus == null;
+        return attendance?.clockInStatus === value;
       }
-      if (key.startsWith("clockOut:")) {
-        const status = key.split(":")[1];
-        return `${attendance?.clockOutStatus}` === status;
+
+      if (type === "clockOut") {
+        if (value === "null") return attendance?.clockOutStatus == null;
+        return attendance?.clockOutStatus === value;
       }
+
       return false;
     });
   });
 
-  // 스케줄 추가
-  const openAddSingleScheduleSheet = () => {
-    if (isPast) return;
-    setBottomSheetContent(
-      <SingleScheduleAddForm defaultDate={selectedDate} />,
-      {
-        title: "스케줄 추가",
-        closeOnClickOutside: true,
-      },
-    );
-  };
-
+  // TODO: 알바생 바텀시트 따로 만들어야 함
   // 스케줄 상세 보기 바텀시트 오픈 함수
   const handleOpenScheduleDetail = (
     schedule: DailyAttendanceRecord["schedule"],
@@ -80,15 +70,6 @@ const ScheduleStaff = () => {
         closeOnClickOutside: true,
       },
     );
-  };
-
-  // 근태 추가
-  const openAddAttendanceSheet = () => {
-    if (!isPast) return;
-    setBottomSheetContent(<AttendanceAddForm defaultDate={selectedDate} />, {
-      title: "근태 추가",
-      closeOnClickOutside: true,
-    });
   };
 
   // 근태 상세 보기 바텀시트 오픈 함수
@@ -185,125 +166,24 @@ const ScheduleStaff = () => {
       />
 
       <div className="flex w-full h-full flex-col bg-grayscale-100 px-5 py-4">
-        <div className="flex w-full justify-between items-center">
-          <h2 className="heading-2 mb-2">{dateKey}</h2>
-          {isPast ? (
-            <Button size="sm" theme="outline" onClick={openAddAttendanceSheet}>
-              근태 추가
-            </Button>
-          ) : (
-            <Button
-              size="sm"
-              onClick={openAddSingleScheduleSheet}
-              theme="outline"
-            >
-              스케줄 추가
-            </Button>
-          )}
-        </div>
-
         <div className="mt-4">
           <ScheduleFilter />
         </div>
 
         <div className="mt-8 text-center">
-          <ul className="space-y-2">
-            {filteredRecords?.length > 0 ? (
-              filteredRecords.map(({ staff, schedule, attendance }) => {
-                const hasClockOut = attendance?.clockOutStatus !== null;
-
-                const {
-                  label: clockInLabel,
-                  className: clockInClass,
-                  dotClassName,
-                } = getClockInStyle(attendance?.clockInStatus, hasClockOut);
-
-                let clockOutLabel = "";
-                if (
-                  attendance?.clockOutStatus === "EARLY_LEAVE" &&
-                  attendance.clockOutTime
-                ) {
-                  const early = getMinutesDiff(
-                    schedule.endTime,
-                    attendance.clockOutTime,
-                  );
-                  clockOutLabel = `조퇴 ${early}분`;
-                } else if (
-                  attendance?.clockOutStatus === "OVERTIME" &&
-                  attendance.clockOutTime
-                ) {
-                  const overtime = getMinutesDiff(
-                    attendance.clockOutTime,
-                    schedule.endTime,
-                  );
-                  clockOutLabel = `추가근무 ${overtime}분`;
-                }
-
-                return (
-                  <li
-                    key={schedule.scheduleId}
-                    className="flex items-center justify-between rounded-xl bg-white p-4 cursor-pointer"
-                    onClick={() => {
-                      if (attendance === null) {
-                        handleOpenScheduleDetail(schedule, staff, attendance);
-                      } else {
-                        handleOpenAttendanceDetail(schedule, staff, attendance);
-                      }
-                    }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <img
-                        src={staff.profileImageUrl}
-                        alt={staff.name}
-                        className="w-9 h-9 rounded-full object-cover"
-                      />
-                      <div>
-                        <div className="flex gap-2 items-center self-stretch">
-                          <p className="title-1 text-grayscale-900">
-                            {staff.name}
-                          </p>
-                          <p className="body-3 text-gray-700">
-                            {formatTimeRange(
-                              schedule.startTime,
-                              schedule.endTime,
-                            )}
-                          </p>
-                        </div>
-
-                        <div className="flex self-stretch gap-2 mt-1">
-                          <span
-                            className={cn(
-                              "body-3 flex items-center",
-                              clockInClass,
-                            )}
-                          >
-                            <span
-                              className={cn(
-                                "w-1.5 h-1.5 rounded-full mr-1 align-middle",
-                                dotClassName,
-                              )}
-                            />
-                            {clockInLabel}
-                          </span>
-                          {clockOutLabel && (
-                            <span className="body-3 text-purple-500">
-                              {clockOutLabel}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                );
-              })
-            ) : isPast ? (
-              <li className="text-sm text-gray-500">근태 기록이 없습니다.</li>
-            ) : (
-              <li className="text-sm text-gray-500">
-                등록된 스케줄이 없습니다.
-              </li>
-            )}
-          </ul>
+          <StaffScheduleList
+            records={filteredRecords}
+            onClick={(schedule, staff, attendance) => {
+              if (attendance === null) {
+                handleOpenScheduleDetail(schedule, staff, attendance);
+              } else {
+                handleOpenAttendanceDetail(schedule, staff, attendance);
+              }
+            }}
+            emptyMessage={
+              isPast ? "근태 기록이 없습니다." : "등록된 스케줄이 없습니다."
+            }
+          />
         </div>
       </div>
     </div>
