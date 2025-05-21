@@ -3,7 +3,7 @@ import StaffAttendanceContainer from "./StaffAttendanceContainer.tsx";
 import { useUserStore } from "../../../stores/userStore.ts";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
-import StaffDocumentContainer from "./StaffDocumentContainer.tsx";
+import StaffDocumentRequestContainer from "./StaffDocumentRequestContainer.tsx";
 
 const HomeStaff = () => {
   const { user } = useUserStore();
@@ -20,7 +20,7 @@ const HomeStaff = () => {
 
       <StaffStoreCard />
       <StaffAttendanceContainer />
-      <StaffDocumentContainer />
+      <StaffDocumentRequestContainer />
     </div>
   );
 };

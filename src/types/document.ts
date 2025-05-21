@@ -73,3 +73,13 @@ export interface StaffContractSummary {
   modifiedAt: string; // ISO datetime
   status: "PENDING_STAFF_SIGNATURE" | "COMPLETED" | "NOT_CREATED";
 }
+
+export const documentLabelMap: Record<
+  StaffDocumentSummary["documentType"],
+  string
+> = {
+  RESIDENT_REGISTRATION: "주민등록등본",
+  HEALTH_CERTIFICATE: "보건증",
+  BANK_ACCOUNT: "통장사본",
+  ID_CARD: "신분증",
+};
