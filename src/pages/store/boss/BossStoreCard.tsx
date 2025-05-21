@@ -21,8 +21,23 @@ const BossStoreCard = () => {
         const stores = await getStoreList();
         setStoreList(stores);
 
-        if (stores.length > 0 && !selectedStore) {
-          setSelectedStore(stores[0]);
+        if (stores.length === 0) return;
+
+        const firstStore = stores[0];
+
+        if (!selectedStore) {
+          setSelectedStore(firstStore);
+        } else {
+          const matched = stores.find(
+            (s) => s.storeId === selectedStore.storeId,
+          );
+
+          if (
+            matched &&
+            JSON.stringify(matched) !== JSON.stringify(selectedStore)
+          ) {
+            setSelectedStore(matched);
+          }
         }
       } catch (error) {
         console.error("매장 조회 실패", error);

@@ -1,31 +1,21 @@
 import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import clsx from "clsx";
-import { useLayout } from "../../../hooks/useLayout.ts";
-import StaffContractListPage from "./StaffContractListPage.tsx";
-import StaffDocumentListPage from "./StaffDocumentListPage.tsx";
+import BossPayrollTab from "./BossPayrollTab.tsx";
 
 const tabItems = [
-  { label: "근로계약서", value: "contract" },
-  { label: "기타 문서", value: "etc" },
+  { label: "급여", value: "payroll" },
+  { label: "공제 항목", value: "withholding" },
+  { label: "급여명세서", value: "paystub" },
 ];
 
-const StaffDocumentPage = () => {
+const BossPayrollPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentTab = searchParams.get("type") || "contract";
-
-  useLayout({
-    title: "내 문서",
-    theme: "plain",
-    headerVisible: true,
-    bottomNavVisible: true,
-    onBack: () => history.back(),
-    rightIcon: null,
-  });
+  const currentTab = searchParams.get("type") || "payroll";
 
   useEffect(() => {
     if (!searchParams.get("type")) {
-      setSearchParams({ type: "contract" });
+      setSearchParams({ type: "payroll" });
     }
   }, [searchParams, setSearchParams]);
 
@@ -36,7 +26,7 @@ const StaffDocumentPage = () => {
   return (
     <div className="flex flex-col">
       {/* 탭 영역 */}
-      <div className="grid grid-cols-2 border-b border-grayscale-200">
+      <div className="grid grid-cols-3 border-b border-grayscale-200">
         {tabItems.map((tab) => (
           <button
             key={tab.value}
@@ -53,13 +43,14 @@ const StaffDocumentPage = () => {
         ))}
       </div>
 
-      {/* 탭별 내용 영역 (API 연결 예정) */}
-      <div className="p-4">
-        {currentTab === "contract" && <StaffContractListPage />}
-        {currentTab === "etc" && <StaffDocumentListPage />}
+      {/* 탭별 내용 영역 */}
+      <div className="p-5">
+        {currentTab === "payroll" && <BossPayrollTab />}
+        {currentTab === "withholding" && <div>공제항목</div>}
+        {currentTab === "paystub" && <div>급여명세서</div>}
       </div>
     </div>
   );
 };
 
-export default StaffDocumentPage;
+export default BossPayrollPage;

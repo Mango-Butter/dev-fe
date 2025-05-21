@@ -26,8 +26,27 @@ const StaffStoreCard = () => {
       try {
         const stores = await fetchStaffStores();
         setStoreList(stores);
-        if (stores.length > 0 && !selectedStore) {
-          setSelectedStore(stores[0]);
+
+        if (stores.length === 0) return;
+
+        const firstStore = stores[0];
+
+        if (!selectedStore) {
+          // 초기값이 없는 경우 첫 번째 매장 선택
+          setSelectedStore(firstStore);
+        } else {
+          // storeList에서 같은 storeId를 가진 최신 정보를 찾음
+          const matched = stores.find(
+            (s) => s.storeId === selectedStore.storeId,
+          );
+
+          // storeId는 같지만 다른 내용(주소, 출퇴근방식 등)이 있다면 업데이트
+          if (
+            matched &&
+            JSON.stringify(matched) !== JSON.stringify(selectedStore)
+          ) {
+            setSelectedStore(matched);
+          }
         }
       } catch (error) {
         console.error("매장 조회 실패", error);
@@ -35,6 +54,7 @@ const StaffStoreCard = () => {
         setLoading(false);
       }
     };
+
     fetchStores();
   }, [selectedStore, setSelectedStore]);
 

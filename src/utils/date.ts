@@ -1,5 +1,7 @@
 // utils/date.ts
 
+import { differenceInCalendarDays } from "date-fns";
+
 // 타입 분리
 export type SingleDate = Date | null;
 export type RangeDate = [Date | null, Date | null];
@@ -149,4 +151,13 @@ export const getStartAndEndDates = (ym: string) => {
   const end = new Date(year, month, 0);
   const format = (d: Date) => d.toISOString().slice(0, 10);
   return [format(start), format(end)];
+};
+
+// 현재 날짜 기준으로 transferDate까지 남은 일 수 계산
+export const getRemainingDays = (transferDate: number): number => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth(); // 0-indexed
+  const targetDate = new Date(year, month, transferDate);
+  return differenceInCalendarDays(targetDate, today);
 };

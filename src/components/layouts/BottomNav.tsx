@@ -7,7 +7,6 @@ import { HomeOff, HomeOn } from "../icons/HomeIcon";
 import { BusinessOff, BusinessOn } from "../icons/BusinessIcon.tsx";
 import { CalendarOff, CalendarOn } from "../icons/CalendarIcon.tsx";
 import { PersonOff, PersonOn } from "../icons/PersonIcon.tsx";
-import { StoreOff, StoreOn } from "../icons/StoreIcon.tsx";
 import { CoinOff, CoinOn } from "../icons/CoinIcon.tsx";
 
 const BottomNav = () => {
@@ -36,16 +35,16 @@ const BottomNav = () => {
             iconActive: <CalendarOn />,
           },
           {
+            label: "급여",
+            to: "/boss/payroll",
+            icon: <CoinOff />,
+            iconActive: <CoinOn />,
+          },
+          {
             label: "직원",
             to: "/boss/employees",
             icon: <PersonOff />,
             iconActive: <PersonOn />,
-          },
-          {
-            label: "매장",
-            to: "/boss/store",
-            icon: <StoreOff />,
-            iconActive: <StoreOn />,
           },
         ]
       : user?.role === "STAFF"

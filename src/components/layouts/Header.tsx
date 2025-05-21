@@ -24,6 +24,16 @@ const Header: React.FC = () => {
     }
   };
 
+  const handleMypage = () => {
+    if (user?.role === "BOSS") {
+      navigate("/boss/store");
+    } else if (user?.role === "STAFF") {
+      navigate("/staff/mypage");
+    } else {
+      navigate("/");
+    }
+  };
+
   return (
     <header
       className={`w-full px-5 py-4 bg-white ${
@@ -55,7 +65,7 @@ const Header: React.FC = () => {
             <button aria-label="알림">
               <AlarmIcon className="w-6 h-6" />
             </button>
-            <button aria-label="마이페이지">
+            <button aria-label="마이페이지" onClick={handleMypage}>
               <AccountIcon className="w-6 h-6" />
             </button>
           </>
