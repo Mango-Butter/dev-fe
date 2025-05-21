@@ -75,15 +75,8 @@ const StoreRegisterStaffPage = () => {
     try {
       await joinStoreAsStaff(data.inviteCode);
       navigate("/staff");
-    } catch (error: any) {
-      const code = error?.response?.data?.errorCode;
-      if (code === "ALREADY_JOIN_STAFF") {
-        alert("이미 매장에 가입된 상태입니다.");
-      } else if (code === "INVITE_CODE_NOT_FOUND") {
-        alert("초대코드가 올바르지 않습니다.");
-      } else {
-        alert("매장 등록 중 오류가 발생했습니다.");
-      }
+    } catch (err: any) {
+      console.log(err);
     }
   };
 

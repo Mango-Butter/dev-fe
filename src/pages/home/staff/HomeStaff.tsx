@@ -4,10 +4,12 @@ import { useUserStore } from "../../../stores/userStore.ts";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import StaffDocumentRequestContainer from "./StaffDocumentRequestContainer.tsx";
+import { getKoreaISOString } from "../../../utils/date.ts";
 
 const HomeStaff = () => {
   const { user } = useUserStore();
-  const today = format(new Date(), "yyyy.MM.dd EEEE", { locale: ko });
+  const todayDate = new Date(getKoreaISOString());
+  const today = format(todayDate, "yyyy.MM.dd EEEE", { locale: ko });
 
   return (
     <div className="flex flex-col h-full py-3 px-5 gap-4">

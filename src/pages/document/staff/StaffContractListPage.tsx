@@ -57,7 +57,7 @@ const StaffContractListPage = () => {
             <div className="flex flex-col">
               <span className="title-2">근로계약서 #{contract.contractId}</span>
               <span className="body-3 text-grayscale-500">
-                {format(new Date(contract.createdAt), "yyyy.MM.dd")}
+                {format(new Date(contract.modifiedAt), "yyyy.MM.dd")}
               </span>
             </div>
 

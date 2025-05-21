@@ -145,7 +145,7 @@ const AttendanceSettingPage = () => {
       const qr = await reissueQrCode(selectedStore.storeId);
       setQrCodeUrl(qr.qrCode);
     } catch (err) {
-      alert("QR 재발급 실패");
+      console.log(err);
     } finally {
       setTimeout(() => setIsQRUpdating(false), 1000);
     }
@@ -156,9 +156,7 @@ const AttendanceSettingPage = () => {
     try {
       await updateGpsSettings(selectedStore.storeId, data);
       alert("GPS 설정이 저장되었습니다.");
-    } catch (err) {
-      alert("GPS 설정 저장 실패");
-    }
+    } catch (err) {}
   };
 
   useEffect(() => {

@@ -128,7 +128,6 @@ const ContractRegisterPage = () => {
       navigate(`/boss/contract/${res.contractId}`); // ✅ 이동
     } catch (err) {
       console.error("계약서 제출 실패", err);
-      alert("계약서 제출에 실패했습니다.");
     } finally {
       setLoading(false);
     }
@@ -205,7 +204,6 @@ const ContractRegisterPage = () => {
         });
       } catch (err) {
         console.error("템플릿 적용 실패", err);
-        alert("템플릿을 불러오는 데 실패했습니다.");
       }
     };
 

@@ -13,6 +13,7 @@ import Button from "../../../components/common/Button.tsx";
 import useStoreStore from "../../../stores/storeStore.ts";
 import useSelectedStaffStore from "../../../stores/selectedStaffStore.ts";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
+import { useState } from "react";
 
 const schema = z.object({
   range: z
@@ -25,14 +26,10 @@ const schema = z.object({
     .min(1, "근무 요일을 선택해주세요"),
   timeMap: z.record(
     z.enum(dayOfWeekList),
-    z
-      .object({
-        startTime: z.string().min(1, "시작시간 필수"),
-        endTime: z.string().min(1, "종료시간 필수"),
-      })
-      .refine(({ startTime, endTime }) => startTime < endTime, {
-        message: "시작시간은 종료시간보다 빨라야 합니다",
-      }),
+    z.object({
+      startTime: z.string().min(1, "시작시간 필수"),
+      endTime: z.string().min(1, "종료시간 필수"),
+    }),
   ),
 });
 
@@ -63,6 +60,7 @@ const RegularScheduleAddForm = ({ onSuccess }: Props) => {
     },
   });
 
+  const [isLoading, setIsLoading] = useState(false);
   const selectedDays = watch("selectedDays");
   const toggleDay = (day: DayOfWeek) => {
     const current = watch("selectedDays");
@@ -71,10 +69,18 @@ const RegularScheduleAddForm = ({ onSuccess }: Props) => {
       : [...current, day];
     setValue("selectedDays", updated, { shouldValidate: true });
   };
+  const { setBottomSheetOpen } = useBottomSheetStore.getState();
 
   const onSubmit = async (data: FormData) => {
+    if (isLoading) return; // 로딩 중이면 중복 요청 방지
+    setIsLoading(true);
+
     const [startDateObj, endDateObj] = data.range;
-    if (!startDateObj || !endDateObj) return;
+    if (!startDateObj || !endDateObj) {
+      alert("반복기간 선택 정보가 없습니다.");
+      setIsLoading(false);
+      return;
+    }
 
     const startDate = startDateObj.toISOString().slice(0, 10);
     const endDate = endDateObj.toISOString().slice(0, 10);
@@ -93,10 +99,10 @@ const RegularScheduleAddForm = ({ onSuccess }: Props) => {
 
     const { selectedStore } = useStoreStore.getState();
     const { selectedStaffId } = useSelectedStaffStore.getState();
-    const { setBottomSheetOpen } = useBottomSheetStore.getState();
 
     if (!selectedStore || !selectedStaffId) {
       alert("매장 또는 알바생 정보가 없습니다.");
+      setIsLoading(false);
       return;
     }
 
@@ -109,8 +115,8 @@ const RegularScheduleAddForm = ({ onSuccess }: Props) => {
       onSuccess?.();
     } catch (err) {
       console.error("고정 스케줄 생성 실패", err);
-      alert("스케줄 추가 중 오류가 발생했습니다.");
     } finally {
+      setIsLoading(false);
       setBottomSheetOpen(false);
     }
   };
@@ -192,11 +198,23 @@ const RegularScheduleAddForm = ({ onSuccess }: Props) => {
       </section>
 
       <div className="sticky bottom-0 mt-4 flex justify-between gap-3 bg-white py-3">
-        <Button theme="outline" className="flex-1">
+        <Button
+          theme="outline"
+          className="flex-1"
+          disabled={isLoading}
+          onClick={() => {
+            setBottomSheetOpen(false);
+          }}
+        >
           취소
         </Button>
-        <Button type="submit" theme="primary" className="flex-1">
-          추가
+        <Button
+          type="submit"
+          theme="primary"
+          className="flex-1"
+          disabled={isLoading}
+        >
+          {isLoading ? "추가 중..." : "추가"}
         </Button>
       </div>
     </form>

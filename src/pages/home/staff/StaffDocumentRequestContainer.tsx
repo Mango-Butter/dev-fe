@@ -42,9 +42,7 @@ const StaffDocumentRequestContainer = () => {
 
   if (loading) {
     return (
-      <div className="text-sm text-gray-500">
-        서류 요청 정보를 불러오는 중...
-      </div>
+      <div className="text-smtext-white">서류 요청 정보를 불러오는 중...</div>
     );
   }
 

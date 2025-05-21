@@ -18,30 +18,19 @@ interface SingleScheduleAddFormProps {
   defaultDate?: Date;
 }
 
-const schema = z
-  .object({
-    staffId: z
-      .number({ required_error: "알바생을 선택해주세요" })
-      .refine((val) => val !== 0, { message: "알바생을 선택해주세요" }),
-    date: z
-      .date()
-      .nullable()
-      .refine((d) => d !== null, {
-        message: "날짜를 선택해주세요",
-      }),
-    startTime: z.string().min(1, "시작 시간을 입력해주세요"),
-    endTime: z.string().min(1, "종료 시간을 입력해주세요"),
-  })
-  .refine(
-    ({ startTime, endTime }) => {
-      if (!startTime || !endTime) return true;
-      return startTime < endTime;
-    },
-    {
-      message: "종료 시간은 시작 시간보다 이후여야 합니다",
-      path: ["endTime"],
-    },
-  );
+const schema = z.object({
+  staffId: z
+    .number({ required_error: "알바생을 선택해주세요" })
+    .refine((val) => val !== 0, { message: "알바생을 선택해주세요" }),
+  date: z
+    .date()
+    .nullable()
+    .refine((d) => d !== null, {
+      message: "날짜를 선택해주세요",
+    }),
+  startTime: z.string().min(1, "시작 시간을 입력해주세요"),
+  endTime: z.string().min(1, "종료 시간을 입력해주세요"),
+});
 
 type FormData = {
   staffId: number;
@@ -109,7 +98,6 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
       alert("스케줄이 성공적으로 추가되었습니다!");
     } catch (err) {
       console.error("스케줄 추가 실패", err);
-      alert("스케줄 추가 중 오류가 발생했습니다.");
     } finally {
       setBottomSheetOpen(false);
     }

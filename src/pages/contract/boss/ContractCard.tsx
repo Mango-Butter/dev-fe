@@ -52,7 +52,6 @@ const ContractCard = ({ contract }: Props) => {
       window.open(url, "_blank");
     } catch (err) {
       console.error("PDF 보기 오류:", err);
-      alert("PDF를 여는 데 실패했습니다.");
     } finally {
       setPopupOpen(false);
     }
@@ -72,7 +71,6 @@ const ContractCard = ({ contract }: Props) => {
       a.click();
     } catch (err) {
       console.error("PDF 다운로드 오류:", err);
-      alert("PDF 다운로드에 실패했습니다.");
     } finally {
       setPopupOpen(false);
     }
@@ -80,7 +78,7 @@ const ContractCard = ({ contract }: Props) => {
 
   // 근로계약서 삭제
   const handleDeleteContract = async () => {
-    //Todo: 삭제
+    alert("아직 준비중인 기능입니다.");
   };
 
   return (

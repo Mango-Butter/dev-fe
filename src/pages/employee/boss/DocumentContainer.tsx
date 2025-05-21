@@ -8,16 +8,18 @@ import {
 import { BossStaffContractSummary } from "../../../types/contract";
 import { BusinessOff } from "../../../components/icons/BusinessIcon.tsx";
 import MailIcon from "../../../components/icons/MailIcon.tsx";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   storeId: number;
   staffId: number;
-  onClickContract: () => void;
 }
 
-const DocumentContainer = ({ storeId, staffId, onClickContract }: Props) => {
+const DocumentContainer = ({ storeId, staffId }: Props) => {
   const [documents, setDocuments] = useState<StaffDocumentSummary[]>([]);
   const [contracts, setContracts] = useState<BossStaffContractSummary[]>([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetch = async () => {
@@ -49,6 +51,14 @@ const DocumentContainer = ({ storeId, staffId, onClickContract }: Props) => {
     },
   );
 
+  const handleContractClick = () => {
+    navigate("/boss/document?type=contract");
+  };
+
+  const handleEtcClick = () => {
+    navigate("/boss/document?type=etc");
+  };
+
   return (
     <div>
       <p className="title-1 mb-3">근무 서류 관리</p>
@@ -56,7 +66,7 @@ const DocumentContainer = ({ storeId, staffId, onClickContract }: Props) => {
         {/* 근로계약서 카드 */}
         <div
           className="bg-white border rounded-xl p-3 flex flex-col items-center text-sm"
-          onClick={onClickContract}
+          onClick={handleContractClick}
         >
           <BusinessOff />
           <p>근로계약서</p>
@@ -84,6 +94,7 @@ const DocumentContainer = ({ storeId, staffId, onClickContract }: Props) => {
           <div
             key={doc.documentType}
             className="bg-white border rounded-xl p-3 flex flex-col items-center text-sm"
+            onClick={handleEtcClick}
           >
             <MailIcon />
             <p>{documentTypeLabelMap[doc.documentType]}</p>

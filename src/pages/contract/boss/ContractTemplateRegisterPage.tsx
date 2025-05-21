@@ -3,7 +3,6 @@ import { useState } from "react";
 import Button from "../../../components/common/Button.tsx";
 import TextField from "../../../components/common/TextField.tsx";
 import { useLayout } from "../../../hooks/useLayout.ts";
-import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import useStoreStore from "../../../stores/storeStore.ts";
 import RangeDatePicker from "../../../components/common/RangeDatePicker.tsx";
 import {
@@ -11,7 +10,6 @@ import {
   weekdayKorean,
   DayOfWeek,
 } from "../../../types/staff.ts";
-import SignaturePadSheet from "./SignaturePadSheet.tsx";
 import { useNavigate } from "react-router-dom";
 import { createContractTemplate } from "../../../api/boss/contractTemplate.ts";
 import {
@@ -30,7 +28,6 @@ const ContractTemplateRegisterPage = () => {
     rightIcon: null,
   });
 
-  const [signatureImage, setSignatureImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { selectedStore } = useStoreStore();
@@ -52,12 +49,10 @@ const ContractTemplateRegisterPage = () => {
       weekdays: [],
       time: {} as any,
       hourlyWage: undefined,
-      bossSignatureKey: "",
     },
   });
 
   const selectedDays = watch("weekdays") ?? [];
-  const { setBottomSheetContent, setBottomSheetOpen } = useBottomSheetStore();
 
   const toggleDay = (day: DayOfWeek) => {
     const updated = selectedDays.includes(day)
@@ -107,7 +102,6 @@ const ContractTemplateRegisterPage = () => {
       navigate("/boss/contract/template");
     } catch (err) {
       console.error("템플릿 저장 실패", err);
-      alert("템플릿 저장에 실패했습니다.");
     } finally {
       setLoading(false);
     }
@@ -205,44 +199,8 @@ const ContractTemplateRegisterPage = () => {
               type="number"
               theme="suffix"
               suffix="원"
-              required
               {...register("hourlyWage", { valueAsNumber: true })}
             />
-          )}
-        />
-
-        <Controller
-          name="bossSignatureKey"
-          control={control}
-          render={() => (
-            <div className="flex flex-col gap-2">
-              <div className="flex title-1 text-black gap-1">서명</div>
-              <div
-                className="h-44 px-6 py-4 border border-gray-300 rounded-lg flex items-center justify-center text-gray-500 cursor-pointer bg-white"
-                onClick={() => {
-                  setBottomSheetContent(
-                    <SignaturePadSheet
-                      onComplete={({ base64, signatureKey }) => {
-                        setSignatureImage(base64);
-                        setValue("bossSignatureKey", signatureKey);
-                        setBottomSheetOpen(false);
-                      }}
-                    />,
-                    { title: "서명 그리기" },
-                  );
-                }}
-              >
-                {signatureImage ? (
-                  <img
-                    src={signatureImage}
-                    alt="서명 이미지"
-                    className="h-full object-contain"
-                  />
-                ) : (
-                  "근로계약서에 적용할 서명을 진행해주세요."
-                )}
-              </div>
-            </div>
           )}
         />
 

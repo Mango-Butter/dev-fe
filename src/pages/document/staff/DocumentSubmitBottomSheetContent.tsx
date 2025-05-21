@@ -48,7 +48,6 @@ const DocumentSubmitBottomSheetContent = ({ document }: Props) => {
       setBottomSheetOpen(false);
     } catch (err) {
       console.error(err);
-      alert("제출 중 오류가 발생했습니다.");
     }
   };
 

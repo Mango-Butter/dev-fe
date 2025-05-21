@@ -1,8 +1,9 @@
 // src/pages/Task.tsx
 import { format } from "date-fns";
+import { getKoreaISOString } from "../utils/date.ts";
 
 const Task = () => {
-  const selectedDate = new Date();
+  const selectedDate = getKoreaISOString();
 
   return (
     <div className="flex w-full h-full p-4">

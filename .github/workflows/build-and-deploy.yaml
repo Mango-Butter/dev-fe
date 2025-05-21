@@ -32,6 +32,7 @@ jobs:
         run: |
           echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env
           echo "VITE_KAKAO_JS_KEY=${{ secrets.VITE_KAKAO_JS_KEY }}" >> .env
+          echo "VITE_SIGNATURE_ENCRYPTION_KEY=${{ secrets.VITE_SIGNATURE_ENCRYPTION_KEY }}" >> .env
 
           if [ "${{ github.ref }}" = "refs/heads/main" ]; then
             echo "VITE_KAKAO_REDIRECT_URI=${{ secrets.VITE_KAKAO_REDIRECT_URI_PROD }}" >> .env.production

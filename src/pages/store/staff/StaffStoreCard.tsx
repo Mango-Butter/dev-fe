@@ -7,18 +7,23 @@ import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
 import { fetchStaffStores } from "../../../api/staff/store.ts";
 import { StaffStore } from "../../../types/store.ts";
 import StaffStoreBottomSheetContent from "../../mypage/staff/StaffStoreBottomSheetContent.tsx";
+import { useNavigate } from "react-router-dom";
 
 const StaffStoreCard = () => {
   const { setBottomSheetContent } = useBottomSheetStore();
   const { selectedStore, setSelectedStore } = useStaffStoreStore();
   const [storeList, setStoreList] = useState<StaffStore[] | null>(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const openStoreSheet = () => {
     setBottomSheetContent(<StaffStoreBottomSheetContent />, {
       title: "매장 전환",
       closeOnClickOutside: true,
     });
+  };
+  const handleStoreRegister = () => {
+    navigate("/staff/store/register");
   };
 
   useEffect(() => {
@@ -70,6 +75,13 @@ const StaffStoreCard = () => {
             <br />
             초대코드를 통해 매장에 합류해 주세요.
           </div>
+
+          <span
+            className="body-2text-grayscale-900 cursor-pointer"
+            onClick={handleStoreRegister}
+          >
+            + 매장 추가하기
+          </span>
         </div>
       </div>
     );

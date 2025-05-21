@@ -46,7 +46,6 @@ const BossPayrollEditPage = () => {
         setCheckedKeys(new Set(payrollResult.map((p) => p.payroll.key))); // 초기값: 모두 체크
       } catch (err) {
         console.error("데이터 불러오기 실패:", err);
-        alert("급여 정보 또는 설정을 불러오는 데 실패했습니다.");
       } finally {
         setLoading(false);
       }
@@ -73,7 +72,6 @@ const BossPayrollEditPage = () => {
       history.back(); // 또는 navigate(-1)
     } catch (err: any) {
       console.error("송금 확정 실패:", err);
-      alert("송금 확정에 실패했습니다.");
     }
   };
 

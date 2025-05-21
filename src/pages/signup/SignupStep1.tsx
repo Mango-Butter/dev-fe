@@ -41,7 +41,7 @@ const SignupStep1 = ({ onSelectRole }: SignupStep1Props) => {
                 className="w-full text-grayscale-900"
                 onClick={() => onSelectRole("BOSS")}
               >
-                사장님 회원가입하기
+                사장님 회원가입
               </Button>
             </div>
             <div className="w-full flex flex-col gap-4">
@@ -52,7 +52,7 @@ const SignupStep1 = ({ onSelectRole }: SignupStep1Props) => {
                 className="w-full text-white"
                 onClick={() => onSelectRole("STAFF")}
               >
-                알바생 회원가입하기
+                알바생 회원가입
               </Button>
             </div>
           </div>

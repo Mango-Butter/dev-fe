@@ -68,7 +68,6 @@ const RequiredDocumentSheet = ({ initialSettings, onSaveSuccess }: Props) => {
       setBottomSheetOpen(false);
     } catch (e) {
       console.error("필수 서류 설정 저장 실패", e);
-      alert("저장에 실패했습니다.");
       setBottomSheetOpen(false);
     }
   };

@@ -16,7 +16,6 @@ export const contractTemplateSchema = z.object({
     )
     .optional(),
   hourlyWage: z.number().optional(),
-  bossSignatureKey: z.string().optional(),
 });
 
 export type ContractTemplateFormValues = z.infer<typeof contractTemplateSchema>;

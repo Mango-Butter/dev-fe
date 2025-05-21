@@ -83,7 +83,7 @@ export interface ContractPdfDownloadResponse {
 
 export interface StaffContractSummary {
   contractId: number;
-  createdAt: string; // ISO datetime string
+  modifiedAt: string; // ISO datetime string
   isSigned: boolean;
 }
 

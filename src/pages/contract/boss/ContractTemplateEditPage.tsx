@@ -4,7 +4,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import Button from "../../../components/common/Button.tsx";
 import TextField from "../../../components/common/TextField.tsx";
 import { useLayout } from "../../../hooks/useLayout.ts";
-import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import useStoreStore from "../../../stores/storeStore.ts";
 import RangeDatePicker from "../../../components/common/RangeDatePicker.tsx";
 import {
@@ -12,7 +11,6 @@ import {
   weekdayKorean,
   DayOfWeek,
 } from "../../../types/staff.ts";
-import SignaturePadSheet from "./SignaturePadSheet.tsx";
 import {
   deleteContractTemplate,
   fetchContractTemplateDetail,
@@ -34,7 +32,6 @@ const ContractTemplateEditPage = () => {
     rightIcon: null,
   });
 
-  const [signatureImage, setSignatureImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { selectedStore } = useStoreStore();
@@ -58,12 +55,10 @@ const ContractTemplateEditPage = () => {
       weekdays: [],
       time: {} as any,
       hourlyWage: undefined,
-      bossSignatureKey: "",
     },
   });
 
   const selectedDays = watch("weekdays") ?? [];
-  const { setBottomSheetContent, setBottomSheetOpen } = useBottomSheetStore();
 
   useEffect(() => {
     const fetchTemplate = async () => {
@@ -98,7 +93,6 @@ const ContractTemplateEditPage = () => {
             ]),
           ),
           hourlyWage: data.contractTemplateData.hourlyWage ?? undefined,
-          bossSignatureKey: "",
         });
       } catch (err) {
         console.error("템플릿 불러오기 실패", err);
@@ -162,7 +156,6 @@ const ContractTemplateEditPage = () => {
       navigate("/boss/contract/template");
     } catch (err) {
       console.error("템플릿 수정 실패", err);
-      alert("템플릿 수정에 실패했습니다.");
     } finally {
       setLoading(false);
     }
@@ -266,41 +259,6 @@ const ContractTemplateEditPage = () => {
           )}
         />
 
-        <Controller
-          name="bossSignatureKey"
-          control={control}
-          render={() => (
-            <div className="flex flex-col gap-2">
-              <div className="flex title-1 text-black gap-1">서명</div>
-              <div
-                className="h-44 px-6 py-4 border border-gray-300 rounded-lg flex items-center justify-center text-gray-500 cursor-pointer bg-white"
-                onClick={() => {
-                  setBottomSheetContent(
-                    <SignaturePadSheet
-                      onComplete={({ base64, signatureKey }) => {
-                        setSignatureImage(base64);
-                        setValue("bossSignatureKey", signatureKey);
-                        setBottomSheetOpen(false);
-                      }}
-                    />,
-                    { title: "서명 그리기" },
-                  );
-                }}
-              >
-                {signatureImage ? (
-                  <img
-                    src={signatureImage}
-                    alt="서명 이미지"
-                    className="h-full object-contain"
-                  />
-                ) : (
-                  "근로계약서에 적용할 서명을 진행해주세요."
-                )}
-              </div>
-            </div>
-          )}
-        />
-
         <div className="flex gap-2">
           <Button
             size="md"
@@ -318,7 +276,6 @@ const ContractTemplateEditPage = () => {
                 navigate("/boss/contract/template");
               } catch (err) {
                 console.error("삭제 실패", err);
-                alert("삭제 중 오류가 발생했습니다.");
               }
             }}
             className="w-full"

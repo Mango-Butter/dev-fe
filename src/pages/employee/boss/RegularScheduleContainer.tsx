@@ -39,7 +39,6 @@ const RegularScheduleContainer = ({
       onDeleteSuccess?.();
     } catch (err) {
       console.error("고정 스케줄 삭제 실패", err);
-      alert("스케줄 삭제 중 오류가 발생했습니다.");
     }
   };
 

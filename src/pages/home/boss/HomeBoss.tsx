@@ -1,15 +1,20 @@
-import { formatFullDate } from "../../../utils/date.ts";
+import { getKoreaISOString, formatFullDate } from "../../../utils/date.ts";
 import useStoreStore from "../../../stores/storeStore.ts";
 import useScheduleStore from "../../../stores/useScheduleStore.ts";
 import { useEffect } from "react";
 import BossStoreCard from "../../store/boss/BossStoreCard.tsx";
 import StaffScheduleList from "../../schedule/boss/StaffScheduleList.tsx";
 import DocumentContainer from "./DocumentContainer.tsx";
+import { useUserStore } from "../../../stores/userStore.ts";
+import { format } from "date-fns";
+import { ko } from "date-fns/locale";
 
 const HomeBoss = () => {
-  const today = new Date();
-  const dateKey = formatFullDate(today);
+  const koreaNow = new Date(getKoreaISOString());
+  const dateKey = formatFullDate(koreaNow);
+  const todayText = format(koreaNow, "yyyy.MM.dd EEEE", { locale: ko });
 
+  const { user } = useUserStore();
   const { selectedStore } = useStoreStore();
   const storeId = selectedStore?.storeId;
 
@@ -23,7 +28,13 @@ const HomeBoss = () => {
   }, [storeId, dateKey, fetchDailySchedule]);
 
   return (
-    <div className="flex flex-col items-center justify-start h-full py-4 px-5 gap-6">
+    <div className="flex flex-col items-start justify-start h-full py-4 px-5 gap-6">
+      <div className="flex flex-col gap-1">
+        <p className="title-1">{todayText}</p> {/* ✅ 한국 시간 기준 텍스트 */}
+        <p className="body-3 text-grayscale-500">
+          {user?.name}님, 오늘 근무도 힘내세요!
+        </p>
+      </div>
       <BossStoreCard />
       {selectedStore && (
         <>

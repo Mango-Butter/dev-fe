@@ -15,11 +15,18 @@ import {
 import { useEffect } from "react";
 import { DailyAttendanceRecord } from "../../../types/calendar.ts";
 
-const schema = z.object({
-  clockInStatus: z.enum(["NORMAL", "LATE", "ABSENT"]),
-  clockInTime: z.string().nullable(),
-  clockOutTime: z.string().nullable(),
-});
+const schema = z.discriminatedUnion("clockInStatus", [
+  z.object({
+    clockInStatus: z.literal("ABSENT"),
+    clockInTime: z.literal(null),
+    clockOutTime: z.literal(null),
+  }),
+  z.object({
+    clockInStatus: z.enum(["NORMAL", "LATE"]),
+    clockInTime: z.string().min(1, "출근 시간을 입력해주세요"),
+    clockOutTime: z.string().min(1, "퇴근 시간을 입력해주세요"),
+  }),
+]);
 
 type FormData = z.infer<typeof schema>;
 
@@ -41,15 +48,18 @@ const AttendanceEditForm = ({
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     mode: "onChange",
-    defaultValues: {
-      clockInStatus: attendance?.clockInStatus ?? "NORMAL",
-      clockInTime: attendance?.clockInTime
-        ? attendance.clockInTime.slice(11, 16)
-        : null,
-      clockOutTime: attendance?.clockOutTime
-        ? attendance.clockOutTime.slice(11, 16)
-        : null,
-    },
+    defaultValues:
+      attendance?.clockInStatus === "ABSENT"
+        ? {
+            clockInStatus: "ABSENT",
+            clockInTime: null,
+            clockOutTime: null,
+          }
+        : {
+            clockInStatus: attendance?.clockInStatus ?? "NORMAL",
+            clockInTime: attendance?.clockInTime?.slice(11, 16) ?? "",
+            clockOutTime: attendance?.clockOutTime?.slice(11, 16) ?? "",
+          },
   });
 
   const clockInStatus = watch("clockInStatus");
@@ -74,7 +84,6 @@ const AttendanceEditForm = ({
       alert("근태 정보가 성공적으로 수정되었습니다.");
     } catch (err) {
       console.error("근태 수정 실패", err);
-      alert("근태 수정 중 오류가 발생했습니다.");
     } finally {
       setBottomSheetOpen(false);
     }
@@ -90,7 +99,6 @@ const AttendanceEditForm = ({
       alert("근태 기록이 삭제되었습니다.");
     } catch (err) {
       console.error("근태 삭제 실패", err);
-      alert("근태 삭제 중 오류가 발생했습니다.");
     } finally {
       setBottomSheetOpen(false);
     }

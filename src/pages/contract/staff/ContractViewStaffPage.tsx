@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useLayout } from "../../../hooks/useLayout.ts";
 import { useEffect, useState } from "react";
-import useStoreStore from "../../../stores/storeStore.ts";
 import { ContractDetailResponse } from "../../../types/contract.ts";
 import { formatFullDateWithTime } from "../../../utils/date.ts";
 import { weekdayKorean } from "../../../types/staff.ts";
@@ -14,11 +13,12 @@ import {
 import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import SignaturePadSheetStaff from "./SignaturePadSheetStaff.tsx";
 import Button from "../../../components/common/Button.tsx";
+import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
 
 const ContractViewStaffPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { selectedStore } = useStoreStore();
+  const { selectedStore } = useStaffStoreStore();
   const [contract, setContract] = useState<ContractDetailResponse | null>(null);
   const { setBottomSheetContent, setBottomSheetOpen } = useBottomSheetStore();
   const [tempSignatureImage, setTempSignatureImage] = useState<string | null>(
@@ -36,8 +36,14 @@ const ContractViewStaffPage = () => {
   });
 
   useEffect(() => {
-    if (!id || !selectedStore) {
+    if (!id) {
       alert("계약서를 찾지 못했습니다.");
+      navigate("/staff", { replace: true });
+      return;
+    }
+
+    if (!selectedStore) {
+      alert("선택된 매장이 없습니다.");
       navigate("/staff", { replace: true });
       return;
     }
@@ -51,7 +57,6 @@ const ContractViewStaffPage = () => {
         setContract(data);
       } catch (err) {
         console.error("계약서 불러오기 실패:", err);
-        alert("계약서를 불러올 수 없습니다.");
         navigate("/staff", { replace: true });
       }
     };
@@ -69,7 +74,6 @@ const ContractViewStaffPage = () => {
       window.open(url, "_blank");
     } catch (err) {
       console.error("PDF 보기 URL 요청 실패", err);
-      alert("PDF 문서를 열 수 없습니다.");
     }
   };
 
@@ -83,7 +87,6 @@ const ContractViewStaffPage = () => {
       window.open(url, "_blank"); // 또는 download 속성 있는 a 태그 만들어도 됨
     } catch (err) {
       console.error("PDF 다운로드 URL 요청 실패", err);
-      alert("PDF 다운로드에 실패했습니다.");
     }
   };
 
@@ -309,7 +312,6 @@ const ContractViewStaffPage = () => {
                   window.location.reload();
                 } catch (err) {
                   console.error("제출 실패", err);
-                  alert("제출에 실패했습니다.");
                 }
               }}
             >

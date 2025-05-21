@@ -37,7 +37,6 @@ const LoginSuccess = () => {
           navigate("/signup");
         }
       } catch (err) {
-        alert("로그인 실패");
         navigate("/login");
       }
     };

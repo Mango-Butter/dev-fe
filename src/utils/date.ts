@@ -1,10 +1,5 @@
 // utils/date.ts
-
 import { differenceInCalendarDays } from "date-fns";
-
-// 타입 분리
-export type SingleDate = Date | null;
-export type RangeDate = [Date | null, Date | null];
 
 /**
  * Date를 'YYYY-MM-DD' 형식의 문자열로 변환하는 함수
@@ -37,78 +32,6 @@ export const formatFullDateWithTime = (date: Date): string => {
     hour: "numeric",
     minute: "numeric",
   }).format(date);
-};
-
-/**
- * SingleDate 또는 RangeDate를 받아서
- * 시작일, 종료일을 'YYYY-MM-DD' 형식으로 변환한 배열 반환
- * @param pickedDate SingleDate 또는 RangeDate
- * @param separator 연결자 (기본: '-')
- * @returns [시작일, 종료일] 문자열 배열
- */
-export const getPickedDateArr = (
-  pickedDate: SingleDate | RangeDate,
-  separator: string = "-",
-): [string, string] => {
-  if (pickedDate instanceof Date) {
-    return [formatFullDate(pickedDate, separator), ""];
-  }
-
-  if (Array.isArray(pickedDate)) {
-    const [start, end] = pickedDate;
-    return [
-      start ? formatFullDate(start, separator) : "",
-      end ? formatFullDate(end, separator) : "",
-    ];
-  }
-
-  return ["", ""];
-};
-
-/**
- * SingleDate 또는 RangeDate를 받아서
- * 선택된 날짜 수(일수 차이)를 계산하는 함수
- * @param pickedDate SingleDate 또는 RangeDate
- * @returns 일수 차이 (하루 선택 시 1 반환)
- */
-export const calculateDiffDays = (
-  pickedDate: SingleDate | RangeDate,
-): number => {
-  if (pickedDate instanceof Date) {
-    return 1;
-  }
-
-  if (Array.isArray(pickedDate)) {
-    const [start, end] = pickedDate;
-    if (start && end) {
-      const diffTime = Math.abs(end.getTime() - start.getTime());
-      return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    }
-  }
-
-  return 0;
-};
-
-/**
- * 문자열로 주어진 두 날짜를 비교해서
- * 일수 차이를 계산하는 함수
- * @param startDate 시작일 (YYYY-MM-DD 문자열)
- * @param endDate 종료일 (YYYY-MM-DD 문자열)
- * @returns 일수 차이
- */
-export const calculateDiffDaysWithStr = (
-  startDate: string,
-  endDate: string,
-): number => {
-  if (!startDate || !endDate) return 0;
-
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-
-  if (isNaN(start.getTime()) || isNaN(end.getTime())) return 0;
-
-  const diffTime = Math.abs(end.getTime() - start.getTime());
-  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 };
 
 /**
@@ -145,19 +68,30 @@ export const formatDateToKSTString = (date: Date): string => {
   return local.toISOString().slice(0, 10); // 잘라내기
 };
 
-export const getStartAndEndDates = (ym: string) => {
+export const getStartAndEndDates = (ym: string): [string, string] => {
   const [year, month] = ym.split("-").map(Number);
-  const start = new Date(year, month - 1, 1);
-  const end = new Date(year, month, 0);
-  const format = (d: Date) => d.toISOString().slice(0, 10);
-  return [format(start), format(end)];
+  const startUtc = new Date(Date.UTC(year, month - 1, 1));
+  const endUtc = new Date(Date.UTC(year, month, 0));
+
+  const offset = 9 * 60 * 60 * 1000;
+  const startKst = new Date(startUtc.getTime() + offset);
+  const endKst = new Date(endUtc.getTime() + offset);
+
+  const format = (d: Date) => d.toISOString().slice(0, 10); // YYYY-MM-DD
+  return [format(startKst), format(endKst)];
 };
 
 // 현재 날짜 기준으로 transferDate까지 남은 일 수 계산
 export const getRemainingDays = (transferDate: number): number => {
-  const today = new Date();
+  const today = new Date(getKoreaISOString());
   const year = today.getFullYear();
   const month = today.getMonth(); // 0-indexed
   const targetDate = new Date(year, month, transferDate);
   return differenceInCalendarDays(targetDate, today);
+};
+
+export const getKoreaISOString = (): string => {
+  const date = new Date();
+  const kstTime = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+  return kstTime.toISOString();
 };

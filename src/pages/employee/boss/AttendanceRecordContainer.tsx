@@ -6,7 +6,7 @@ import { StaffAttendanceRecord } from "../../../types/attendance";
 import { cn } from "../../../libs";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore";
 import AttendanceEditForm from "../../schedule/boss/AttendanceEditForm.tsx";
-import { getStartAndEndDates } from "../../../utils/date.ts";
+import { getKoreaISOString, getStartAndEndDates } from "../../../utils/date.ts";
 
 interface Props {
   staff: {
@@ -22,8 +22,8 @@ const AttendanceRecordContainer = ({ staff, storeId }: Props) => {
   const { setBottomSheetContent } = useBottomSheetStore();
 
   const [selectedYearMonth, setSelectedYearMonth] = useState(() => {
-    const now = new Date();
-    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+    const koreaNow = new Date(getKoreaISOString());
+    return `${koreaNow.getFullYear()}-${String(koreaNow.getMonth() + 1).padStart(2, "0")}`;
   });
 
   const [records, setRecords] = useState<StaffAttendanceRecord[]>([]);

@@ -84,9 +84,9 @@ const BottomNav = () => {
 
   return (
     <nav
-      className={`h-14 ${
+      className={`h-20 ${
         bottomNavVisible ? "flex" : "hidden"
-      } justify-around items-center bg-white border-t`}
+      } justify-around items-center bg-white border-t pb-5`}
     >
       {navItems.map(({ to, label, icon, iconActive }) => (
         <NavLink

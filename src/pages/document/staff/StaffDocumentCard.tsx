@@ -59,7 +59,6 @@ const StaffDocumentCard = ({ document: doc }: Props) => {
       window.open(url, "_blank");
     } catch (e) {
       console.error("PDF 보기 오류", e);
-      alert("PDF 보기 링크 생성에 실패했습니다.");
     }
   };
 
@@ -79,7 +78,6 @@ const StaffDocumentCard = ({ document: doc }: Props) => {
       a.click();
     } catch (e) {
       console.error("다운로드 오류", e);
-      alert("다운로드에 실패했습니다.");
     }
   };
 
@@ -96,10 +94,7 @@ const StaffDocumentCard = ({ document: doc }: Props) => {
       await deleteStaffDocument(selectedStore.storeId, documentId);
       await fetchDocuments();
       alert("삭제되었습니다.");
-    } catch (e) {
-      console.error("삭제 오류", e);
-      alert("삭제에 실패했습니다.");
-    }
+    } catch (err) {}
   };
 
   return (

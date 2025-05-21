@@ -1,9 +1,9 @@
 import SignatureCanvas from "react-signature-canvas";
 import { useRef, useState } from "react";
 import Button from "../../../components/common/Button";
-import useStoreStore from "../../../stores/storeStore";
 import { encryptSignatureBase64 } from "../../../libs/encryption";
 import { uploadStaffSignature } from "../../../api/staff/constract.ts";
+import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
 
 interface Props {
   onComplete: (data: { base64: string; signatureKey: string }) => void;
@@ -11,7 +11,7 @@ interface Props {
 
 const SignaturePadSheetStaff = ({ onComplete }: Props) => {
   const sigRef = useRef<SignatureCanvas>(null);
-  const { selectedStore } = useStoreStore();
+  const { selectedStore } = useStaffStoreStore();
   const [loading, setLoading] = useState(false);
 
   const handleClear = () => {
@@ -39,7 +39,6 @@ const SignaturePadSheetStaff = ({ onComplete }: Props) => {
       onComplete({ base64, signatureKey }); // 부모로 전달
     } catch (err) {
       console.error("알바생 서명 업로드 실패", err);
-      alert("서명 업로드에 실패했습니다. 다시 시도해주세요.");
     } finally {
       setLoading(false);
     }

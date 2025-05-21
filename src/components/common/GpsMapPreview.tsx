@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { loadKakaoMapScript } from "../../utils/loadKakaoMapScript.ts";
 
 interface GpsMapPreviewProps {
   latitude: number;
@@ -14,40 +15,50 @@ const GpsMapPreview = ({
   const mapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (typeof window === "undefined" || !window.kakao || !mapRef.current)
-      return;
+    const initMap = async () => {
+      await loadKakaoMapScript(); // ✅ 지도 SDK 로딩 보장
 
-    const kakao = window.kakao;
-    const center = new kakao.maps.LatLng(latitude, longitude);
+      if (!window.kakao || !mapRef.current) return;
 
-    const map = new kakao.maps.Map(mapRef.current, {
-      center,
-      level: 3,
-    });
+      const kakao = window.kakao;
+      const center = new kakao.maps.LatLng(latitude, longitude);
 
-    new kakao.maps.Marker({ position: center, map });
-
-    if (radiusMeters > 0) {
-      new kakao.maps.Circle({
+      const map = new kakao.maps.Map(mapRef.current, {
         center,
-        radius: radiusMeters,
-        strokeWeight: 2,
-        strokeColor: "#4A90E2",
-        strokeOpacity: 0.8,
-        fillColor: "#4A90E2",
-        fillOpacity: 0.2,
-        map,
+        level: 3,
       });
-    }
 
-    // 🚨 DOM 사이즈 변화가 있었을 경우 강제로 다시 그리기
-    setTimeout(() => {
-      map.relayout();
-      map.setCenter(center);
-    }, 100); // DOM 완성 후 약간의 딜레이
+      new kakao.maps.Marker({ position: center, map });
+
+      if (radiusMeters > 0) {
+        new kakao.maps.Circle({
+          center,
+          radius: radiusMeters,
+          strokeWeight: 2,
+          strokeColor: "#4A90E2",
+          strokeOpacity: 0.8,
+          fillColor: "#4A90E2",
+          fillOpacity: 0.2,
+          map,
+        });
+      }
+
+      // DOM 렌더링 완료 후 레이아웃 재계산
+      setTimeout(() => {
+        map.relayout();
+        map.setCenter(center);
+      }, 100);
+    };
+
+    initMap();
   }, [latitude, longitude, radiusMeters]);
 
-  return <div ref={mapRef} className="w-full h-full rounded-lg border" />;
+  return (
+    <div
+      ref={mapRef}
+      className="w-full aspect-square rounded-lg border border-gray-200"
+    />
+  );
 };
 
 export default GpsMapPreview;

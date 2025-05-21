@@ -168,11 +168,11 @@ function App() {
                 element={withSuspense(StoreRegisterStaffPage)}
               />
               <Route
-                path="/staff/contract/:id"
+                path="staff/contract/:id"
                 element={<ContractViewStaffPage />}
               />
               <Route
-                path="/staff/attendance"
+                path="staff/attendance"
                 element={<StaffAttendancePage />}
               />
             </Route>

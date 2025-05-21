@@ -37,8 +37,7 @@ const BossPayrollTab = () => {
         setPayrolls(payrollResult);
         setSettings(settingsResult);
       } catch (err) {
-        console.error("데이터 불러오기 실패:", err);
-        alert("급여 정보 또는 설정을 불러오는 데 실패했습니다.");
+        console.log(err);
       } finally {
         setLoading(false);
       }
@@ -124,7 +123,7 @@ const BossPayrollTab = () => {
           <ul className="space-y-4">
             {payrolls.map((item) => (
               <BossPayrollCard
-                key={item.payroll.key}
+                key={item.staff.staffId}
                 data={item}
                 editable={false}
                 checked={true}

@@ -15,7 +15,6 @@ import {
   validateBusinessNumber,
 } from "../../../api/boss/store.ts";
 import Spinner from "../../../components/common/Spinner.tsx";
-import modalStore from "../../../stores/modalStore.ts";
 
 const StoreRegisterBossPage = () => {
   useLayout({
@@ -31,7 +30,6 @@ const StoreRegisterBossPage = () => {
   const { user } = useUserStore();
   const [isBusinessNumberChecked, setIsBusinessNumberChecked] = useState(false);
   const [isChecking, setIsChecking] = useState(false);
-  const { setModalOpen } = modalStore();
   const navigate = useNavigate();
 
   const {
@@ -127,11 +125,8 @@ const StoreRegisterBossPage = () => {
         gps: { latitude, longitude },
       };
       await registerStore(payload);
-      setModalOpen(true);
       navigate(-1);
-    } catch (err) {
-      alert("등록 실패");
-    }
+    } catch (err) {}
   };
 
   if (isLoading) return <div>로딩 중...</div>;

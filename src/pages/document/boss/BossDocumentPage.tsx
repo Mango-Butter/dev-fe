@@ -7,7 +7,7 @@ import BossDocumentEtcPage from "./BossDocumentEtcPage.tsx";
 
 const tabItems = [
   { label: "근로계약서", value: "contract" },
-  { label: "기타 문서", value: "etc" },
+  { label: "기타 서류", value: "etc" },
 ];
 
 const BossDocumentPage = () => {

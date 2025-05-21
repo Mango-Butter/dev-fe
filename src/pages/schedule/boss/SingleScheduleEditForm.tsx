@@ -20,22 +20,11 @@ interface SingleScheduleEditFormProps {
   attendance: DailyAttendanceRecord["attendance"];
 }
 
-const schema = z
-  .object({
-    date: z.date({ required_error: "날짜를 선택해주세요" }),
-    startTime: z.string().min(1, "시작 시간을 입력해주세요"),
-    endTime: z.string().min(1, "종료 시간을 입력해주세요"),
-  })
-  .refine(
-    ({ startTime, endTime }) => {
-      if (!startTime || !endTime) return true;
-      return startTime < endTime;
-    },
-    {
-      message: "종료 시간은 시작 시간보다 이후여야 합니다",
-      path: ["endTime"],
-    },
-  );
+const schema = z.object({
+  date: z.date({ required_error: "날짜를 선택해주세요" }),
+  startTime: z.string().min(1, "시작 시간을 입력해주세요"),
+  endTime: z.string().min(1, "종료 시간을 입력해주세요"),
+});
 
 type FormData = z.infer<typeof schema>;
 
@@ -79,7 +68,6 @@ const SingleScheduleEditForm = ({
       alert("스케줄이 성공적으로 수정되었습니다.");
     } catch (err) {
       console.error("스케줄 수정 실패", err);
-      alert("스케줄 수정 중 오류가 발생했습니다.");
     } finally {
       setBottomSheetOpen(false);
     }
@@ -99,7 +87,6 @@ const SingleScheduleEditForm = ({
       alert("스케줄이 삭제되었습니다.");
     } catch (err) {
       console.error("스케줄 삭제 실패", err);
-      alert("스케줄 삭제 중 오류가 발생했습니다.");
     } finally {
       setBottomSheetOpen(false);
     }

@@ -39,7 +39,6 @@ const SignaturePadSheet = ({ onComplete }: Props) => {
       onComplete({ base64, signatureKey });
     } catch (err) {
       console.error("서명 암호화/업로드 실패", err);
-      alert("서명 업로드에 실패했습니다. 다시 시도해주세요.");
     } finally {
       setLoading(false);
     }

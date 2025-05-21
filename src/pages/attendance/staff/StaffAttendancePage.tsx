@@ -7,6 +7,7 @@ import GpsMapPreview from "../../../components/common/GpsMapPreview.tsx";
 import { clockIn, clockOut } from "../../../api/staff/attendance.ts";
 import Button from "../../../components/common/Button.tsx";
 import { schemaUnion } from "../../../schemas/attendanceSchema.ts";
+import { getKoreaISOString } from "../../../utils/date.ts";
 
 const StaffAttendancePage = () => {
   const [params] = useSearchParams();
@@ -47,10 +48,12 @@ const StaffAttendancePage = () => {
         await clockOut(selectedStore.storeId, parsed);
         alert("퇴근이 완료되었습니다.");
       }
+      await qrInstanceRef.current?.stop();
+      await qrInstanceRef.current?.clear();
+
       navigate("/staff");
     } catch (err) {
       console.error(err);
-      alert("요청 실패: " + err);
     }
   };
 
@@ -62,7 +65,7 @@ const StaffAttendancePage = () => {
             latitude: pos.coords.latitude,
             longitude: pos.coords.longitude,
           });
-          setLocationFetchedAt(new Date().toISOString());
+          setLocationFetchedAt(getKoreaISOString());
         },
         (err) => {
           console.error("위치 권한 오류:", err);
@@ -90,9 +93,6 @@ const StaffAttendancePage = () => {
       },
       (decodedText) => {
         setQrCode(decodedText);
-        qr.stop()
-          .then(() => qr.clear())
-          .catch(console.error);
       },
       (error) => {
         console.warn("QR 인식 실패:", error);
@@ -148,13 +148,19 @@ const StaffAttendancePage = () => {
     <div className="w-full p-4">
       <div className="w-full flex flex-col gap-9">
         <div className="w-full aspect-square rounded-xl border-[5px] border-secondary-500 bg-grayscale-200 overflow-hidden">
-          {attendanceMethod === "GPS" && currentPosition ? (
-            <GpsMapPreview
-              latitude={currentPosition.latitude}
-              longitude={currentPosition.longitude}
-              radiusMeters={0}
-            />
-          ) : attendanceMethod === "BOTH" || attendanceMethod === "QR" ? (
+          {attendanceMethod === "GPS" || attendanceMethod === "BOTH" ? (
+            currentPosition ? (
+              <GpsMapPreview
+                latitude={currentPosition.latitude}
+                longitude={currentPosition.longitude}
+                radiusMeters={0}
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-sm text-gray-500">
+                위치 정보를 받아오는 중입니다...
+              </div>
+            )
+          ) : attendanceMethod === "QR" ? (
             <>
               <div
                 id="qr-reader"

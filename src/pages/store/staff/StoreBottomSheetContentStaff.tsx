@@ -50,16 +50,6 @@ const StoreBottomSheetContent = () => {
 
   return (
     <div className="flex flex-col h-full">
-      {/* 상단: 매장 추가 버튼 */}
-      <div
-        onClick={handleStoreRegister}
-        className="flex justify-end w-full flex-1  bg-white mb-4"
-      >
-        <span className="body-2text-grayscale-900 cursor-pointer">
-          + 매장 추가하기
-        </span>
-      </div>
-
       {/* 매장 리스트 */}
       <div className="flex flex-col h-[50dvh] relative">
         <div className="flex-1 overflow-y-auto px-4 pt-4 pb-32">
@@ -72,10 +62,24 @@ const StoreBottomSheetContent = () => {
                   <br />
                   매장을 추가해 주세요.
                 </div>
+                <span
+                  className="body-2text-grayscale-900 cursor-pointer"
+                  onClick={handleStoreRegister}
+                >
+                  + 매장 추가하기
+                </span>
               </div>
             </div>
           ) : (
             <div className="flex flex-col gap-4">
+              <div
+                onClick={handleStoreRegister}
+                className="flex justify-end w-full flex-1  bg-white mb-4"
+              >
+                <span className="body-2text-grayscale-900 cursor-pointer">
+                  + 매장 추가하기
+                </span>
+              </div>
               {storeList.map((store) => {
                 const isSelected = tempSelectedStore?.storeId === store.storeId;
                 return (

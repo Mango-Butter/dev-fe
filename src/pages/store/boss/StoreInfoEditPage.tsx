@@ -91,7 +91,6 @@ const StoreInfoEditPage = () => {
       alert("매장 정보가 수정되었습니다.");
       navigate(-1);
     } catch (err) {
-      alert("수정 실패: 주소를 다시 확인해주세요.");
       console.error(err);
     }
   };
@@ -104,7 +103,6 @@ const StoreInfoEditPage = () => {
       const result = await reissueInviteCode(selectedStore.storeId);
       setInviteCode(result.inviteCode); // 새 코드 반영
     } catch (err) {
-      alert("초대코드 재발급 실패");
       console.error(err);
     } finally {
       setTimeout(() => setIsSpinning(false), 1000); // 1초 후 애니메이션 해제

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore";
 import useStoreStore from "../../../stores/storeStore";
 import useSelectedStaffStore from "../../../stores/selectedStaffStore";
@@ -12,7 +12,6 @@ import DocumentContainer from "./DocumentContainer.tsx";
 
 const EmployeeDetailPage = () => {
   const { staffId } = useParams();
-  const navigate = useNavigate();
   const { selectedStore } = useStoreStore();
   const { setBottomSheetContent } = useBottomSheetStore();
   const { setSelectedStaffId } = useSelectedStaffStore();
@@ -63,12 +62,6 @@ const EmployeeDetailPage = () => {
     );
   };
 
-  const handleContractClick = () => {
-    if (!staffId) return;
-    setSelectedStaffId(staffId);
-    navigate("/boss/contract/register");
-  };
-
   useEffect(() => {
     fetchStaffAndSchedules();
   }, [selectedStore, staffId]);
@@ -113,7 +106,6 @@ const EmployeeDetailPage = () => {
           <DocumentContainer
             storeId={selectedStore.storeId}
             staffId={staff.staffId}
-            onClickContract={handleContractClick}
           />
           {/*근태 관리*/}
           <AttendanceRecordContainer

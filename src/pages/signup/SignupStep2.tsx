@@ -118,7 +118,6 @@ const SignupStep2 = ({ role, onBack }: SignupStep2Props) => {
         alert("이미 가입된 사용자입니다.");
       } else {
         console.error("회원가입 실패", error);
-        alert("회원가입에 실패했습니다. 다시 시도해주세요.");
       }
     }
   };

@@ -8,7 +8,11 @@ import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import useStoreStore from "../../../stores/storeStore.ts";
 import { getStaffBriefList } from "../../../api/boss/staff.ts";
 import { StaffBrief } from "../../../types/staff.ts";
-import { formatDateToKSTString, formatFullDate } from "../../../utils/date.ts";
+import {
+  formatDateToKSTString,
+  formatFullDate,
+  getKoreaISOString,
+} from "../../../utils/date.ts";
 import Button from "../../../components/common/Button.tsx";
 import { createAttendance } from "../../../api/boss/schedule.ts";
 import useScheduleStore from "../../../stores/useScheduleStore.ts";
@@ -46,7 +50,7 @@ const AttendanceAddForm = ({ defaultDate }: AddAttendanceFormProps) => {
     mode: "onChange",
     defaultValues: {
       staffId: 0,
-      date: defaultDate ?? new Date(),
+      date: defaultDate ?? new Date(getKoreaISOString()),
       clockInTime: "09:00",
       clockOutTime: "15:00",
     },
@@ -86,7 +90,6 @@ const AttendanceAddForm = ({ defaultDate }: AddAttendanceFormProps) => {
       alert("근태가 성공적으로 추가되었습니다.");
     } catch (err) {
       console.error("근태 추가 실패", err);
-      alert("근태 추가 중 오류가 발생했습니다.");
     } finally {
       setBottomSheetOpen(false);
     }

@@ -69,7 +69,7 @@ const BossContractListPage = () => {
       </div>
 
       {/* 고정 버튼 */}
-      <div className="sticky bottom-3 bg-white py-2">
+      <div className="sticky bottom-3 py-2">
         <Button
           size="sm"
           theme="secondary"
