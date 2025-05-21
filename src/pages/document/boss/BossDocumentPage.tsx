@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import clsx from "clsx";
 import { useLayout } from "../../../hooks/useLayout.ts";
 import BossContractListPage from "./BossContractListPage.tsx";
-import BossDocumentEtcPage from "./BossDocumentEtcPage.tsx"; // 임시, 추후 Boss 전용으로 교체 예정
+import BossDocumentEtcPage from "./BossDocumentEtcPage.tsx";
 
 const tabItems = [
   { label: "근로계약서", value: "contract" },
@@ -12,7 +12,7 @@ const tabItems = [
 
 const BossDocumentPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentTab = searchParams.get("type") || "payroll";
+  const currentTab = searchParams.get("type") || "contract";
   const navigate = useNavigate();
   useLayout({
     title: "문서함",
@@ -42,7 +42,7 @@ const BossDocumentPage = () => {
             key={tab.value}
             onClick={() => handleTabChange(tab.value)}
             className={clsx(
-              "py-3 text-center body-3",
+              "py-3 text-center body-2",
               currentTab === tab.value
                 ? "text-grayscale-900 border-b-2 border-black font-semibold"
                 : "text-grayscale-400",
