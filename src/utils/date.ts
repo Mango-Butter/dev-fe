@@ -142,3 +142,11 @@ export const formatDateToKSTString = (date: Date): string => {
   const local = new Date(date.getTime() - offset); // 타임존 보정
   return local.toISOString().slice(0, 10); // 잘라내기
 };
+
+export const getStartAndEndDates = (ym: string) => {
+  const [year, month] = ym.split("-").map(Number);
+  const start = new Date(year, month - 1, 1);
+  const end = new Date(year, month, 0);
+  const format = (d: Date) => d.toISOString().slice(0, 10);
+  return [format(start), format(end)];
+};

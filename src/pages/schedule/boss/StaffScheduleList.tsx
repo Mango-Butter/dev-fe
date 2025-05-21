@@ -20,7 +20,7 @@ interface Props {
 const StaffScheduleList = ({ records, onClick, emptyMessage }: Props) => {
   if (!records || records.length === 0) {
     return (
-      <div className="text-sm text-gray-500 text-center mt-8">
+      <div className="text-sm text-gray-500 text-center m-3">
         {emptyMessage || "데이터가 없습니다."}
       </div>
     );

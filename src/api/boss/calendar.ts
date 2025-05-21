@@ -12,7 +12,7 @@ export const fetchCalendarSummary = async (
   start: string, // YYYY-MM-DD
   end: string, // YYYY-MM-DD
 ): Promise<CalendarSummaryResponse> => {
-  const response = await axiosAuth.get(`/api/boss/stores/${storeId}/calender`, {
+  const response = await axiosAuth.get(`/api/boss/stores/${storeId}/calendar`, {
     params: { start, end },
   });
   return response.data;
@@ -24,7 +24,7 @@ export const fetchDailyAttendance = async (
   date: string, // YYYY-MM-DD
 ): Promise<DailyAttendanceResponse> => {
   const response = await axiosAuth.get(
-    `/api/boss/stores/${storeId}/calender/daily`,
+    `/api/boss/stores/${storeId}/calendar/daily`,
     {
       params: { date },
     },

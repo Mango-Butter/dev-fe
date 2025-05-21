@@ -6,6 +6,7 @@ import { StaffAttendanceRecord } from "../../../types/attendance";
 import { cn } from "../../../libs";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore";
 import AttendanceEditForm from "../../schedule/boss/AttendanceEditForm.tsx";
+import { getStartAndEndDates } from "../../../utils/date.ts";
 
 interface Props {
   staff: {
@@ -27,14 +28,6 @@ const AttendanceRecordContainer = ({ staff, storeId }: Props) => {
 
   const [records, setRecords] = useState<StaffAttendanceRecord[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const getStartAndEndDates = (ym: string) => {
-    const [year, month] = ym.split("-").map(Number);
-    const start = new Date(year, month - 1, 1);
-    const end = new Date(year, month, 0);
-    const format = (d: Date) => d.toISOString().slice(0, 10);
-    return [format(start), format(end)];
-  };
 
   const handleClickRecord = (record: StaffAttendanceRecord) => {
     setBottomSheetContent(

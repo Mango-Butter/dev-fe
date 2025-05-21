@@ -31,13 +31,8 @@ const ContractTemplatePage = () => {
     navigate("/boss/contract/template/register");
   };
 
-  const navigateToTemplateView = (templateId: number) => {
+  const navigateToTemplateEdit = (templateId: number) => {
     navigate(`/boss/contract/template/${templateId}`);
-  };
-
-  const navigateToDetail = (e: React.MouseEvent, templateId: number) => {
-    e.stopPropagation();
-    navigate(`/boss/contract/template/register?templateId=${templateId}`);
   };
 
   // ✅ 레이아웃 설정
@@ -77,7 +72,6 @@ const ContractTemplatePage = () => {
           templates.map(({ templateId, title }) => (
             <div
               key={templateId}
-              onClick={() => navigateToTemplateView(templateId)}
               className="cursor-pointer w-full px-4 py-6 bg-white rounded-xl shadow-[1px_1px_6px_0px_rgba(231,231,231,1.00)] inline-flex justify-start items-center"
             >
               <div className="flex-1 flex justify-between items-center">
@@ -86,7 +80,7 @@ const ContractTemplatePage = () => {
                 </div>
                 <div
                   className="text-right justify-center text-grayscale-500 body-1"
-                  onClick={(e) => navigateToDetail(e, templateId)}
+                  onClick={() => navigateToTemplateEdit(templateId)}
                 >
                   편집
                 </div>

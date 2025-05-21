@@ -37,9 +37,10 @@ const AttendanceEditForm = ({
     handleSubmit,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isValid, isDirty },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
+    mode: "onChange",
     defaultValues: {
       clockInStatus: attendance?.clockInStatus ?? "NORMAL",
       clockInTime: attendance?.clockInTime
@@ -108,7 +109,9 @@ const AttendanceEditForm = ({
             alt={staff.name}
             className="w-12 h-12 rounded-full object-cover"
           />
-          <p className="text-sm font-medium">{staff.name}</p>
+          <div className="w-12">
+            <p className="text-sm font-medium text-center">{staff.name}</p>
+          </div>
         </div>
       </section>
 
@@ -127,12 +130,14 @@ const AttendanceEditForm = ({
           <TextField
             type="time"
             value={schedule.startTime.slice(11, 16)}
+            size="sm"
             disabled
           />
           <span className="self-center text-gray-400">~</span>
           <TextField
             type="time"
             value={schedule.endTime.slice(11, 16)}
+            size="sm"
             disabled
           />
         </div>
@@ -163,6 +168,7 @@ const AttendanceEditForm = ({
               type="time"
               {...register("clockInTime")}
               state={errors.clockInTime ? "warning" : "none"}
+              size="sm"
               required
             />
             <span className="self-center text-gray-400">~</span>
@@ -170,13 +176,14 @@ const AttendanceEditForm = ({
               type="time"
               {...register("clockOutTime")}
               state={errors.clockOutTime ? "warning" : "none"}
+              size="sm"
               required
             />
           </div>
         </section>
       )}
 
-      <div className="sticky bottom-0 mt-4 flex justify-between gap-3 bg-white">
+      <div className="mt-4 flex justify-between gap-3 bg-white">
         <Button
           type="button"
           onClick={onDelete}
@@ -184,7 +191,13 @@ const AttendanceEditForm = ({
         >
           삭제
         </Button>
-        <Button type="submit" className="flex-1 bg-yellow-400 text-white">
+        <Button
+          type="submit"
+          theme="primary"
+          className="flex-1"
+          state={isDirty && isValid ? "default" : "disabled"}
+          disabled={!isDirty || !isValid}
+        >
           수정
         </Button>
       </div>

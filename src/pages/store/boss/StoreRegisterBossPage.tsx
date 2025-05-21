@@ -37,6 +37,7 @@ const StoreRegisterBossPage = () => {
   const {
     control,
     handleSubmit,
+    watch,
     setValue,
     getValues,
     formState: { isValid },
@@ -54,6 +55,12 @@ const StoreRegisterBossPage = () => {
       longitude: undefined,
     },
   });
+
+  const watchedValues = watch();
+
+  useEffect(() => {
+    console.log("폼 값 변경됨:", watchedValues);
+  }, [watchedValues]);
 
   const checkBusinessNumber = async () => {
     if (isChecking) return; // 중복 호출 방지

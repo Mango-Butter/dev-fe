@@ -30,7 +30,9 @@ export const createContractTemplate = async (
 export const fetchContractTemplateList = async (
   storeId: number,
 ): Promise<FetchContractTemplateListResponse> => {
-  const response = await axiosAuth.get(`/api/boss/stores/${storeId}/templates`);
+  const response = await axiosAuth.get(
+    `/api/boss/stores/${storeId}/contracts/templates`,
+  );
   return response.data;
 };
 
@@ -47,7 +49,7 @@ export const updateContractTemplate = async (
   payload: CreateContractTemplateRequest,
 ): Promise<UpdateContractTemplateResponse> => {
   const response = await axiosAuth.post(
-    `/api/boss/stores/${storeId}/templates/${templateId}`,
+    `/api/boss/stores/${storeId}/contracts/templates/${templateId}`,
     payload,
   );
   return response.data;
@@ -64,7 +66,7 @@ export const fetchContractTemplateDetail = async (
   templateId: number,
 ): Promise<FetchContractTemplateDetailResponse> => {
   const response = await axiosAuth.get(
-    `/api/boss/stores/${storeId}/templates/${templateId}`,
+    `/api/boss/stores/${storeId}/contracts/templates/${templateId}`,
   );
   return response.data;
 };
@@ -79,5 +81,7 @@ export const deleteContractTemplate = async (
   storeId: number,
   templateId: number,
 ): Promise<void> => {
-  await axiosAuth.delete(`/api/boss/stores/${storeId}/templates/${templateId}`);
+  await axiosAuth.delete(
+    `/api/boss/stores/${storeId}/contracts/templates/${templateId}`,
+  );
 };
