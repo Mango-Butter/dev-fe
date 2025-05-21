@@ -37,9 +37,10 @@ const AttendanceEditForm = ({
     handleSubmit,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isValid, isDirty },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
+    mode: "onChange",
     defaultValues: {
       clockInStatus: attendance?.clockInStatus ?? "NORMAL",
       clockInTime: attendance?.clockInTime
@@ -190,7 +191,13 @@ const AttendanceEditForm = ({
         >
           삭제
         </Button>
-        <Button type="submit" className="flex-1 bg-yellow-400 text-white">
+        <Button
+          type="submit"
+          theme="primary"
+          className="flex-1"
+          state={isDirty && isValid ? "default" : "disabled"}
+          disabled={!isDirty || !isValid}
+        >
           수정
         </Button>
       </div>

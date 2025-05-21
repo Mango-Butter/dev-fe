@@ -20,7 +20,9 @@ interface SingleScheduleAddFormProps {
 
 const schema = z
   .object({
-    staffId: z.number({ required_error: "알바생을 선택해주세요" }),
+    staffId: z
+      .number({ required_error: "알바생을 선택해주세요" })
+      .refine((val) => val !== 0, { message: "알바생을 선택해주세요" }),
     date: z
       .date()
       .nullable()
@@ -61,9 +63,10 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
+    mode: "onChange",
     defaultValues: {
       staffId: 0,
       date: defaultDate ?? new Date(),
@@ -204,8 +207,14 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
         >
           취소
         </Button>
-        <Button type="submit" className="flex-1 bg-yellow-400 text-white">
-          수정
+        <Button
+          type="submit"
+          theme="primary"
+          className="flex-1"
+          state={isValid ? "default" : "disabled"}
+          disabled={!isValid}
+        >
+          추가
         </Button>
       </div>
     </form>

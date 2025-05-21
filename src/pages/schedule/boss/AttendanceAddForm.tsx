@@ -18,7 +18,9 @@ interface AddAttendanceFormProps {
 }
 
 const schema = z.object({
-  staffId: z.number({ required_error: "알바생을 선택해주세요" }),
+  staffId: z
+    .number({ required_error: "알바생을 선택해주세요" })
+    .refine((val) => val !== 0, { message: "알바생을 선택해주세요" }),
   date: z.date({ required_error: "날짜를 선택해주세요" }),
   clockInTime: z.string().min(1, "출근 시간을 입력해주세요"),
   clockOutTime: z.string().min(1, "퇴근 시간을 입력해주세요"),
@@ -38,9 +40,10 @@ const AttendanceAddForm = ({ defaultDate }: AddAttendanceFormProps) => {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
+    mode: "onChange",
     defaultValues: {
       staffId: 0,
       date: defaultDate ?? new Date(),
@@ -170,7 +173,13 @@ const AttendanceAddForm = ({ defaultDate }: AddAttendanceFormProps) => {
         >
           취소
         </Button>
-        <Button type="submit" className="flex-1 bg-yellow-400 text-white">
+        <Button
+          type="submit"
+          theme="primary"
+          className="flex-1"
+          state={isValid ? "default" : "disabled"}
+          disabled={!isValid}
+        >
           추가
         </Button>
       </div>

@@ -52,9 +52,10 @@ const SingleScheduleEditForm = ({
     handleSubmit,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isValid, isDirty },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
+    mode: "onChange",
     defaultValues: {
       date: new Date(schedule.workDate!),
       startTime: schedule.startTime.slice(11, 16),
@@ -178,7 +179,13 @@ const SingleScheduleEditForm = ({
         >
           삭제
         </Button>
-        <Button type="submit" className="flex-1 bg-yellow-400 text-white">
+        <Button
+          type="submit"
+          theme="primary"
+          className="flex-1"
+          state={isDirty && isValid ? "default" : "disabled"}
+          disabled={!isDirty || !isValid}
+        >
           수정
         </Button>
       </div>

@@ -9,7 +9,7 @@ export const getDefaultScheduleTimes = (
   mode: RoundMode = "default",
 ): { startTime: string; endTime: string } => {
   const now = new Date();
-  let hour = now.getHours();
+  let hour = now.getHours() + 1;
   let minute = now.getMinutes();
 
   const pad = (n: number) => String(n).padStart(2, "0");
