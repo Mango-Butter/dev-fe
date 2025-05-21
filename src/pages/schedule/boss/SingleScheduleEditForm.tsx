@@ -111,13 +111,15 @@ const SingleScheduleEditForm = ({
     >
       <section>
         <h2 className="title-1 block mb-3">근무자</h2>
-        <div className="flex w-full items-start justify-center flex-col gap-3">
+        <div className="flex items-start justify-center flex-col gap-3">
           <img
             src={staff.profileImageUrl}
             alt={staff.name}
             className="w-12 h-12 rounded-full object-cover"
           />
-          <p className="text-sm font-medium">{staff.name}</p>
+          <div className="w-12">
+            <p className="text-sm font-medium text-center">{staff.name}</p>
+          </div>
         </div>
       </section>
 
@@ -149,6 +151,7 @@ const SingleScheduleEditForm = ({
             type="time"
             {...register("startTime")}
             state={errors.startTime ? "warning" : "none"}
+            size="sm"
             required
           />
           <span className="self-center text-gray-400">~</span>
@@ -156,6 +159,7 @@ const SingleScheduleEditForm = ({
             type="time"
             {...register("endTime")}
             state={errors.endTime ? "warning" : "none"}
+            size="sm"
             required
           />
         </div>
@@ -166,7 +170,7 @@ const SingleScheduleEditForm = ({
         )}
       </section>
 
-      <div className="sticky bottom-0 mt-4 flex justify-between gap-3 bg-white">
+      <div className="mt-4 flex justify-between gap-3 bg-white">
         <Button
           type="button"
           onClick={onDelete}

@@ -20,7 +20,7 @@ const textFieldVariants = cva(
       size: {
         lg: "[&_input]:h-14 body-1 [&_input]:px-6",
         md: "[&_input]:h-12 body-1 [&_input]:px-6",
-        sm: "[&_input]:h-11 body-1 [&_input]:px-4",
+        sm: "[&_input]:body-2 [&_input]:px-4",
       },
     },
     defaultVariants: {

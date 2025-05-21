@@ -150,9 +150,9 @@ const AttendanceAddForm = ({ defaultDate }: AddAttendanceFormProps) => {
           <span className="title-1 text-warning">*</span>
         </div>
         <div className="flex w-full gap-2 overflow-x-auto scrollbar-hide">
-          <TextField type="time" {...register("clockInTime")} />
+          <TextField type="time" {...register("clockInTime")} size="sm" />
           <span className="self-center text-gray-400">~</span>
-          <TextField type="time" {...register("clockOutTime")} />
+          <TextField type="time" {...register("clockOutTime")} size="sm" />
         </div>
         {(errors.clockInTime || errors.clockOutTime) && (
           <p className="text-xs text-red-500 mt-1">
@@ -161,7 +161,7 @@ const AttendanceAddForm = ({ defaultDate }: AddAttendanceFormProps) => {
         )}
       </section>
 
-      <div className="sticky bottom-0 mt-4 flex gap-3 bg-white">
+      <div className="mt-4 flex gap-3 bg-white">
         <Button
           type="button"
           theme="outline"

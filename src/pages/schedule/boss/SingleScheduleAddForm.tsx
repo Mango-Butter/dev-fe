@@ -177,6 +177,7 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
             type="time"
             {...register("startTime")}
             state={errors.startTime ? "warning" : "none"}
+            size="sm"
             required
           />
           <span className="self-center text-gray-400">~</span>
@@ -184,6 +185,7 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
             type="time"
             {...register("endTime")}
             state={errors.endTime ? "warning" : "none"}
+            size="sm"
             required
           />
         </div>
@@ -194,7 +196,7 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
         )}
       </section>
 
-      <div className="sticky bottom-0 mt-4 flex justify-between gap-3 bg-white">
+      <div className="mt-4 flex justify-between gap-3 bg-white">
         <Button
           type="button"
           onClick={() => setBottomSheetOpen(false)}
