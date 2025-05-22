@@ -1,5 +1,4 @@
 // utils/date.ts
-import { differenceInCalendarDays } from "date-fns";
 
 /**
  * Date를 'YYYY-MM-DD' 형식의 문자열로 변환하는 함수
@@ -81,13 +80,12 @@ export const getStartAndEndDates = (ym: string): [string, string] => {
   return [format(startKst), format(endKst)];
 };
 
-// 현재 날짜 기준으로 transferDate까지 남은 일 수 계산
+// 오늘 일(day) 기준으로 송금일(transferDate)까지 남은 일 수 계산
 export const getRemainingDays = (transferDate: number): number => {
   const today = new Date(getKoreaISOString());
-  const year = today.getFullYear();
-  const month = today.getMonth(); // 0-indexed
-  const targetDate = new Date(year, month, transferDate);
-  return differenceInCalendarDays(targetDate, today);
+  const todayDate = today.getDate(); // 오늘의 일(day) 숫자만
+
+  return transferDate - todayDate;
 };
 
 export const getKoreaISOString = (): string => {
