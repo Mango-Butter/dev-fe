@@ -5,6 +5,7 @@ import ErrorIcon from "../../../components/icons/ErrorIcon.tsx";
 import { StaffStore } from "../../../types/store.ts";
 import { fetchStaffStores } from "../../../api/staff/store.ts";
 import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
+import { useNavigate } from "react-router-dom";
 
 const StaffStoreBottomSheetContent = () => {
   const { setBottomSheetOpen } = useBottomSheetStore();
@@ -14,7 +15,7 @@ const StaffStoreBottomSheetContent = () => {
   );
   const [storeList, setStoreList] = useState<StaffStore[] | null>(null);
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
   const handleSelectStore = (store: StaffStore) => {
     setTempSelectedStore(store);
   };
@@ -24,6 +25,10 @@ const StaffStoreBottomSheetContent = () => {
       setSelectedStore(tempSelectedStore);
     }
     setBottomSheetOpen(false);
+  };
+
+  const handleStoreRegister = () => {
+    navigate("/staff/store/register");
   };
 
   useEffect(() => {
@@ -56,10 +61,24 @@ const StaffStoreBottomSheetContent = () => {
                   <br />
                   초대코드를 통해 매장에 합류해 주세요.
                 </div>
+                <button
+                  onClick={handleStoreRegister}
+                  className="text-primary-600 font-medium text-sm hover:underline"
+                >
+                  + 매장 추가하기
+                </button>
               </div>
             </div>
           ) : (
             <div className="flex flex-col gap-4">
+              <div className="flex justify-end">
+                <button
+                  onClick={handleStoreRegister}
+                  className="text-primary-600 font-medium text-sm hover:underline"
+                >
+                  + 매장 추가하기
+                </button>
+              </div>
               {storeList.map((store) => {
                 const isSelected = tempSelectedStore?.storeId === store.storeId;
                 return (
