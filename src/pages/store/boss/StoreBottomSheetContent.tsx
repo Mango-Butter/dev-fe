@@ -119,7 +119,7 @@ const StoreBottomSheetContent = () => {
         theme="ghost2"
         state="default"
         className="w-full flex-1"
-        onClick={handleConfirm} // ✅ 완료 시 전역 store 반영
+        onClick={handleConfirm}
       >
         완료
       </Button>

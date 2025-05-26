@@ -15,6 +15,7 @@ import useSelectedStaffStore from "../../../stores/selectedStaffStore.ts";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import { useState } from "react";
 import { formatDateToKSTString } from "../../../libs/date.ts";
+import { toast } from "react-toastify";
 
 const schema = z.object({
   range: z
@@ -78,7 +79,7 @@ const RegularScheduleAddForm = ({ onSuccess }: Props) => {
 
     const [startDateObj, endDateObj] = data.range;
     if (!startDateObj || !endDateObj) {
-      alert("반복기간 선택 정보가 없습니다.");
+      toast.error("반복기간 선택 정보가 없습니다.");
       setIsLoading(false);
       return;
     }
@@ -102,7 +103,7 @@ const RegularScheduleAddForm = ({ onSuccess }: Props) => {
     const { selectedStaffId } = useSelectedStaffStore.getState();
 
     if (!selectedStore || !selectedStaffId) {
-      alert("매장 또는 알바생 정보가 없습니다.");
+      toast.error("매장 또는 알바생 정보가 없습니다.");
       setIsLoading(false);
       return;
     }

@@ -25,6 +25,8 @@ import {
   formatDateToKSTString,
   parseDateStringToKST,
 } from "../../../libs/date.ts";
+import { toast } from "react-toastify";
+import { showConfirm } from "../../../libs/showConfirm.ts";
 
 const ContractTemplateEditPage = () => {
   useLayout({
@@ -100,7 +102,7 @@ const ContractTemplateEditPage = () => {
         });
       } catch (err) {
         console.error("템플릿 불러오기 실패", err);
-        alert("템플릿을 불러오지 못했습니다.");
+        toast.error("템플릿을 불러오지 못했습니다.");
         navigate("/boss/contract/template");
       }
     };
@@ -113,6 +115,29 @@ const ContractTemplateEditPage = () => {
       ? selectedDays.filter((d) => d !== day)
       : [...selectedDays, day];
     setValue("weekdays", updated, { shouldValidate: true });
+  };
+
+  const handleDeleteTemplate = async () => {
+    if (!selectedStore || !templateId) return;
+
+    const confirmed = await showConfirm({
+      title: "정말 삭제할까요?",
+      text: "이 근로계약서 템플릿은 복구할 수 없어요.",
+      confirmText: "삭제할래요",
+      cancelText: "취소할래요",
+      icon: "warning",
+    });
+
+    if (!confirmed) return;
+
+    try {
+      await deleteContractTemplate(selectedStore.storeId, Number(templateId));
+      toast.success("템플릿이 삭제되었습니다.");
+      navigate("/boss/contract/template");
+    } catch (err) {
+      console.error("템플릿 삭제 실패", err);
+      toast.error("템플릿 삭제에 실패했어요.");
+    }
   };
 
   const onSubmit = async (data: ContractTemplateFormValues) => {
@@ -154,7 +179,7 @@ const ContractTemplateEditPage = () => {
         Number(templateId),
         payload,
       );
-      alert("템플릿이 성공적으로 수정되었습니다.");
+      toast.success("템플릿이 성공적으로 수정되었습니다.");
       navigate("/boss/contract/template");
     } catch (err) {
       console.error("템플릿 수정 실패", err);
@@ -266,24 +291,12 @@ const ContractTemplateEditPage = () => {
             size="md"
             theme="outline"
             type="button"
-            onClick={async () => {
-              if (!selectedStore || !templateId) return;
-              if (!confirm("정말 삭제하시겠습니까?")) return;
-              try {
-                await deleteContractTemplate(
-                  selectedStore.storeId,
-                  Number(templateId),
-                );
-                alert("삭제 완료");
-                navigate("/boss/contract/template");
-              } catch (err) {
-                console.error("삭제 실패", err);
-              }
-            }}
+            onClick={handleDeleteTemplate}
             className="w-full"
           >
             삭제
           </Button>
+
           <Button
             size="md"
             theme="primary"

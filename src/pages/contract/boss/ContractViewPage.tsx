@@ -7,6 +7,7 @@ import { fetchContractDetail } from "../../../api/boss/contract.ts";
 import { formatFullDateWithTime } from "../../../utils/date.ts";
 import { weekdayKorean } from "../../../types/staff.ts";
 import { parseDateStringToKST } from "../../../libs/date.ts";
+import { toast } from "react-toastify";
 
 const ContractViewPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,7 +26,7 @@ const ContractViewPage = () => {
 
   useEffect(() => {
     if (!id || !selectedStore) {
-      alert("계약서를 찾지 못했습니다.");
+      toast.error("계약서를 찾지 못했습니다.");
       navigate("/boss/contract", { replace: true });
       return;
     }
@@ -38,8 +39,7 @@ const ContractViewPage = () => {
         );
         setContract(data);
       } catch (err) {
-        console.error("계약서 불러오기 실패:", err);
-        alert("계약서를 불러올 수 없습니다.");
+        toast.error("계약서를 불러올 수 없습니다.");
         navigate("/boss/contract", { replace: true });
       }
     };

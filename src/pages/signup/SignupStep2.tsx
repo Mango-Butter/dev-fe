@@ -14,6 +14,7 @@ import { useAuth } from "../../hooks/useAuth.ts";
 import { signup } from "../../api/common/auth.ts";
 import { useAuthStore } from "../../stores/authStore.ts";
 import FullScreenLoading from "../../components/common/FullScreenLoading.tsx";
+import { toast } from "react-toastify";
 
 interface SignupStep2Props {
   role: "BOSS" | "STAFF";
@@ -116,9 +117,9 @@ const SignupStep2 = ({ role, onBack }: SignupStep2Props) => {
       }
     } catch (error: any) {
       if (error.response?.status === 409) {
-        alert("이미 가입된 사용자입니다.");
+        toast.error("이미 가입된 사용자입니다.");
       } else {
-        console.error("회원가입 실패", error);
+        toast.error("회원가입 실패", error);
       }
     }
   };

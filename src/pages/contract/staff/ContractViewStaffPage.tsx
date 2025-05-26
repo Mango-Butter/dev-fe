@@ -15,6 +15,7 @@ import SignaturePadSheetStaff from "./SignaturePadSheetStaff.tsx";
 import Button from "../../../components/common/Button.tsx";
 import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
 import { parseDateStringToKST } from "../../../libs/date.ts";
+import { toast } from "react-toastify";
 
 const ContractViewStaffPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -38,13 +39,13 @@ const ContractViewStaffPage = () => {
 
   useEffect(() => {
     if (!id) {
-      alert("계약서를 찾지 못했습니다.");
+      toast.error("계약서를 찾지 못했습니다.");
       navigate("/staff", { replace: true });
       return;
     }
 
     if (!selectedStore) {
-      alert("선택된 매장이 없습니다.");
+      toast.error("선택된 매장이 없습니다.");
       navigate("/staff", { replace: true });
       return;
     }
@@ -309,7 +310,7 @@ const ContractViewStaffPage = () => {
                     parseInt(id),
                     signatureKey,
                   );
-                  alert("계약서가 성공적으로 제출되었습니다.");
+                  toast.success("계약서가 성공적으로 제출되었습니다.");
                   window.location.reload();
                 } catch (err) {
                   console.error("제출 실패", err);

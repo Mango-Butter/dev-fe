@@ -17,6 +17,8 @@ import {
   formatDateToKSTString,
   parseDateStringToKST,
 } from "../../../libs/date.ts";
+import { toast } from "react-toastify";
+import { showConfirm } from "../../../libs/showConfirm.ts";
 
 interface SingleScheduleEditFormProps {
   schedule: DailyAttendanceRecord["schedule"];
@@ -69,7 +71,7 @@ const SingleScheduleEditForm = ({
       const dateKey = formatFullDate(data.date);
       await useScheduleStore.getState().syncScheduleAndDot(storeId, dateKey);
 
-      alert("스케줄이 성공적으로 수정되었습니다.");
+      toast.success("스케줄이 성공적으로 수정되었습니다.");
     } catch (err) {
       console.error("스케줄 수정 실패", err);
     } finally {
@@ -80,7 +82,15 @@ const SingleScheduleEditForm = ({
   const onDelete = async () => {
     if (!storeId) return;
 
-    if (!confirm("정말로 이 스케줄을 삭제하시겠습니까?")) return;
+    const confirmed = await showConfirm({
+      title: "정말로 삭제할까요?",
+      text: "이 스케줄을 삭제하면 복구할 수 없어요.",
+      confirmText: "삭제할래요",
+      cancelText: "취소할래요",
+      icon: "question",
+    });
+
+    if (!confirmed) return;
 
     try {
       await deleteSingleSchedule(storeId, schedule.scheduleId);
@@ -88,9 +98,10 @@ const SingleScheduleEditForm = ({
       const dateKey = formatFullDate(parseDateStringToKST(schedule.workDate));
       await useScheduleStore.getState().syncScheduleAndDot(storeId, dateKey);
 
-      alert("스케줄이 삭제되었습니다.");
+      toast.success("스케줄이 삭제되었습니다.");
     } catch (err) {
       console.error("스케줄 삭제 실패", err);
+      toast.error("스케줄 삭제에 실패했어요.");
     } finally {
       setBottomSheetOpen(false);
     }

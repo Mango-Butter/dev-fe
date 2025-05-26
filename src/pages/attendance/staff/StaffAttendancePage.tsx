@@ -8,6 +8,7 @@ import { clockIn, clockOut } from "../../../api/staff/attendance.ts";
 import Button from "../../../components/common/Button.tsx";
 import { schemaUnion } from "../../../schemas/attendanceSchema.ts";
 import { getKoreaISOString } from "../../../utils/date.ts";
+import { toast } from "react-toastify";
 
 const StaffAttendancePage = () => {
   const [params] = useSearchParams();
@@ -43,10 +44,10 @@ const StaffAttendancePage = () => {
     try {
       if (mode === "clock-in") {
         await clockIn(selectedStore.storeId, parsed);
-        alert("출근이 완료되었습니다.");
+        toast.success("출근이 완료되었습니다.");
       } else {
         await clockOut(selectedStore.storeId, parsed);
-        alert("퇴근이 완료되었습니다.");
+        toast.success("퇴근이 완료되었습니다.");
       }
       await qrInstanceRef.current?.stop();
       await qrInstanceRef.current?.clear();
@@ -68,8 +69,8 @@ const StaffAttendancePage = () => {
           setLocationFetchedAt(getKoreaISOString());
         },
         (err) => {
-          console.error("위치 권한 오류:", err);
-          alert("위치 정보를 가져오는 데 실패했습니다.");
+          console.error(err);
+          toast.error("위치 정보를 가져오는 데 실패했습니다.");
         },
       );
     }

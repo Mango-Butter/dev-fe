@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 type PermissionState = "granted" | "denied" | "prompt" | "unsupported";
 
@@ -35,7 +36,7 @@ export const useGeolocationPermission = (
 
   const requestLocation = useCallback(() => {
     if (!navigator.geolocation) {
-      alert("이 브라우저는 위치 정보 기능을 지원하지 않습니다.");
+      toast.error("이 브라우저는 위치 정보 기능을 지원하지 않습니다.");
       return;
     }
 
@@ -46,9 +47,11 @@ export const useGeolocationPermission = (
       },
       (error) => {
         if (permissionState === "denied") {
-          alert("위치 권한 요청이 차단되어 있습니다. 수동으로 허용해주세요.");
+          toast.error(
+            "위치 권한 요청이 차단되어 있습니다. 수동으로 허용해주세요.",
+          );
         } else {
-          alert("위치 요청에 실패했습니다. 재시도 해주세요.");
+          toast.error("위치 요청에 실패했습니다. 재시도 해주세요.");
         }
         options?.onError?.(error);
       },

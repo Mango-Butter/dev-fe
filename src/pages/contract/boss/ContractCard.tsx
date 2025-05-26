@@ -14,6 +14,7 @@ import {
 import { formatFullDateWithTime } from "../../../utils/date.ts";
 import useSelectedStaffStore from "../../../stores/selectedStaffStore.ts";
 import { parseDateStringToKST } from "../../../libs/date.ts";
+import { toast } from "react-toastify";
 
 interface Props {
   contract: BossContractSummary;
@@ -79,7 +80,7 @@ const ContractCard = ({ contract }: Props) => {
 
   // 근로계약서 삭제
   const handleDeleteContract = async () => {
-    alert("아직 준비중인 기능입니다.");
+    toast("아직 준비중인 기능입니다.");
   };
 
   return (

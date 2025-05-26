@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 type PermissionState = "granted" | "denied" | "prompt" | "unsupported";
 
@@ -34,7 +35,7 @@ export const useCameraPermission = (options?: UseCameraPermissionOptions) => {
   // 권한 요청
   const requestCamera = useCallback(() => {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      alert("이 브라우저는 카메라 권한을 지원하지 않습니다.");
+      toast.error("이 브라우저는 카메라 권한을 지원하지 않습니다.");
       setPermissionState("unsupported");
       return;
     }
@@ -46,7 +47,9 @@ export const useCameraPermission = (options?: UseCameraPermissionOptions) => {
         options?.onSuccess?.();
       })
       .catch((error) => {
-        alert("카메라 접근이 거부되었습니다. 브라우저 설정에서 허용해주세요.");
+        toast.error(
+          "카메라 접근이 거부되었습니다. 브라우저 설정에서 허용해주세요.",
+        );
         options?.onError?.(error);
       });
   }, [options]);

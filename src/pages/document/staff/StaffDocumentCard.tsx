@@ -19,6 +19,7 @@ import {
   getStaffDocumentViewUrl,
 } from "../../../api/staff/document.ts";
 import { parseDateStringToKST } from "../../../libs/date.ts";
+import { toast } from "react-toastify";
 
 interface Props {
   document: StaffDocumentSummary;
@@ -50,9 +51,15 @@ const StaffDocumentCard = ({ document: doc }: Props) => {
 
   const handleViewPdf = async () => {
     setPopupOpen(false);
+    if (!selectedStore) {
+      toast.error("매장 정보가 확인되지 않았습니다.");
+      return;
+    }
+    if (!documentId) {
+      toast.error("문서 정보가 없습니다.");
+      return;
+    }
     try {
-      if (!selectedStore || !documentId) throw new Error("정보 부족");
-
       const { url } = await getStaffDocumentViewUrl(
         selectedStore.storeId,
         documentId,
@@ -65,9 +72,15 @@ const StaffDocumentCard = ({ document: doc }: Props) => {
 
   const handleDownloadPdf = async () => {
     setPopupOpen(false);
+    if (!selectedStore) {
+      toast.error("매장 정보가 확인되지 않았습니다.");
+      return;
+    }
+    if (!documentId) {
+      toast.error("문서 정보가 없습니다.");
+      return;
+    }
     try {
-      if (!selectedStore || !documentId) throw new Error("정보 부족");
-
       const { url } = await getStaffDocumentDownloadUrl(
         selectedStore.storeId,
         documentId,
@@ -84,9 +97,15 @@ const StaffDocumentCard = ({ document: doc }: Props) => {
 
   const handleDeleteDocument = async () => {
     setPopupOpen(false);
+    if (!selectedStore) {
+      toast.error("매장 정보가 확인되지 않았습니다.");
+      return;
+    }
+    if (!documentId) {
+      toast.error("문서 정보가 없습니다.");
+      return;
+    }
     try {
-      if (!selectedStore || !documentId) throw new Error("정보 부족");
-
       const confirmDelete = confirm(
         `${documentLabelMap[doc.documentType]} 제출 파일을 삭제하시겠습니까?`,
       );
@@ -94,7 +113,7 @@ const StaffDocumentCard = ({ document: doc }: Props) => {
 
       await deleteStaffDocument(selectedStore.storeId, documentId);
       await fetchDocuments();
-      alert("삭제되었습니다.");
+      toast.success("삭제되었습니다.");
     } catch (err) {}
   };
 

@@ -4,6 +4,7 @@ import Button from "../../../components/common/Button";
 import { encryptSignatureBase64 } from "../../../libs/encryption";
 import { uploadStaffSignature } from "../../../api/staff/constract.ts";
 import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
+import { toast } from "react-toastify";
 
 interface Props {
   onComplete: (data: { base64: string; signatureKey: string }) => void;
@@ -20,7 +21,7 @@ const SignaturePadSheetStaff = ({ onComplete }: Props) => {
 
   const handleComplete = async () => {
     if (sigRef.current?.isEmpty()) {
-      alert("서명을 입력해주세요.");
+      toast.error("서명을 입력해주세요.");
       return;
     }
 
@@ -29,8 +30,10 @@ const SignaturePadSheetStaff = ({ onComplete }: Props) => {
       const base64 = sigRef.current!.getCanvas().toDataURL("image/png");
       const encrypted = encryptSignatureBase64(base64);
 
-      if (!selectedStore) throw new Error("매장이 선택되지 않았습니다.");
-
+      if (!selectedStore) {
+        toast.error("매장이 선택되지 않았습니다.");
+        return;
+      }
       const signatureKey = await uploadStaffSignature(
         selectedStore.storeId,
         encrypted,

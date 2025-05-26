@@ -8,6 +8,7 @@ import AttendanceEditForm from "../../schedule/boss/AttendanceEditForm.tsx";
 import { getStartAndEndDates } from "../../../utils/date.ts";
 import { getKSTDate } from "../../../libs/date.ts";
 import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx";
+import { toast } from "react-toastify";
 
 interface Props {
   staff: {
@@ -69,8 +70,7 @@ const AttendanceRecordContainer = ({ staff, storeId }: Props) => {
         );
         setRecords(data);
       } catch (err) {
-        console.error("근태 기록 조회 실패", err);
-        alert("근태 기록을 불러올 수 없습니다.");
+        toast.error("근태 기록을 불러올 수 없습니다.");
       } finally {
         setLoading(false);
       }
