@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import StaffDocumentCard from "./StaffDocumentCard.tsx";
 import { useDocumentStore } from "../../../stores/staff/documentStore.ts";
+import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx";
 
 const StaffDocumentListPage = () => {
   const { documents, loading, fetchDocuments } = useDocumentStore();
@@ -10,11 +11,7 @@ const StaffDocumentListPage = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center p-4 text-grayscale-500 body-3">
-        제출 서류 목록을 불러오는 중입니다...
-      </div>
-    );
+    return <FullScreenLoading />;
   }
 
   if (documents.length === 0) {

@@ -13,6 +13,7 @@ import { useUserStore } from "../../stores/userStore.ts";
 import { useAuth } from "../../hooks/useAuth.ts";
 import { signup } from "../../api/common/auth.ts";
 import { useAuthStore } from "../../stores/authStore.ts";
+import FullScreenLoading from "../../components/common/FullScreenLoading.tsx";
 
 interface SignupStep2Props {
   role: "BOSS" | "STAFF";
@@ -33,7 +34,7 @@ const SignupStep2 = ({ role, onBack }: SignupStep2Props) => {
   const { user } = useUserStore();
   const navigate = useNavigate();
 
-  if (isLoading) return <div>로딩 중...</div>;
+  if (isLoading) return <FullScreenLoading />;
   if (!isLoggedIn || !user) return <Navigate to="/login" replace />;
 
   const {

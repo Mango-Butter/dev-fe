@@ -8,6 +8,7 @@ import { useLayout } from "../../../hooks/useLayout.ts";
 import { useAuth } from "../../../hooks/useAuth.ts";
 import { useUserStore } from "../../../stores/userStore.ts";
 import { joinStoreAsStaff } from "../../../api/staff/store.ts";
+import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx";
 
 const inviteCodeSchema = z.object({
   inviteCode: z
@@ -80,7 +81,7 @@ const StoreRegisterStaffPage = () => {
     }
   };
 
-  if (isLoading) return <div>로딩 중...</div>;
+  if (isLoading) return <FullScreenLoading />;
   if (!isLoggedIn || !user) return <Navigate to="/login" replace />;
 
   return (

@@ -6,6 +6,7 @@ import useStoreStore from "../../../stores/storeStore.ts";
 import { useSearchParams } from "react-router-dom";
 import { getStartAndEndDates } from "../../../utils/date.ts";
 import { getKSTDate } from "../../../libs/date.ts";
+import SkeletonStaffCard from "../../../components/skeleton/SkeletonStaffCard.tsx";
 
 const Employees = () => {
   const { selectedStore } = useStoreStore();
@@ -59,9 +60,9 @@ const Employees = () => {
             선택된 매장이 없습니다.
           </p>
         ) : isLoading ? (
-          <p className="text-center text-gray-400 mt-10">
-            근무 정보를 불러오는 중...
-          </p>
+          Array(3)
+            .fill(null)
+            .map((_, i) => <SkeletonStaffCard key={i} />)
         ) : staffAttendanceList.length === 0 ? (
           <p className="text-center text-gray-400 mt-10">
             등록된 직원이 없습니다.

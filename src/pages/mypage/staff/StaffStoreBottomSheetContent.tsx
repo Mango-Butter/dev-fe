@@ -6,6 +6,7 @@ import { StaffStore } from "../../../types/store.ts";
 import { fetchStaffStores } from "../../../api/staff/store.ts";
 import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
 import { useNavigate } from "react-router-dom";
+import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx";
 
 const StaffStoreBottomSheetContent = () => {
   const { setBottomSheetOpen } = useBottomSheetStore();
@@ -45,7 +46,7 @@ const StaffStoreBottomSheetContent = () => {
     fetchStores();
   }, []);
 
-  if (loading) return <div className="text-center py-8">불러오는 중...</div>;
+  if (loading) return <FullScreenLoading />;
 
   return (
     <div className="flex flex-col h-full">

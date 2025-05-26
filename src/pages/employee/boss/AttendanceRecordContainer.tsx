@@ -7,6 +7,7 @@ import useBottomSheetStore from "../../../stores/useBottomSheetStore";
 import AttendanceEditForm from "../../schedule/boss/AttendanceEditForm.tsx";
 import { getStartAndEndDates } from "../../../utils/date.ts";
 import { getKSTDate } from "../../../libs/date.ts";
+import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx";
 
 interface Props {
   staff: {
@@ -99,9 +100,7 @@ const AttendanceRecordContainer = ({ staff, storeId }: Props) => {
         </div>
 
         {loading ? (
-          <div className="text-center p-4 text-sm text-gray-400">
-            불러오는 중...
-          </div>
+          <FullScreenLoading />
         ) : records.length === 0 ? (
           <div className="text-center p-4 text-sm text-gray-400">
             근무 기록이 없습니다.

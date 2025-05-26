@@ -9,6 +9,7 @@ import { getRegularSchedules, getStaffDetail } from "../../../api/boss/staff";
 import RegularScheduleContainer from "./RegularScheduleContainer";
 import AttendanceRecordContainer from "./AttendanceRecordContainer.tsx";
 import DocumentContainer from "./DocumentContainer.tsx";
+import SkeletonStaffCard from "../../../components/skeleton/SkeletonStaffCard.tsx";
 
 const EmployeeDetailPage = () => {
   const { staffId } = useParams();
@@ -84,9 +85,7 @@ const EmployeeDetailPage = () => {
           </div>
         </div>
       ) : (
-        <div className="text-sm text-gray-500">
-          알바생 정보를 불러오는 중...
-        </div>
+        <SkeletonStaffCard />
       )}
 
       {staff && selectedStore && (

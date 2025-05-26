@@ -12,6 +12,7 @@ import {
   documentTypeLabelMap,
   StaffDocumentStatus,
 } from "../../../types/document.ts";
+import SkeletonStaffCard from "../../../components/skeleton/SkeletonStaffCard.tsx";
 
 interface Props {
   documentType: BossRequiredDocumentType;
@@ -78,7 +79,7 @@ const BossDocumentEtcCard = ({
       {isExpanded && (
         <div className="px-4 pb-1">
           {loading ? (
-            <span className="text-sm text-gray-400">불러오는 중...</span>
+            <SkeletonStaffCard />
           ) : staffList.length === 0 ? (
             <span className="text-sm text-gray-400">알바생 없음</span>
           ) : (

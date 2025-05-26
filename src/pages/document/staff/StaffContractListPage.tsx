@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
+import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -34,11 +35,7 @@ const StaffContractListPage = () => {
   }, [selectedStore]);
 
   if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center p-4 text-grayscale-500 body-3">
-        계약서 목록을 불러오는 중입니다...
-      </div>
-    );
+    return <FullScreenLoading />;
   }
 
   if (contracts.length === 0) {

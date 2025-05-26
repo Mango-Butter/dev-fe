@@ -7,6 +7,7 @@ import { getStoreList } from "../../../api/boss/store.ts";
 import StoreBottomSheetContent from "./StoreBottomSheetContent.tsx";
 import ErrorIcon from "../../../components/icons/ErrorIcon.tsx";
 import ArrowIcon from "../../../components/icons/ArrowIcon.tsx";
+import SkeletonStoreCard from "../../../components/skeleton/SkeletonStoreCard.tsx";
 
 const BossStoreCard = () => {
   const navigate = useNavigate();
@@ -61,7 +62,7 @@ const BossStoreCard = () => {
   };
 
   if (loading) {
-    return <div className="text-center mt-20">불러오는 중...</div>;
+    return <SkeletonStoreCard />;
   }
 
   if (!storeList || storeList.length === 0) {

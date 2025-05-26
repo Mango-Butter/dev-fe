@@ -25,6 +25,7 @@ import StaffAttendancePage from "./pages/attendance/staff/StaffAttendancePage.ts
 import ContractTemplateEditPage from "./pages/contract/boss/ContractTemplateEditPage.tsx";
 import BossPayrollPage from "./pages/payroll/boss/BossPayrollPage.tsx";
 import BossPayrollEditPage from "./pages/payroll/boss/BossPayrollEditPage.tsx";
+import FullScreenLoading from "./components/common/FullScreenLoading.tsx";
 
 // Lazy-loaded components (boss)
 const HomeBoss = lazy(() => import("./pages/home/boss/HomeBoss.tsx"));
@@ -65,7 +66,7 @@ const StoreRegisterStaffPage = lazy(
 
 // Suspense Wrapper
 const withSuspense = (Component: React.LazyExoticComponent<any>) => (
-  <Suspense fallback={<div>로딩 중...</div>}>
+  <Suspense fallback={<FullScreenLoading />}>
     <Component />
   </Suspense>
 );
