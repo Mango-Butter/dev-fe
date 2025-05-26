@@ -14,6 +14,7 @@ import useStoreStore from "../../../stores/storeStore.ts";
 import useSelectedStaffStore from "../../../stores/selectedStaffStore.ts";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import { useState } from "react";
+import { formatDateToKSTString } from "../../../libs/date.ts";
 
 const schema = z.object({
   range: z
@@ -82,8 +83,8 @@ const RegularScheduleAddForm = ({ onSuccess }: Props) => {
       return;
     }
 
-    const startDate = startDateObj.toISOString().slice(0, 10);
-    const endDate = endDateObj.toISOString().slice(0, 10);
+    const startDate = formatDateToKSTString(startDateObj);
+    const endDate = formatDateToKSTString(endDateObj);
 
     const payload: CreateRegularScheduleDto[] = data.selectedDays.map((day) => {
       const time = data.timeMap[day];

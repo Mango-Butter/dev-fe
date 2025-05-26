@@ -1,26 +1,21 @@
 // utils/date.ts
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+import { getKSTDate, getKSTISOString } from "../libs/date";
 
 /**
- * Date를 'YYYY-MM-DD' 형식의 문자열로 변환하는 함수
- * @param date 변환할 Date
- * @param separator 연결자
- * @returns 'YYYY-MM-DD' 형식의 문자열
- * @example
- * formatFullDate(new Date(), "-"); // '2022-10-10'
- * formatFullDate(new Date(), "/"); // '2022/10/10'
- * formatFullDate(new Date(), "."); // '2022.10.10'
+ * Date를 'YYYY-MM-DD' 형식의 문자열로 변환하는 함수 (KST 기준)
  */
-export const formatFullDate = (date: Date, separator: string = "-"): string => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return [year, month, day].join(separator);
-};
+export const formatFullDate = (date: Date): string =>
+  dayjs(date).tz("Asia/Seoul").format("YYYY-MM-DD");
 
 /**
- * Date를 '2024년 1월 1일 월요일 오전 9시 30분' 형식의 문자열로 변환하는 함수
- * @param date 변환할 Date
- * @returns 한국어 날짜 시간 형식의 문자열
+ * Date를 '2024년 1월 1일 월요일 오전 9시 30분' 형식의 문자열로 변환 (로컬 기준이지만 한국어 표기 목적)
  */
 export const formatFullDateWithTime = (date: Date): string => {
   return new Intl.DateTimeFormat("ko-KR", {
@@ -30,66 +25,59 @@ export const formatFullDateWithTime = (date: Date): string => {
     weekday: "long",
     hour: "numeric",
     minute: "numeric",
+    timeZone: "Asia/Seoul",
   }).format(date);
 };
 
 /**
- * 문자열로 주어진 두 시간를 비교해서
- * 시간 차이를 계산하는 함수
+ * 문자열로 주어진 두 시간의 차이를 분 단위로 계산 (KST 기준)
  */
 export const getMinutesDiff = (a: string, b: string): number => {
-  const dateA = new Date(a);
-  const dateB = new Date(b);
-  return Math.abs(
-    Math.floor((dateA.getTime() - dateB.getTime()) / (1000 * 60)),
-  );
-};
-
-// 보고 있는 날짜의 달의 시작일과 종료일 반환
-export const getCalendarRange = (
-  viewDate: Date,
-): { start: string; end: string } => {
-  const start = new Date(viewDate.getFullYear(), viewDate.getMonth(), 1);
-  const end = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 0);
-
-  const format = (d: Date) => d.toISOString().split("T")[0]; // YYYY-MM-DD
-  return { start: format(start), end: format(end) };
+  const dateA = dayjs(a).tz("Asia/Seoul");
+  const dateB = dayjs(b).tz("Asia/Seoul");
+  return Math.abs(dateA.diff(dateB, "minute"));
 };
 
 /**
- * 한국(KST) 기준으로 날짜를 'YYYY-MM-DD' 형식 문자열로 반환
- * @param date Date 객체
- * @returns KST 기준 YYYY-MM-DD 문자열
+ * 주어진 날짜 기준으로 해당 월의 1일~말일 범위를 KST 기준으로 반환
  */
-export const formatDateToKSTString = (date: Date): string => {
-  const offset = date.getTimezoneOffset() * 60000;
-  const local = new Date(date.getTime() - offset); // 타임존 보정
-  return local.toISOString().slice(0, 10); // 잘라내기
+export const getCalendarRange = (
+  viewDate: Date,
+): { start: string; end: string } => {
+  const base = dayjs(viewDate).tz("Asia/Seoul");
+  const start = base.startOf("month").format("YYYY-MM-DD");
+  const end = base.endOf("month").format("YYYY-MM-DD");
+  return { start, end };
 };
 
+/**
+ * 주어진 연월(YYYY-MM) 기준으로 KST 시작일과 종료일을 반환
+ */
 export const getStartAndEndDates = (ym: string): [string, string] => {
   const [year, month] = ym.split("-").map(Number);
-  const startUtc = new Date(Date.UTC(year, month - 1, 1));
-  const endUtc = new Date(Date.UTC(year, month, 0));
-
-  const offset = 9 * 60 * 60 * 1000;
-  const startKst = new Date(startUtc.getTime() + offset);
-  const endKst = new Date(endUtc.getTime() + offset);
-
-  const format = (d: Date) => d.toISOString().slice(0, 10); // YYYY-MM-DD
-  return [format(startKst), format(endKst)];
+  const base = dayjs.tz(
+    `${year}-${String(month).padStart(2, "0")}-01`,
+    "Asia/Seoul",
+  );
+  const start = base.startOf("month").format("YYYY-MM-DD");
+  const end = base.endOf("month").format("YYYY-MM-DD");
+  return [start, end];
 };
 
-// 오늘 일(day) 기준으로 송금일(transferDate)까지 남은 일 수 계산
+/**
+ * 오늘 일(day) 기준으로 송금일까지 남은 일 수 계산
+ */
 export const getRemainingDays = (transferDate: number): number => {
-  const today = new Date(getKoreaISOString());
-  const todayDate = today.getDate(); // 오늘의 일(day) 숫자만
-
-  return transferDate - todayDate;
+  const today = getKSTDate();
+  return transferDate - today.getDate();
 };
 
+/**
+ * 기존 getKoreaISOString은 deprecated 처리
+ */
 export const getKoreaISOString = (): string => {
-  const date = new Date();
-  const kstTime = new Date(date.getTime() + 9 * 60 * 60 * 1000);
-  return kstTime.toISOString();
+  console.warn(
+    "getKoreaISOString은 deprecated 되었으니 getKSTISOString을 사용하세요.",
+  );
+  return getKSTISOString();
 };

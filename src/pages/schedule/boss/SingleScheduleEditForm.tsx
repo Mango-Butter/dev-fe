@@ -7,12 +7,16 @@ import Button from "../../../components/common/Button.tsx";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import useStoreStore from "../../../stores/storeStore.ts";
 import useScheduleStore from "../../../stores/useScheduleStore.ts";
-import { formatDateToKSTString, formatFullDate } from "../../../utils/date.ts";
+import { formatFullDate } from "../../../utils/date.ts";
 import {
   updateSingleSchedule,
   deleteSingleSchedule,
 } from "../../../api/boss/schedule.ts";
 import { DailyAttendanceRecord } from "../../../types/calendar.ts";
+import {
+  formatDateToKSTString,
+  parseDateStringToKST,
+} from "../../../libs/date.ts";
 
 interface SingleScheduleEditFormProps {
   schedule: DailyAttendanceRecord["schedule"];
@@ -46,7 +50,7 @@ const SingleScheduleEditForm = ({
     resolver: zodResolver(schema),
     mode: "onChange",
     defaultValues: {
-      date: new Date(schedule.workDate!),
+      date: parseDateStringToKST(schedule.workDate!),
       startTime: schedule.startTime.slice(11, 16),
       endTime: schedule.endTime.slice(11, 16),
     },
@@ -81,7 +85,7 @@ const SingleScheduleEditForm = ({
     try {
       await deleteSingleSchedule(storeId, schedule.scheduleId);
 
-      const dateKey = formatFullDate(new Date(schedule.workDate));
+      const dateKey = formatFullDate(parseDateStringToKST(schedule.workDate));
       await useScheduleStore.getState().syncScheduleAndDot(storeId, dateKey);
 
       alert("스케줄이 삭제되었습니다.");
@@ -118,7 +122,7 @@ const SingleScheduleEditForm = ({
         <SingleDatePicker
           value={watch("date")}
           onChange={(date) =>
-            setValue("date", date ? date : new Date(schedule.workDate), {
+            setValue("date", date ?? parseDateStringToKST(schedule.workDate), {
               shouldValidate: true,
             })
           }

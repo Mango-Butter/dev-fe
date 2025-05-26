@@ -13,6 +13,7 @@ import {
 } from "../../../api/boss/contract.ts";
 import { formatFullDateWithTime } from "../../../utils/date.ts";
 import useSelectedStaffStore from "../../../stores/selectedStaffStore.ts";
+import { parseDateStringToKST } from "../../../libs/date.ts";
 
 interface Props {
   contract: BossContractSummary;
@@ -103,7 +104,9 @@ const ContractCard = ({ contract }: Props) => {
 
           {contract.modifiedAt && (
             <span className="body-4 text-grayscale-500">
-              {formatFullDateWithTime(new Date(contract.modifiedAt))}
+              {formatFullDateWithTime(
+                parseDateStringToKST(contract.modifiedAt),
+              )}
             </span>
           )}
         </div>

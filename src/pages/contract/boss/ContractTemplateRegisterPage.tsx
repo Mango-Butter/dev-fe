@@ -17,6 +17,7 @@ import {
   contractTemplateSchema,
 } from "../../../schemas/contractTemplateSchema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { formatDateToKSTString } from "../../../libs/date.ts";
 
 const ContractTemplateRegisterPage = () => {
   useLayout({
@@ -85,11 +86,9 @@ const ContractTemplateRegisterPage = () => {
         title: data.title,
         contractTemplateData: {
           contractStart: contractStart
-            ? contractStart.toISOString().split("T")[0]
+            ? formatDateToKSTString(contractStart)
             : null,
-          contractEnd: contractEnd
-            ? contractEnd.toISOString().split("T")[0]
-            : null,
+          contractEnd: contractEnd ? formatDateToKSTString(contractEnd) : null,
           duty: data.duty || null,
           hourlyWage:
             typeof data.hourlyWage === "number" ? data.hourlyWage : null,

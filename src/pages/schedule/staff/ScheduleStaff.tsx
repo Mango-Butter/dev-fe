@@ -7,7 +7,6 @@ import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import "../../../styles/schedulePageCalendar.css";
 import { getClockInStyle } from "../../../utils/attendance.ts";
 import { cn } from "../../../libs";
-
 import { DailyAttendanceRecord } from "../../../types/calendar.ts";
 import { useScheduleFilters } from "../../../hooks/useScheduleFilters.ts";
 import ScheduleFilter from "../boss/ScheduleFilter.tsx";
@@ -16,10 +15,16 @@ import useStaffScheduleStore from "../../../stores/staff/useStaffScheduleStore.t
 import StaffScheduleList from "../boss/StaffScheduleList.tsx";
 import SingleScheduleEditForm from "../boss/SingleScheduleEditForm.tsx";
 import AttendanceEditForm from "../boss/AttendanceEditForm.tsx";
+import { getKSTDate } from "../../../libs/date.ts";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const ScheduleStaff = () => {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [calendarViewDate, setCalendarViewDate] = useState<Date>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date>(getKSTDate());
+  const [calendarViewDate, setCalendarViewDate] = useState<Date>(getKSTDate());
   const dateKey = formatFullDate(selectedDate);
 
   const { scheduleMap, dotMap, fetchDailySchedule, fetchDotRange } =
@@ -29,7 +34,9 @@ const ScheduleStaff = () => {
   const storeId = selectedStore?.storeId;
   const { setBottomSheetContent } = useBottomSheetStore();
 
-  const isPast = selectedDate < new Date(new Date().setHours(0, 0, 0, 0));
+  const isPast = dayjs(selectedDate).isBefore(
+    dayjs(getKSTDate()).startOf("day"),
+  );
   const { filters } = useScheduleFilters();
 
   const filteredRecords = scheduleMap[dateKey]?.filter(({ attendance }) => {
@@ -107,9 +114,19 @@ const ScheduleStaff = () => {
     <div className="flex flex-col w-full h-full">
       <Calendar
         className="schedule-page-calendar"
-        onChange={(value) => setSelectedDate(value as Date)}
+        onChange={(value) =>
+          setSelectedDate(
+            dayjs(value as Date)
+              .tz("Asia/Seoul")
+              .toDate(),
+          )
+        }
         onActiveStartDateChange={({ activeStartDate }) => {
-          if (activeStartDate) setCalendarViewDate(activeStartDate);
+          if (activeStartDate) {
+            setCalendarViewDate(
+              dayjs(activeStartDate).tz("Asia/Seoul").toDate(),
+            );
+          }
         }}
         value={selectedDate}
         calendarType="gregory"

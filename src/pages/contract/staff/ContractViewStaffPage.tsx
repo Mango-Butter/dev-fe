@@ -14,6 +14,7 @@ import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import SignaturePadSheetStaff from "./SignaturePadSheetStaff.tsx";
 import Button from "../../../components/common/Button.tsx";
 import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
+import { parseDateStringToKST } from "../../../libs/date.ts";
 
 const ContractViewStaffPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -220,7 +221,7 @@ const ContractViewStaffPage = () => {
               만료일:{" "}
               {contract?.bossSignature.expiresAt
                 ? formatFullDateWithTime(
-                    new Date(contract.bossSignature.expiresAt),
+                    parseDateStringToKST(contract.bossSignature.expiresAt),
                   )
                 : "-"}
             </span>
@@ -265,7 +266,7 @@ const ContractViewStaffPage = () => {
               만료일:{" "}
               {contract?.staffSignature?.expiresAt
                 ? formatFullDateWithTime(
-                    new Date(contract.staffSignature.expiresAt),
+                    parseDateStringToKST(contract.staffSignature.expiresAt),
                   )
                 : "-"}
             </span>

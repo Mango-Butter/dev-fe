@@ -9,10 +9,11 @@ import { getStaffBriefList } from "../../../api/boss/staff.ts";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import useStoreStore from "../../../stores/storeStore.ts";
 import useScheduleStore from "../../../stores/useScheduleStore.ts";
-import { formatDateToKSTString, formatFullDate } from "../../../utils/date.ts";
+import { formatFullDate } from "../../../utils/date.ts";
 import { getDefaultScheduleTimes } from "../../../utils/time.ts";
 import TextField from "../../../components/common/TextField.tsx";
 import Button from "../../../components/common/Button.tsx";
+import { formatDateToKSTString, getKSTDate } from "../../../libs/date.ts";
 
 interface SingleScheduleAddFormProps {
   defaultDate?: Date;
@@ -58,7 +59,7 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
     mode: "onChange",
     defaultValues: {
       staffId: 0,
-      date: defaultDate ?? new Date(),
+      date: defaultDate ?? getKSTDate(),
       startTime,
       endTime,
     },

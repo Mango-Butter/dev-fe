@@ -4,7 +4,8 @@ import { getStaffAttendancesList } from "../../../api/boss/staff.ts";
 import { StaffAttendance } from "../../../types/staff.ts";
 import useStoreStore from "../../../stores/storeStore.ts";
 import { useSearchParams } from "react-router-dom";
-import { getKoreaISOString, getStartAndEndDates } from "../../../utils/date.ts";
+import { getStartAndEndDates } from "../../../utils/date.ts";
+import { getKSTDate } from "../../../libs/date.ts";
 
 const Employees = () => {
   const { selectedStore } = useStoreStore();
@@ -15,7 +16,7 @@ const Employees = () => {
   const [searchParams] = useSearchParams();
   const currentTab = searchParams.get("type") || "attendance";
   const [selectedYearMonth, setSelectedYearMonth] = useState(() => {
-    const koreaNow = new Date(getKoreaISOString());
+    const koreaNow = getKSTDate();
     return `${koreaNow.getFullYear()}-${String(koreaNow.getMonth() + 1).padStart(2, "0")}`;
   });
   useEffect(() => {

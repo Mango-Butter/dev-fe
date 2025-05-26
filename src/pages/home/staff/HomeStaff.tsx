@@ -4,11 +4,11 @@ import { useUserStore } from "../../../stores/userStore.ts";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import StaffDocumentRequestContainer from "./StaffDocumentRequestContainer.tsx";
-import { getKoreaISOString } from "../../../utils/date.ts";
+import { getKSTDate } from "../../../libs/date.ts";
 
 const HomeStaff = () => {
   const { user } = useUserStore();
-  const todayDate = new Date(getKoreaISOString());
+  const todayDate = getKSTDate();
   const today = format(todayDate, "yyyy.MM.dd EEEE", { locale: ko });
 
   return (

@@ -22,6 +22,10 @@ import {
 } from "../../../api/boss/contractTemplate.ts";
 import SelectField from "../../../components/common/SelectField.tsx";
 import useSelectedStaffStore from "../../../stores/selectedStaffStore.ts";
+import {
+  formatDateToKSTString,
+  parseDateStringToKST,
+} from "../../../libs/date.ts";
 
 interface ContractFormValues {
   staffId: string | null;
@@ -113,8 +117,8 @@ const ContractRegisterPage = () => {
         bossSignatureKey: data.bossSignatureKey,
         contractDataInput: {
           contractName: "기본 근로계약서",
-          contractStart: contractStart.toISOString().split("T")[0],
-          contractEnd: contractEnd.toISOString().split("T")[0],
+          contractStart: formatDateToKSTString(contractStart),
+          contractEnd: formatDateToKSTString(contractEnd),
           duty: data.duty,
           workSchedules,
           hourlyWage: data.hourlyWage,
@@ -190,10 +194,10 @@ const ContractRegisterPage = () => {
           staffId: watch("staffId"),
           range: [
             data.contractTemplateData.contractStart
-              ? new Date(data.contractTemplateData.contractStart)
+              ? parseDateStringToKST(data.contractTemplateData.contractStart)
               : null,
             data.contractTemplateData.contractEnd
-              ? new Date(data.contractTemplateData.contractEnd)
+              ? parseDateStringToKST(data.contractTemplateData.contractEnd)
               : null,
           ],
           duty: data.contractTemplateData.duty ?? "",

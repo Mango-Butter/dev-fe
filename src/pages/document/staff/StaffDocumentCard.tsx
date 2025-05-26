@@ -18,6 +18,7 @@ import {
   getStaffDocumentDownloadUrl,
   getStaffDocumentViewUrl,
 } from "../../../api/staff/document.ts";
+import { parseDateStringToKST } from "../../../libs/date.ts";
 
 interface Props {
   document: StaffDocumentSummary;
@@ -116,7 +117,8 @@ const StaffDocumentCard = ({ document: doc }: Props) => {
           <span className="title-2">{documentLabelMap[documentType]}</span>
           {expiresAt && (
             <span className="body-4 text-grayscale-500">
-              유효기간: {formatFullDateWithTime(new Date(expiresAt))}
+              유효기간:{" "}
+              {formatFullDateWithTime(parseDateStringToKST(expiresAt))}
             </span>
           )}
         </div>

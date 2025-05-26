@@ -1,11 +1,16 @@
 // src/components/staff/StaffAttendanceCard.tsx
-import { format, differenceInSeconds, isBefore, parseISO } from "date-fns";
 import Button from "../../../components/common/Button.tsx";
 import { TodayScheduleWithAttendance } from "../../../types/attendance.ts";
 import {
   getClockInStyle,
   getClockOutStyle,
 } from "../../../utils/attendance.ts";
+// 추가
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 interface Props {
   storeName: string;
@@ -20,31 +25,32 @@ const StaffAttendanceCard = ({
   onClickClockIn,
   onClickClockOut,
 }: Props) => {
-  const now = new Date();
   const { schedule, attendance } = data;
-  const startTime = parseISO(schedule.startTime);
-  const endTime = parseISO(schedule.endTime);
+  const now = dayjs().tz("Asia/Seoul");
+
+  const startTime = dayjs(schedule.startTime).tz("Asia/Seoul");
+  const endTime = dayjs(schedule.endTime).tz("Asia/Seoul");
   const clockInTime = attendance?.clockInTime
-    ? parseISO(attendance.clockInTime)
+    ? dayjs(attendance.clockInTime).tz("Asia/Seoul")
     : null;
   const clockOutTime = attendance?.clockOutTime
-    ? parseISO(attendance.clockOutTime)
+    ? dayjs(attendance.clockOutTime).tz("Asia/Seoul")
     : null;
 
   const canClockIn =
     !clockInTime &&
-    differenceInSeconds(startTime, now) <= 600 && // 10분 전부터 가능
-    isBefore(now, endTime);
+    startTime.diff(now, "second") <= 600 &&
+    now.isBefore(endTime);
 
   const canClockOut =
     clockInTime &&
     !clockOutTime &&
-    isBefore(startTime, now) &&
-    isBefore(now, endTime);
+    now.isAfter(startTime) &&
+    now.isBefore(endTime);
 
   const remainingSeconds = clockOutTime
     ? 0
-    : Math.max(0, differenceInSeconds(endTime, now));
+    : Math.max(0, endTime.diff(now, "second"));
 
   const formatDuration = (sec: number) => {
     const h = Math.floor(sec / 3600);
@@ -60,11 +66,11 @@ const StaffAttendanceCard = ({
         <div className="flex gap-2 items-center">
           <span className="body-3">스케줄 시간</span>
           <span className="body-3 text-grayscale-500">
-            {format(startTime, "HH:mm")}
+            {startTime.format("HH:mm")}
           </span>
           <span className="body-3 text-grayscale-500">~</span>
           <span className="body-3 text-grayscale-500">
-            {format(endTime, "HH:mm")}
+            {endTime.format("HH:mm")}
           </span>
         </div>
       </div>
@@ -73,7 +79,7 @@ const StaffAttendanceCard = ({
         <div className="flex w-full gap-2 items-center">
           <span className="w-fit body-3 text-grayscale-900">출근 시간</span>
           <span className="body-3 text-grayscale-600">
-            {format(clockInTime, "HH:mm")}
+            {clockInTime.format("HH:mm")}
           </span>
 
           {attendance?.clockInStatus && (
@@ -98,7 +104,7 @@ const StaffAttendanceCard = ({
         <div className="flex w-full gap-2 items-center">
           <span className="w-fit body-3 text-grayscale-900">퇴근 시간</span>
           <span className="body-3 text-grayscale-600">
-            {format(clockOutTime, "HH:mm")}
+            {clockOutTime.format("HH:mm")}
           </span>
           {attendance?.clockOutStatus && (
             <div className="flex items-center gap-1">

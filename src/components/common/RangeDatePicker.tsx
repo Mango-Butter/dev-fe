@@ -1,6 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import Calendar, { CalendarProps } from "react-calendar";
 import { formatFullDate } from "../../utils/date";
+import { getKSTDate } from "../../libs/date"; // KST 기준 today
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 import ArrowIcon from "../icons/ArrowIcon";
 import TextField from "./TextField.tsx";
 import { CalendarOff } from "../icons/CalendarIcon.tsx";
@@ -20,7 +27,7 @@ export default function RangeDatePicker({
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const today = new Date();
+  const today = getKSTDate();
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -34,15 +41,20 @@ export default function RangeDatePicker({
 
   const isDateDisabled = (date: Date, view: string) => {
     if (view !== "month") return false;
-    const base = new Date(today.setHours(0, 0, 0, 0));
-    if (mode === "past") return date >= base;
-    if (mode === "future") return date < base;
+    const base = dayjs(today).startOf("day");
+    const target = dayjs(date).tz("Asia/Seoul").startOf("day");
+
+    if (mode === "past") return !target.isBefore(base);
+    if (mode === "future") return target.isBefore(base);
     return false;
   };
 
   const handleChange: CalendarProps["onChange"] = (picked, _) => {
     if (Array.isArray(picked)) {
-      const [start, end] = picked;
+      const [start, end] = picked.map((d) =>
+        d ? dayjs(d).tz("Asia/Seoul").toDate() : null,
+      ) as [Date | null, Date | null];
+
       onChange([start, end]);
       if (start && end) {
         setOpen(false);
@@ -94,6 +106,7 @@ export default function RangeDatePicker({
             tileClassName={({ date, view }) => {
               if (view !== "month") return undefined;
               if (isDateDisabled(date, view)) return undefined;
+
               const day = date.getDay();
               if (day === 0) return "sunday";
               if (day === 6) return "saturday";

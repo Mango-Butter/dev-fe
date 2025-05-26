@@ -21,6 +21,10 @@ import {
   contractTemplateSchema,
 } from "../../../schemas/contractTemplateSchema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  formatDateToKSTString,
+  parseDateStringToKST,
+} from "../../../libs/date.ts";
 
 const ContractTemplateEditPage = () => {
   useLayout({
@@ -74,10 +78,10 @@ const ContractTemplateEditPage = () => {
           title: data.title,
           range: [
             data.contractTemplateData.contractStart
-              ? new Date(data.contractTemplateData.contractStart)
+              ? parseDateStringToKST(data.contractTemplateData.contractStart)
               : null,
             data.contractTemplateData.contractEnd
-              ? new Date(data.contractTemplateData.contractEnd)
+              ? parseDateStringToKST(data.contractTemplateData.contractEnd)
               : null,
           ],
           duty: data.contractTemplateData.duty ?? "",
@@ -135,11 +139,9 @@ const ContractTemplateEditPage = () => {
         title: data.title,
         contractTemplateData: {
           contractStart: contractStart
-            ? contractStart.toISOString().split("T")[0]
+            ? formatDateToKSTString(contractStart)
             : null,
-          contractEnd: contractEnd
-            ? contractEnd.toISOString().split("T")[0]
-            : null,
+          contractEnd: contractEnd ? formatDateToKSTString(contractEnd) : null,
           duty: data.duty || null,
           hourlyWage:
             typeof data.hourlyWage === "number" ? data.hourlyWage : null,

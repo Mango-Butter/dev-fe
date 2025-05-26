@@ -1,12 +1,12 @@
 // src/pages/boss/staff/AttendanceRecordContainer.tsx
-
 import { useEffect, useState } from "react";
 import { getStaffAttendanceRecords } from "../../../api/boss/attendance";
 import { StaffAttendanceRecord } from "../../../types/attendance";
 import { cn } from "../../../libs";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore";
 import AttendanceEditForm from "../../schedule/boss/AttendanceEditForm.tsx";
-import { getKoreaISOString, getStartAndEndDates } from "../../../utils/date.ts";
+import { getStartAndEndDates } from "../../../utils/date.ts";
+import { getKSTDate } from "../../../libs/date.ts";
 
 interface Props {
   staff: {
@@ -22,7 +22,7 @@ const AttendanceRecordContainer = ({ staff, storeId }: Props) => {
   const { setBottomSheetContent } = useBottomSheetStore();
 
   const [selectedYearMonth, setSelectedYearMonth] = useState(() => {
-    const koreaNow = new Date(getKoreaISOString());
+    const koreaNow = getKSTDate();
     return `${koreaNow.getFullYear()}-${String(koreaNow.getMonth() + 1).padStart(2, "0")}`;
   });
 

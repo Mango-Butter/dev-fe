@@ -2,9 +2,13 @@ import { useEffect, useState } from "react";
 import { StaffContractSummary } from "../../../types/contract";
 import useStaffStoreStore from "../../../stores/useStaffStoreStore";
 import Button from "../../../components/common/Button";
-import { format } from "date-fns";
 import { fetchStaffContracts } from "../../../api/staff/constract.ts";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const StaffContractListPage = () => {
   const { selectedStore } = useStaffStoreStore();
@@ -57,7 +61,9 @@ const StaffContractListPage = () => {
             <div className="flex flex-col">
               <span className="title-2">근로계약서 #{contract.contractId}</span>
               <span className="body-3 text-grayscale-500">
-                {format(new Date(contract.modifiedAt), "yyyy.MM.dd")}
+                {dayjs(contract.modifiedAt)
+                  .tz("Asia/Seoul")
+                  .format("YYYY.MM.DD")}
               </span>
             </div>
 

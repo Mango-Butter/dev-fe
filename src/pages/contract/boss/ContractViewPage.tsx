@@ -6,6 +6,7 @@ import { ContractDetailResponse } from "../../../types/contract.ts";
 import { fetchContractDetail } from "../../../api/boss/contract.ts";
 import { formatFullDateWithTime } from "../../../utils/date.ts";
 import { weekdayKorean } from "../../../types/staff.ts";
+import { parseDateStringToKST } from "../../../libs/date.ts";
 
 const ContractViewPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -176,7 +177,7 @@ const ContractViewPage = () => {
               만료일:{" "}
               {contract?.bossSignature.expiresAt
                 ? formatFullDateWithTime(
-                    new Date(contract.bossSignature.expiresAt),
+                    parseDateStringToKST(contract.bossSignature.expiresAt),
                   )
                 : "-"}
             </span>
@@ -196,7 +197,12 @@ const ContractViewPage = () => {
               )}
             </div>
             <span className="text-xs text-grayscale-500">
-              만료일: {contract?.staffSignature?.expiresAt || "-"}
+              만료일:{" "}
+              {contract?.staffSignature?.expiresAt
+                ? formatFullDateWithTime(
+                    parseDateStringToKST(contract.staffSignature.expiresAt),
+                  )
+                : "-"}
             </span>
           </div>
         </div>

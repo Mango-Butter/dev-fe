@@ -14,6 +14,7 @@ import {
 } from "../../../api/boss/schedule.ts";
 import { useEffect } from "react";
 import { DailyAttendanceRecord } from "../../../types/calendar.ts";
+import { parseDateStringToKST } from "../../../libs/date.ts";
 
 const schema = z.discriminatedUnion("clockInStatus", [
   z.object({
@@ -79,7 +80,7 @@ const AttendanceEditForm = ({
         clockInTime: data.clockInTime ?? null,
         clockOutTime: data.clockOutTime ?? null,
       });
-      const dateKey = formatFullDate(new Date(schedule.workDate));
+      const dateKey = formatFullDate(parseDateStringToKST(schedule.workDate));
       await useScheduleStore.getState().syncScheduleAndDot(storeId, dateKey);
       alert("근태 정보가 성공적으로 수정되었습니다.");
     } catch (err) {
@@ -94,7 +95,7 @@ const AttendanceEditForm = ({
     if (!confirm("정말로 이 근태 기록을 삭제하시겠습니까?")) return;
     try {
       await deleteAttendance(storeId, schedule.scheduleId);
-      const dateKey = formatFullDate(new Date(schedule.workDate));
+      const dateKey = formatFullDate(parseDateStringToKST(schedule.workDate));
       await useScheduleStore.getState().syncScheduleAndDot(storeId, dateKey);
       alert("근태 기록이 삭제되었습니다.");
     } catch (err) {
@@ -127,7 +128,7 @@ const AttendanceEditForm = ({
         <label className="title-1 block mb-3">근무 일정</label>
         <TextField
           type="text"
-          value={formatFullDate(new Date(schedule.workDate))}
+          value={formatFullDate(parseDateStringToKST(schedule.workDate))}
           disabled
         />
       </section>

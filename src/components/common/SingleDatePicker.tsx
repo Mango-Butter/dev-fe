@@ -1,6 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import Calendar, { CalendarProps } from "react-calendar";
 import { formatFullDate } from "../../utils/date";
+import { getKSTDate } from "../../libs/date"; // ✅ KST 기준 유틸
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 import ArrowIcon from "../icons/ArrowIcon";
 import TextField from "./TextField.tsx";
 import "../../styles/datePickerCalendar.css";
@@ -22,7 +29,7 @@ export default function SingleDatePicker({
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const today = new Date();
+  const today = getKSTDate();
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -36,15 +43,20 @@ export default function SingleDatePicker({
 
   const isDateDisabled = (date: Date, view: string) => {
     if (view !== "month") return false;
-    const base = new Date(today.setHours(0, 0, 0, 0));
-    if (mode === "past") return date >= base;
-    if (mode === "future") return date < base;
+    const base = dayjs(today).startOf("day");
+    const target = dayjs(date).tz("Asia/Seoul").startOf("day");
+
+    if (mode === "past") return !target.isBefore(base);
+    if (mode === "future") return target.isBefore(base);
     return false;
   };
 
   const handleChange: CalendarProps["onChange"] = (selectedDate, _) => {
     if (selectedDate instanceof Date || selectedDate === null) {
-      onChange(selectedDate);
+      const kstDate = selectedDate
+        ? dayjs(selectedDate).tz("Asia/Seoul").toDate()
+        : null;
+      onChange(kstDate);
       setOpen(false);
     }
   };
