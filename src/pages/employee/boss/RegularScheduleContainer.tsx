@@ -34,7 +34,7 @@ const RegularScheduleContainer = ({
 
     const confirmed = await showConfirm({
       title: "정말 삭제할까요?",
-      text: "이 고정 스케줄은 복구할 수 없어요.",
+      text: `내일 이후부터의 고정 스케줄이 모두 삭제됩니다.\n삭제된 스케줄은 복구할 수 없어요.`,
       confirmText: "삭제할래요",
       cancelText: "취소할래요",
       icon: "question",
