@@ -13,12 +13,12 @@ import Login from "./pages/login/Login.tsx";
 import Signup from "./pages/signup/Signup.tsx";
 import AddressSearchPopup from "./pages/store/boss/AddressSearchPopup.tsx";
 import RoleRoute from "./routes/RoleRoute.tsx";
-import Landing from "./pages/Landing.tsx";
 import FullScreenLoading from "./components/common/FullScreenLoading.tsx";
 import HomeBoss from "./pages/home/boss/HomeBoss.tsx";
 import HomeStaff from "./pages/home/staff/HomeStaff.tsx";
 
 // Lazy-loaded components (boss)
+const Landing = lazy(() => import("./pages/landing/Landing.tsx"));
 const Schedule = lazy(() => import("./pages/schedule/boss/Schedule.tsx"));
 const Employees = lazy(() => import("./pages/employee/boss/Employees.tsx"));
 const Task = lazy(() => import("./pages/Task"));
