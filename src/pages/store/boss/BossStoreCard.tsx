@@ -77,7 +77,7 @@ const BossStoreCard = () => {
           </div>
           <div
             onClick={handleStoreRegister}
-            className="body-3 text-grayscale-900 cursor-pointer"
+            className="body-3 text-grayscale-900 hover:underline cursor-pointer"
           >
             + 매장 추가하기
           </div>

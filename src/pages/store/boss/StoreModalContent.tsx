@@ -25,7 +25,7 @@ const StoreModalContent = () => {
       <div className="flex justify-end">
         <button
           onClick={handleStoreRegister}
-          className="text-primary-600 font-medium text-sm hover:underline"
+          className="body-3 text-grayscale-900 hover:underline"
         >
           + 매장 추가하기
         </button>
