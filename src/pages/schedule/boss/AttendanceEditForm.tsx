@@ -177,6 +177,7 @@ const AttendanceEditForm = ({
           onChange={(val) =>
             setValue("clockInStatus", val as FormData["clockInStatus"], {
               shouldValidate: true,
+              shouldDirty: true,
             })
           }
         />
