@@ -42,9 +42,9 @@ const StaffDocumentContainer = () => {
   // 상태별 계약서 수 계산
   const contractCounts = contracts.reduce(
     (acc, contract) => {
-      if (contract.isSigned) {
+      if (contract.status === "COMPLETED") {
         acc.COMPLETED++;
-      } else {
+      } else if (contract.status === "PENDING_STAFF_SIGNATURE") {
         acc.NOT_SIGNED++;
       }
       return acc;
@@ -57,7 +57,7 @@ const StaffDocumentContainer = () => {
 
   return (
     <div>
-      <p className="title-1 mb-3">제출 서류 현황</p>
+      <p className="title-1 mb-3">내가 제출한 서류</p>
       {isDocsCountZero ? (
         <div className="text-center text-grayscale-400 body-3 py-4 shadow-basic rounded-lg">
           제출한 서류가 없습니다.
