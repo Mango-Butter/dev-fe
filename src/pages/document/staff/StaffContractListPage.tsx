@@ -2,9 +2,14 @@ import { useEffect, useState } from "react";
 import { StaffContractSummary } from "../../../types/contract";
 import useStaffStoreStore from "../../../stores/useStaffStoreStore";
 import Button from "../../../components/common/Button";
-import { format } from "date-fns";
 import { fetchStaffContracts } from "../../../api/staff/constract.ts";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
+import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx";
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const StaffContractListPage = () => {
   const { selectedStore } = useStaffStoreStore();
@@ -30,11 +35,7 @@ const StaffContractListPage = () => {
   }, [selectedStore]);
 
   if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center p-4 text-grayscale-500 body-3">
-        계약서 목록을 불러오는 중입니다...
-      </div>
-    );
+    return <FullScreenLoading />;
   }
 
   if (contracts.length === 0) {
@@ -57,7 +58,9 @@ const StaffContractListPage = () => {
             <div className="flex flex-col">
               <span className="title-2">근로계약서 #{contract.contractId}</span>
               <span className="body-3 text-grayscale-500">
-                {format(new Date(contract.modifiedAt), "yyyy.MM.dd")}
+                {dayjs(contract.modifiedAt)
+                  .tz("Asia/Seoul")
+                  .format("YYYY.MM.DD")}
               </span>
             </div>
 

@@ -8,6 +8,8 @@ import { PersonOff } from "../../../components/icons/PersonIcon.tsx";
 import MenuIcon from "../../../components/icons/MenuIcon.tsx";
 import MailIcon from "../../../components/icons/MailIcon.tsx";
 import { StoreInfo } from "../../../types/store.ts";
+import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx";
+import { toast } from "react-toastify";
 
 const StoreInfoPage = () => {
   useLayout({
@@ -23,7 +25,7 @@ const StoreInfoPage = () => {
 
   useEffect(() => {
     if (!selectedStore) {
-      alert("선택된 매장정보가 없습니다.");
+      toast.error("선택된 매장정보가 없습니다.");
       navigate("/store");
       return;
     }
@@ -42,7 +44,7 @@ const StoreInfoPage = () => {
     fetchStoreInfo();
   }, [selectedStore, navigate]);
 
-  if (loading) return <div className="p-6">불러오는 중...</div>;
+  if (loading) return <FullScreenLoading />;
   if (!storeInfo) return null;
 
   return (

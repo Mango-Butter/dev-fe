@@ -155,7 +155,7 @@ const AttendanceSettingPage = () => {
     if (!selectedStore) return;
     try {
       await updateGpsSettings(selectedStore.storeId, data);
-      alert("GPS 설정이 저장되었습니다.");
+      toast.success("GPS 설정이 저장되었습니다.");
     } catch (err) {}
   };
 

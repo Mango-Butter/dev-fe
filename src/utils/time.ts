@@ -1,4 +1,4 @@
-import { getKoreaISOString } from "./date.ts";
+import { getKSTDate } from "../libs/date.ts";
 
 type RoundMode = "default" | "hour" | "half";
 
@@ -15,7 +15,7 @@ type RoundMode = "default" | "hour" | "half";
 export const getDefaultScheduleTimes = (
   mode: RoundMode = "default",
 ): { startTime: string; endTime: string } => {
-  const now = new Date(getKoreaISOString()); // ✅ KST 기준
+  const now = getKSTDate();
   let hour = now.getHours() + 1;
   let minute = now.getMinutes();
 

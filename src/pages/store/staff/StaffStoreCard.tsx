@@ -8,6 +8,7 @@ import { fetchStaffStores } from "../../../api/staff/store.ts";
 import { StaffStore } from "../../../types/store.ts";
 import StaffStoreBottomSheetContent from "../../mypage/staff/StaffStoreBottomSheetContent.tsx";
 import { useNavigate } from "react-router-dom";
+import SkeletonStoreCard from "../../../components/skeleton/SkeletonStoreCard.tsx";
 
 const StaffStoreCard = () => {
   const { setBottomSheetContent } = useBottomSheetStore();
@@ -63,7 +64,7 @@ const StaffStoreCard = () => {
     fetchStores();
   }, [selectedStore, setSelectedStore]);
 
-  if (loading) return <div className="text-center mt-20">불러오는 중...</div>;
+  if (loading) return <SkeletonStoreCard />;
 
   if (!storeList || storeList.length === 0) {
     return (

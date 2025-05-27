@@ -9,6 +9,8 @@ import { getRegularSchedules, getStaffDetail } from "../../../api/boss/staff";
 import RegularScheduleContainer from "./RegularScheduleContainer";
 import AttendanceRecordContainer from "./AttendanceRecordContainer.tsx";
 import DocumentContainer from "./DocumentContainer.tsx";
+import SkeletonStaffCard from "../../../components/skeleton/SkeletonStaffCard.tsx";
+import { toast } from "react-toastify";
 
 const EmployeeDetailPage = () => {
   const { staffId } = useParams();
@@ -45,8 +47,7 @@ const EmployeeDetailPage = () => {
       setAvailableDays(days);
       setSelectedDays(days);
     } catch (err) {
-      console.error("알바생 정보 또는 스케줄 조회 실패", err);
-      alert("알바생 정보를 불러오는 데 실패했습니다.");
+      toast.error("알바생 정보를 불러오는 데 실패했습니다.");
     }
   };
 
@@ -84,9 +85,7 @@ const EmployeeDetailPage = () => {
           </div>
         </div>
       ) : (
-        <div className="text-sm text-gray-500">
-          알바생 정보를 불러오는 중...
-        </div>
+        <SkeletonStaffCard />
       )}
 
       {staff && selectedStore && (

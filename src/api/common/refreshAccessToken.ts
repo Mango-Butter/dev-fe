@@ -1,4 +1,5 @@
 // src/api/refreshAccessToken.ts
+import { toast } from "react-toastify";
 import { useAuthStore } from "../../stores/authStore.ts";
 import axiosBare from "./axiosBare.ts";
 
@@ -26,6 +27,6 @@ export async function refreshAccessToken(): Promise<string> {
 
 function handleLogout(message: string) {
   useAuthStore.getState().logout();
-  alert(message);
+  toast(message);
   window.location.href = "/login";
 }

@@ -6,7 +6,8 @@ import ArrowIcon from "../../../components/icons/ArrowIcon.tsx";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import useStoreStore from "../../../stores/storeStore.ts";
 import { StoreSummaryBoss } from "../../../types/store.ts";
-import StoreBottomSheetContent from "../../store/boss/StoreBottomSheetContent.tsx"; // ✅ zustand store import
+import StoreBottomSheetContent from "../../store/boss/StoreBottomSheetContent.tsx";
+import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx"; // ✅ zustand store import
 
 const Store = () => {
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ const Store = () => {
   }, [selectedStore, setSelectedStore]);
 
   if (loading) {
-    return <div className="text-center mt-20">불러오는 중...</div>;
+    return <FullScreenLoading />;
   }
 
   if (!storeList || storeList.length === 0) {

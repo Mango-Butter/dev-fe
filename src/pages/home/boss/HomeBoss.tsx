@@ -1,4 +1,4 @@
-import { getKoreaISOString, formatFullDate } from "../../../utils/date.ts";
+import { formatFullDate } from "../../../utils/date.ts";
 import useStoreStore from "../../../stores/storeStore.ts";
 import useScheduleStore from "../../../stores/useScheduleStore.ts";
 import { useEffect } from "react";
@@ -8,9 +8,10 @@ import DocumentContainer from "./DocumentContainer.tsx";
 import { useUserStore } from "../../../stores/userStore.ts";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
+import { getKSTDate } from "../../../libs/date.ts";
 
 const HomeBoss = () => {
-  const koreaNow = new Date(getKoreaISOString());
+  const koreaNow = getKSTDate();
   const dateKey = formatFullDate(koreaNow);
   const todayText = format(koreaNow, "yyyy.MM.dd EEEE", { locale: ko });
 

@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { getCoordsFromAddress } from "../../../utils/kakaoGeocoder.ts";
 import ResetIcon from "../../../components/icons/ResetIcon.tsx";
 import GpsMapPreview from "../../../components/common/GpsMapPreview.tsx";
+import { toast } from "react-toastify";
 
 const StoreInfoEditPage = () => {
   useLayout({
@@ -88,7 +89,7 @@ const StoreInfoEditPage = () => {
         gps: { latitude, longitude },
       });
 
-      alert("매장 정보가 수정되었습니다.");
+      toast.success("매장 정보가 수정되었습니다.");
       navigate(-1);
     } catch (err) {
       console.error(err);
@@ -133,7 +134,7 @@ const StoreInfoEditPage = () => {
   }, []);
 
   if (!selectedStore) {
-    alert("선택된 매장이 없습니다.");
+    toast.error("선택된 매장이 없습니다.");
     navigate("/store");
     return null;
   }

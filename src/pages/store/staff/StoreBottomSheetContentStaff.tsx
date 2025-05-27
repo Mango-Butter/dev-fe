@@ -3,6 +3,7 @@ import Button from "../../../components/common/Button.tsx";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import { getStoreList } from "../../../api/boss/store.ts";
 import { useEffect, useState } from "react";
+import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx";
 import ErrorIcon from "../../../components/icons/ErrorIcon.tsx";
 import useStoreStore from "../../../stores/storeStore.ts";
 import { StoreSummaryBoss } from "../../../types/store.ts";
@@ -46,7 +47,7 @@ const StoreBottomSheetContent = () => {
     fetchStores();
   }, []);
 
-  if (loading) return <div className="text-center py-8">불러오는 중...</div>;
+  if (loading) return <FullScreenLoading />;
 
   return (
     <div className="flex flex-col h-full">

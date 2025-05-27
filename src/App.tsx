@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./routes/PublicRoute";
@@ -10,24 +12,13 @@ import LoginSuccess from "./pages/login/LoginSuccess.tsx";
 import Login from "./pages/login/Login.tsx";
 import Signup from "./pages/signup/Signup.tsx";
 import AddressSearchPopup from "./pages/store/boss/AddressSearchPopup.tsx";
-import ContractViewPage from "./pages/contract/boss/ContractViewPage.tsx";
-import ContractRegisterPage from "./pages/contract/boss/ContractRegisterPage.tsx";
 import RoleRoute from "./routes/RoleRoute.tsx";
 import Landing from "./pages/Landing.tsx";
-import EmployeeDetailPage from "./pages/employee/boss/EmployeeDetailPage.tsx";
-import ContractTemplateRegisterPage from "./pages/contract/boss/ContractTemplateRegisterPage.tsx";
-import ContractTemplatePage from "./pages/contract/boss/ContractTemplatePage.tsx";
-import ContractViewStaffPage from "./pages/contract/staff/ContractViewStaffPage.tsx";
-import StaffMyPage from "./pages/mypage/staff/StaffMyPage.tsx";
-import StaffDocumentPage from "./pages/document/staff/StaffDocumentPage.tsx";
-import BossDocumentPage from "./pages/document/boss/BossDocumentPage.tsx";
-import StaffAttendancePage from "./pages/attendance/staff/StaffAttendancePage.tsx";
-import ContractTemplateEditPage from "./pages/contract/boss/ContractTemplateEditPage.tsx";
-import BossPayrollPage from "./pages/payroll/boss/BossPayrollPage.tsx";
-import BossPayrollEditPage from "./pages/payroll/boss/BossPayrollEditPage.tsx";
+import FullScreenLoading from "./components/common/FullScreenLoading.tsx";
+import HomeBoss from "./pages/home/boss/HomeBoss.tsx";
+import HomeStaff from "./pages/home/staff/HomeStaff.tsx";
 
 // Lazy-loaded components (boss)
-const HomeBoss = lazy(() => import("./pages/home/boss/HomeBoss.tsx"));
 const Schedule = lazy(() => import("./pages/schedule/boss/Schedule.tsx"));
 const Employees = lazy(() => import("./pages/employee/boss/Employees.tsx"));
 const Task = lazy(() => import("./pages/Task"));
@@ -50,9 +41,35 @@ const SalarySettingPage = lazy(
 const NotificationSettingPage = lazy(
   () => import("./pages/store/boss/NotificationSettingPage.tsx"),
 );
+const ContractViewPage = lazy(
+  () => import("./pages/contract/boss/ContractViewPage.tsx"),
+);
+const ContractRegisterPage = lazy(
+  () => import("./pages/contract/boss/ContractRegisterPage.tsx"),
+);
+const EmployeeDetailPage = lazy(
+  () => import("./pages/employee/boss/EmployeeDetailPage.tsx"),
+);
+const ContractTemplateRegisterPage = lazy(
+  () => import("./pages/contract/boss/ContractTemplateRegisterPage.tsx"),
+);
+const ContractTemplatePage = lazy(
+  () => import("./pages/contract/boss/ContractTemplatePage.tsx"),
+);
+const BossDocumentPage = lazy(
+  () => import("./pages/document/boss/BossDocumentPage.tsx"),
+);
+const ContractTemplateEditPage = lazy(
+  () => import("./pages/contract/boss/ContractTemplateEditPage.tsx"),
+);
+const BossPayrollPage = lazy(
+  () => import("./pages/payroll/boss/BossPayrollPage.tsx"),
+);
+const BossPayrollEditPage = lazy(
+  () => import("./pages/payroll/boss/BossPayrollEditPage.tsx"),
+);
 
 // Lazy-loaded components (staff)
-const HomeStaff = lazy(() => import("./pages/home/staff/HomeStaff.tsx"));
 const ScheduleStaff = lazy(
   () => import("./pages/schedule/staff/ScheduleStaff.tsx"),
 );
@@ -62,123 +79,134 @@ const StoreRegisterIntro = lazy(
 const StoreRegisterStaffPage = lazy(
   () => import("./pages/store/staff/StoreRegisterStaffPage.tsx"),
 );
-
-// Suspense Wrapper
-const withSuspense = (Component: React.LazyExoticComponent<any>) => (
-  <Suspense fallback={<div>로딩 중...</div>}>
-    <Component />
-  </Suspense>
+const StaffAttendancePage = lazy(
+  () => import("./pages/attendance/staff/StaffAttendancePage.tsx"),
+);
+const ContractViewStaffPage = lazy(
+  () => import("./pages/contract/staff/ContractViewStaffPage.tsx"),
+);
+const StaffMyPage = lazy(() => import("./pages/mypage/staff/StaffMyPage.tsx"));
+const StaffDocumentPage = lazy(
+  () => import("./pages/document/staff/StaffDocumentPage.tsx"),
 );
 
 function App() {
   return (
     <Router>
       <AppInitializer />
-      <Routes>
-        <Route path="*" element={<NotFound />} />
-        <Route path="/" element={<MobileLayout />}>
-          {/* PUBIC Routes */}
-          <Route element={<PublicRoute />}>
-            <Route index element={<Landing />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/loginSuccess" element={<LoginSuccess />} />
-          </Route>
-          {/* PROTECTED Routes */}
-          <Route element={<ProtectedRoute />}>
-            {/* COMMON Routes */}
-            <Route path="/address-search" element={<AddressSearchPopup />} />
-            <Route path="/signup" element={<Signup />} />
-            {/* BOSS Routes */}
-            <Route element={<RoleRoute allowedRole="BOSS" />}>
-              <Route path="boss" element={withSuspense(HomeBoss)} />
-              <Route path="boss/schedule" element={withSuspense(Schedule)} />
-              <Route path="boss/employees" element={withSuspense(Employees)} />
-              <Route
-                path="/boss/employee/:staffId"
-                element={<EmployeeDetailPage />}
-              />
-              <Route path="boss/task" element={withSuspense(Task)} />
-              <Route path="boss/store" element={withSuspense(Store)} />
-              <Route
-                path="boss/store/register"
-                element={withSuspense(StoreRegisterBossPage)}
-              />
-              <Route
-                path="boss/store/info"
-                element={withSuspense(StoreInfoPage)}
-              />
-              <Route
-                path="boss/store/info/edit"
-                element={withSuspense(StoreInfoEditPage)}
-              />
-              <Route
-                path="boss/store/attendance"
-                element={withSuspense(AttendanceSettingPage)}
-              />
-              <Route
-                path="boss/store/salary"
-                element={withSuspense(SalarySettingPage)}
-              />
-              <Route
-                path="boss/store/notification"
-                element={withSuspense(NotificationSettingPage)}
-              />
-              <Route
-                path="/boss/contract/template"
-                element={<ContractTemplatePage />}
-              />
-              <Route
-                path="/boss/contract/template/register"
-                element={<ContractTemplateRegisterPage />}
-              />
-              <Route
-                path="/boss/contract/template/:id"
-                element={<ContractTemplateEditPage />}
-              />
-              <Route path="/boss/contract/:id" element={<ContractViewPage />} />
-              <Route
-                path="/boss/contract/register"
-                element={<ContractRegisterPage />}
-              />
-              <Route path="/boss/document" element={<BossDocumentPage />} />
-              <Route path="/boss/payroll" element={<BossPayrollPage />} />
-              <Route
-                path="/boss/payroll/edit"
-                element={<BossPayrollEditPage />}
-              />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="light"
+      />
+      <Suspense fallback={<FullScreenLoading />}>
+        <Routes>
+          <Route path="*" element={<NotFound />} />
+          <Route path="/" element={<MobileLayout />}>
+            {/* PUBIC Routes */}
+            <Route element={<PublicRoute />}>
+              <Route index element={<Landing />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/loginSuccess" element={<LoginSuccess />} />
             </Route>
+            {/* PROTECTED Routes */}
+            <Route element={<ProtectedRoute />}>
+              {/* COMMON Routes */}
+              <Route path="/address-search" element={<AddressSearchPopup />} />
+              <Route path="/signup" element={<Signup />} />
+              {/* BOSS Routes */}
+              <Route element={<RoleRoute allowedRole="BOSS" />}>
+                <Route path="boss" element={<HomeBoss />} />
+                <Route path="boss/schedule" element={<Schedule />} />
+                <Route path="boss/employees" element={<Employees />} />
+                <Route
+                  path="/boss/employee/:staffId"
+                  element={<EmployeeDetailPage />}
+                />
+                <Route path="boss/task" element={<Task />} />
+                <Route path="boss/store" element={<Store />} />
+                <Route
+                  path="boss/store/register"
+                  element={<StoreRegisterBossPage />}
+                />
+                <Route path="boss/store/info" element={<StoreInfoPage />} />
+                <Route
+                  path="boss/store/info/edit"
+                  element={<StoreInfoEditPage />}
+                />
+                <Route
+                  path="boss/store/attendance"
+                  element={<AttendanceSettingPage />}
+                />
+                <Route
+                  path="boss/store/salary"
+                  element={<SalarySettingPage />}
+                />
+                <Route
+                  path="boss/store/notification"
+                  element={<NotificationSettingPage />}
+                />
+                <Route
+                  path="/boss/contract/template"
+                  element={<ContractTemplatePage />}
+                />
+                <Route
+                  path="/boss/contract/template/register"
+                  element={<ContractTemplateRegisterPage />}
+                />
+                <Route
+                  path="/boss/contract/template/:id"
+                  element={<ContractTemplateEditPage />}
+                />
+                <Route
+                  path="/boss/contract/:id"
+                  element={<ContractViewPage />}
+                />
+                <Route
+                  path="/boss/contract/register"
+                  element={<ContractRegisterPage />}
+                />
+                <Route path="/boss/document" element={<BossDocumentPage />} />
+                <Route path="/boss/payroll" element={<BossPayrollPage />} />
+                <Route
+                  path="/boss/payroll/edit"
+                  element={<BossPayrollEditPage />}
+                />
+              </Route>
 
-            {/* STAFF Routes */}
-            <Route element={<RoleRoute allowedRole="STAFF" />}>
-              <Route path="staff" element={withSuspense(HomeStaff)} />
-              <Route
-                path="staff/schedule"
-                element={withSuspense(ScheduleStaff)}
-              />
-              <Route path="staff/task" element={<NotFound />} />
-              <Route path="staff/payroll" element={<NotFound />} />
-              <Route path="staff/mypage" element={<StaffMyPage />} />
-              <Route path="staff/document" element={<StaffDocumentPage />} />
-              <Route
-                path="staff/store/intro"
-                element={withSuspense(StoreRegisterIntro)}
-              />
-              <Route
-                path="staff/store/register"
-                element={withSuspense(StoreRegisterStaffPage)}
-              />
-              <Route
-                path="staff/contract/:id"
-                element={<ContractViewStaffPage />}
-              />
-              <Route
-                path="staff/attendance"
-                element={<StaffAttendancePage />}
-              />
+              {/* STAFF Routes */}
+              <Route element={<RoleRoute allowedRole="STAFF" />}>
+                <Route path="staff" element={<HomeStaff />} />
+                <Route path="staff/schedule" element={<ScheduleStaff />} />
+                <Route path="staff/task" element={<NotFound />} />
+                <Route path="staff/payroll" element={<NotFound />} />
+                <Route path="staff/mypage" element={<StaffMyPage />} />
+                <Route path="staff/document" element={<StaffDocumentPage />} />
+                <Route
+                  path="staff/store/intro"
+                  element={<StoreRegisterIntro />}
+                />
+                <Route
+                  path="staff/store/register"
+                  element={<StoreRegisterStaffPage />}
+                />
+                <Route
+                  path="staff/contract/:id"
+                  element={<ContractViewStaffPage />}
+                />
+                <Route
+                  path="staff/attendance"
+                  element={<StaffAttendancePage />}
+                />
+              </Route>
             </Route>
           </Route>
-        </Route>
-      </Routes>
+        </Routes>
+      </Suspense>
     </Router>
   );
 }

@@ -8,14 +8,12 @@ import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import useStoreStore from "../../../stores/storeStore.ts";
 import { getStaffBriefList } from "../../../api/boss/staff.ts";
 import { StaffBrief } from "../../../types/staff.ts";
-import {
-  formatDateToKSTString,
-  formatFullDate,
-  getKoreaISOString,
-} from "../../../utils/date.ts";
+import { formatFullDate } from "../../../utils/date.ts";
 import Button from "../../../components/common/Button.tsx";
 import { createAttendance } from "../../../api/boss/schedule.ts";
 import useScheduleStore from "../../../stores/useScheduleStore.ts";
+import { formatDateToKSTString, getKSTDate } from "../../../libs/date.ts";
+import { toast } from "react-toastify";
 
 interface AddAttendanceFormProps {
   defaultDate?: Date;
@@ -50,7 +48,7 @@ const AttendanceAddForm = ({ defaultDate }: AddAttendanceFormProps) => {
     mode: "onChange",
     defaultValues: {
       staffId: 0,
-      date: defaultDate ?? new Date(getKoreaISOString()),
+      date: defaultDate ?? getKSTDate(),
       clockInTime: "09:00",
       clockOutTime: "15:00",
     },
@@ -87,7 +85,7 @@ const AttendanceAddForm = ({ defaultDate }: AddAttendanceFormProps) => {
 
       await useScheduleStore.getState().syncScheduleAndDot(storeId, dateKey);
 
-      alert("근태가 성공적으로 추가되었습니다.");
+      toast.success("근태가 성공적으로 추가되었습니다.");
     } catch (err) {
       console.error("근태 추가 실패", err);
     } finally {

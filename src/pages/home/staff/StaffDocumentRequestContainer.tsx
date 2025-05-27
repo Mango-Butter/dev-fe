@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useStaffStoreStore from "../../../stores/useStaffStoreStore";
 import { fetchStaffContracts } from "../../../api/staff/constract.ts";
 import { getStaffDocumentSummary } from "../../../api/staff/document.ts";
+import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx";
 
 const StaffDocumentRequestContainer = () => {
   const navigate = useNavigate();
@@ -41,9 +42,7 @@ const StaffDocumentRequestContainer = () => {
   }, [storeId]);
 
   if (loading) {
-    return (
-      <div className="text-smtext-white">서류 요청 정보를 불러오는 중...</div>
-    );
+    return <FullScreenLoading />;
   }
 
   return (

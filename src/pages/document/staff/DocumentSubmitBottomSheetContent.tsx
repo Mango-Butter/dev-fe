@@ -12,6 +12,7 @@ import { encryptSignatureBase64 } from "../../../libs/encryption.ts";
 import { uploadStaffDocument } from "../../../api/staff/document.ts";
 import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
 import { useDocumentStore } from "../../../stores/staff/documentStore.ts";
+import { toast } from "react-toastify";
 
 interface Props {
   document: StaffDocumentSummary;
@@ -25,11 +26,11 @@ const DocumentSubmitBottomSheetContent = ({ document }: Props) => {
 
   const handleConfirm = async () => {
     if (!selectedStore) {
-      alert("매장을 찾을 수 없습니다.");
+      toast.error("매장을 찾을 수 없습니다.");
       return;
     }
     if (!uploadedFile) {
-      alert("파일을 등록해주세요.");
+      toast.error("파일을 등록해주세요.");
       return;
     }
 
@@ -44,7 +45,7 @@ const DocumentSubmitBottomSheetContent = ({ document }: Props) => {
       });
       await fetchDocuments();
 
-      alert("제출이 완료되었습니다.");
+      toast.success("제출이 완료되었습니다.");
       setBottomSheetOpen(false);
     } catch (err) {
       console.error(err);

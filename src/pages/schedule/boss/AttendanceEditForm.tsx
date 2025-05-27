@@ -14,6 +14,9 @@ import {
 } from "../../../api/boss/schedule.ts";
 import { useEffect } from "react";
 import { DailyAttendanceRecord } from "../../../types/calendar.ts";
+import { parseDateStringToKST } from "../../../libs/date.ts";
+import { toast } from "react-toastify";
+import { showConfirm } from "../../../libs/showConfirm.ts";
 
 const schema = z.discriminatedUnion("clockInStatus", [
   z.object({
@@ -79,9 +82,9 @@ const AttendanceEditForm = ({
         clockInTime: data.clockInTime ?? null,
         clockOutTime: data.clockOutTime ?? null,
       });
-      const dateKey = formatFullDate(new Date(schedule.workDate));
+      const dateKey = formatFullDate(parseDateStringToKST(schedule.workDate));
       await useScheduleStore.getState().syncScheduleAndDot(storeId, dateKey);
-      alert("근태 정보가 성공적으로 수정되었습니다.");
+      toast.success("근태 정보가 성공적으로 수정되었습니다.");
     } catch (err) {
       console.error("근태 수정 실패", err);
     } finally {
@@ -91,14 +94,25 @@ const AttendanceEditForm = ({
 
   const onDelete = async () => {
     if (!storeId) return;
-    if (!confirm("정말로 이 근태 기록을 삭제하시겠습니까?")) return;
+
+    const confirmed = await showConfirm({
+      title: "정말 삭제할까요?",
+      text: "삭제한 근태 기록은 복구할 수 없어요",
+      confirmText: "삭제할래요",
+      cancelText: "취소할래요",
+      icon: "question",
+    });
+
+    if (!confirmed) return;
+
     try {
       await deleteAttendance(storeId, schedule.scheduleId);
-      const dateKey = formatFullDate(new Date(schedule.workDate));
+      const dateKey = formatFullDate(parseDateStringToKST(schedule.workDate));
       await useScheduleStore.getState().syncScheduleAndDot(storeId, dateKey);
-      alert("근태 기록이 삭제되었습니다.");
+      toast.success("근태 기록이 삭제되었습니다.");
     } catch (err) {
       console.error("근태 삭제 실패", err);
+      toast.error("근태 기록 삭제에 실패했어요.");
     } finally {
       setBottomSheetOpen(false);
     }
@@ -127,7 +141,7 @@ const AttendanceEditForm = ({
         <label className="title-1 block mb-3">근무 일정</label>
         <TextField
           type="text"
-          value={formatFullDate(new Date(schedule.workDate))}
+          value={formatFullDate(parseDateStringToKST(schedule.workDate))}
           disabled
         />
       </section>

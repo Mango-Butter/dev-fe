@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import ErrorIcon from "../../../components/icons/ErrorIcon.tsx";
 import useStoreStore from "../../../stores/storeStore.ts";
 import { StoreSummaryBoss } from "../../../types/store.ts";
+import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx";
 
 const StoreBottomSheetContent = () => {
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ const StoreBottomSheetContent = () => {
     fetchStores();
   }, []);
 
-  if (loading) return <div className="text-center py-8">불러오는 중...</div>;
+  if (loading) return <FullScreenLoading />;
 
   return (
     <div className="flex flex-col h-full">
@@ -118,7 +119,7 @@ const StoreBottomSheetContent = () => {
         theme="ghost2"
         state="default"
         className="w-full flex-1"
-        onClick={handleConfirm} // ✅ 완료 시 전역 store 반영
+        onClick={handleConfirm}
       >
         완료
       </Button>

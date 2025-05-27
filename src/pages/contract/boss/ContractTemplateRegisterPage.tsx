@@ -17,6 +17,8 @@ import {
   contractTemplateSchema,
 } from "../../../schemas/contractTemplateSchema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { formatDateToKSTString } from "../../../libs/date.ts";
+import { toast } from "react-toastify";
 
 const ContractTemplateRegisterPage = () => {
   useLayout({
@@ -85,11 +87,9 @@ const ContractTemplateRegisterPage = () => {
         title: data.title,
         contractTemplateData: {
           contractStart: contractStart
-            ? contractStart.toISOString().split("T")[0]
+            ? formatDateToKSTString(contractStart)
             : null,
-          contractEnd: contractEnd
-            ? contractEnd.toISOString().split("T")[0]
-            : null,
+          contractEnd: contractEnd ? formatDateToKSTString(contractEnd) : null,
           duty: data.duty || null,
           hourlyWage:
             typeof data.hourlyWage === "number" ? data.hourlyWage : null,
@@ -98,7 +98,7 @@ const ContractTemplateRegisterPage = () => {
       };
 
       await createContractTemplate(selectedStore.storeId, payload);
-      alert("템플릿이 성공적으로 등록되었습니다.");
+      toast.success("템플릿이 성공적으로 등록되었습니다.");
       navigate("/boss/contract/template");
     } catch (err) {
       console.error("템플릿 저장 실패", err);

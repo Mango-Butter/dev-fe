@@ -18,10 +18,12 @@ import { DailyAttendanceRecord } from "../../../types/calendar.ts";
 import ScheduleFilter from "./ScheduleFilter.tsx";
 import { useScheduleFilters } from "../../../hooks/useScheduleFilters.ts";
 import StaffScheduleList from "./StaffScheduleList.tsx";
+import dayjs from "dayjs";
+import { getKSTDate } from "../../../libs/date.ts";
 
 const Schedule = () => {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [calendarViewDate, setCalendarViewDate] = useState<Date>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date>(getKSTDate());
+  const [calendarViewDate, setCalendarViewDate] = useState<Date>(getKSTDate());
   const dateKey = formatFullDate(selectedDate);
 
   const { scheduleMap, dotMap, fetchDailySchedule, fetchDotRange } =
@@ -31,7 +33,10 @@ const Schedule = () => {
   const storeId = selectedStore?.storeId;
   const { setBottomSheetContent } = useBottomSheetStore();
 
-  const isPast = selectedDate < new Date(new Date().setHours(0, 0, 0, 0));
+  const isPast = dayjs(selectedDate).isBefore(
+    dayjs(getKSTDate()).startOf("day"),
+  );
+
   const { filters } = useScheduleFilters();
 
   const filteredRecords = scheduleMap[dateKey]?.filter(({ attendance }) => {
@@ -129,9 +134,18 @@ const Schedule = () => {
     <div className="flex flex-col w-full h-full">
       <Calendar
         className="schedule-page-calendar"
-        onChange={(value) => setSelectedDate(value as Date)}
+        onChange={(value) =>
+          setSelectedDate(
+            dayjs(value as Date)
+              .tz("Asia/Seoul")
+              .toDate(),
+          )
+        }
         onActiveStartDateChange={({ activeStartDate }) => {
-          if (activeStartDate) setCalendarViewDate(activeStartDate);
+          if (activeStartDate)
+            setCalendarViewDate(
+              dayjs(activeStartDate).tz("Asia/Seoul").toDate(),
+            );
         }}
         value={selectedDate}
         calendarType="gregory"

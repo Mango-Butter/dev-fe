@@ -8,6 +8,7 @@ import {
   DailyAttendanceRecord,
   DailyCalendarSummary,
 } from "../types/calendar.ts";
+import { parseDateStringToKST } from "../libs/date.ts";
 
 interface ScheduleStore {
   scheduleMap: Record<string, DailyAttendanceRecord[]>;
@@ -63,7 +64,7 @@ const useScheduleStore = create<ScheduleStore>((set, get) => ({
 
   // --- 전체 동기화 ---
   syncScheduleAndDot: async (storeId, date) => {
-    const parsed = new Date(date);
+    const parsed = parseDateStringToKST(date);
     await Promise.all([
       get().fetchDailySchedule(storeId, date),
       get().fetchDotRange(storeId, parsed),

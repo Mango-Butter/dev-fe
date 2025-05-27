@@ -12,6 +12,7 @@ import {
 } from "../../../api/boss/payroll.ts";
 import Button from "../../../components/common/Button.tsx";
 import BossPayrollCard from "./BossPayrollCard.tsx";
+import { toast } from "react-toastify";
 
 const BossPayrollEditPage = () => {
   useLayout({
@@ -68,8 +69,8 @@ const BossPayrollEditPage = () => {
 
     try {
       await confirmPayrollTransfers(selectedStore.storeId, keys);
-      alert("송금 인원을 성공적으로 확정했습니다.");
-      history.back(); // 또는 navigate(-1)
+      toast.success("송금 인원을 성공적으로 확정했습니다.");
+      history.back();
     } catch (err: any) {
       console.error("송금 확정 실패:", err);
     }

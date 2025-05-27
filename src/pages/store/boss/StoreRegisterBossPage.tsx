@@ -15,6 +15,7 @@ import {
   validateBusinessNumber,
 } from "../../../api/boss/store.ts";
 import Spinner from "../../../components/common/Spinner.tsx";
+import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx";
 
 const StoreRegisterBossPage = () => {
   useLayout({
@@ -129,7 +130,7 @@ const StoreRegisterBossPage = () => {
     } catch (err) {}
   };
 
-  if (isLoading) return <div>로딩 중...</div>;
+  if (isLoading) return <FullScreenLoading />;
   if (!isLoggedIn || !user) return <Navigate to="/login" replace />;
 
   return (

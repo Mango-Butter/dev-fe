@@ -4,6 +4,7 @@ import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
 import { TodayScheduleWithAttendance } from "../../../types/attendance.ts";
 import { getTodayScheduleAndAttendance } from "../../../api/staff/attendance.ts";
 import StaffAttendanceCard from "./StaffAttendanceCard.tsx";
+import { parseDateStringToKST } from "../../../libs/date.ts";
 
 const StaffAttendanceContainer = () => {
   const { selectedStore } = useStaffStoreStore();
@@ -19,8 +20,8 @@ const StaffAttendanceContainer = () => {
       const result = await getTodayScheduleAndAttendance(selectedStore.storeId);
       result.sort(
         (a, b) =>
-          new Date(a.schedule.startTime).getTime() -
-          new Date(b.schedule.startTime).getTime(),
+          parseDateStringToKST(a.schedule.startTime).getTime() -
+          parseDateStringToKST(b.schedule.startTime).getTime(),
       );
       setSchedules(result);
       setLoading(false);

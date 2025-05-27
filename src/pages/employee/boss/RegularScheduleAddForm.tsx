@@ -14,6 +14,8 @@ import useStoreStore from "../../../stores/storeStore.ts";
 import useSelectedStaffStore from "../../../stores/selectedStaffStore.ts";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import { useState } from "react";
+import { formatDateToKSTString } from "../../../libs/date.ts";
+import { toast } from "react-toastify";
 
 const schema = z.object({
   range: z
@@ -72,18 +74,18 @@ const RegularScheduleAddForm = ({ onSuccess }: Props) => {
   const { setBottomSheetOpen } = useBottomSheetStore.getState();
 
   const onSubmit = async (data: FormData) => {
-    if (isLoading) return; // 로딩 중이면 중복 요청 방지
+    if (isLoading) return;
     setIsLoading(true);
 
     const [startDateObj, endDateObj] = data.range;
     if (!startDateObj || !endDateObj) {
-      alert("반복기간 선택 정보가 없습니다.");
+      toast.error("반복기간 선택 정보가 없습니다.");
       setIsLoading(false);
       return;
     }
 
-    const startDate = startDateObj.toISOString().slice(0, 10);
-    const endDate = endDateObj.toISOString().slice(0, 10);
+    const startDate = formatDateToKSTString(startDateObj);
+    const endDate = formatDateToKSTString(endDateObj);
 
     const payload: CreateRegularScheduleDto[] = data.selectedDays.map((day) => {
       const time = data.timeMap[day];
@@ -101,7 +103,7 @@ const RegularScheduleAddForm = ({ onSuccess }: Props) => {
     const { selectedStaffId } = useSelectedStaffStore.getState();
 
     if (!selectedStore || !selectedStaffId) {
-      alert("매장 또는 알바생 정보가 없습니다.");
+      toast.error("매장 또는 알바생 정보가 없습니다.");
       setIsLoading(false);
       return;
     }

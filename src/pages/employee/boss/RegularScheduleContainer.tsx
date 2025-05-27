@@ -6,6 +6,7 @@ import {
 } from "../../../types/staff";
 import { deleteRegularSchedule } from "../../../api/boss/staff";
 import Button from "../../../components/common/Button";
+import { showConfirm } from "../../../libs/showConfirm.ts";
 
 interface Props {
   storeId: number;
@@ -31,7 +32,14 @@ const RegularScheduleContainer = ({
   const handleDelete = async (regularGroupId: number) => {
     if (!storeId || !staffId) return;
 
-    const confirmed = window.confirm("정말 이 스케줄을 삭제하시겠습니까?");
+    const confirmed = await showConfirm({
+      title: "정말 삭제할까요?",
+      text: "이 고정 스케줄은 복구할 수 없어요.",
+      confirmText: "삭제할래요",
+      cancelText: "취소할래요",
+      icon: "question",
+    });
+
     if (!confirmed) return;
 
     try {

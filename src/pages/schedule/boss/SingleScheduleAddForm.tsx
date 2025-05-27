@@ -9,10 +9,12 @@ import { getStaffBriefList } from "../../../api/boss/staff.ts";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import useStoreStore from "../../../stores/storeStore.ts";
 import useScheduleStore from "../../../stores/useScheduleStore.ts";
-import { formatDateToKSTString, formatFullDate } from "../../../utils/date.ts";
+import { formatFullDate } from "../../../utils/date.ts";
 import { getDefaultScheduleTimes } from "../../../utils/time.ts";
 import TextField from "../../../components/common/TextField.tsx";
 import Button from "../../../components/common/Button.tsx";
+import { formatDateToKSTString, getKSTDate } from "../../../libs/date.ts";
+import { toast } from "react-toastify";
 
 interface SingleScheduleAddFormProps {
   defaultDate?: Date;
@@ -58,7 +60,7 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
     mode: "onChange",
     defaultValues: {
       staffId: 0,
-      date: defaultDate ?? new Date(),
+      date: defaultDate ?? getKSTDate(),
       startTime,
       endTime,
     },
@@ -95,7 +97,7 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
       // 서버 등록 후 최신 상태 fetch로 동기화
       await useScheduleStore.getState().syncScheduleAndDot(storeId, dateKey);
 
-      alert("스케줄이 성공적으로 추가되었습니다!");
+      toast.success("스케줄이 성공적으로 추가되었습니다!");
     } catch (err) {
       console.error("스케줄 추가 실패", err);
     } finally {
