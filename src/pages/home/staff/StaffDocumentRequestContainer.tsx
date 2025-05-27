@@ -4,6 +4,7 @@ import useStaffStoreStore from "../../../stores/useStaffStoreStore";
 import { fetchStaffContracts } from "../../../api/staff/constract.ts";
 import { getStaffDocumentSummary } from "../../../api/staff/document.ts";
 import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx";
+import { cn } from "../../../libs";
 
 const StaffDocumentRequestContainer = () => {
   const navigate = useNavigate();
@@ -24,7 +25,9 @@ const StaffDocumentRequestContainer = () => {
           getStaffDocumentSummary(storeId),
         ]);
 
-        const unsignedCount = contracts.filter((c) => !c.isSigned).length;
+        const unsignedCount = contracts.filter(
+          (c) => c.status === "PENDING_STAFF_SIGNATURE",
+        ).length;
         const unsubmittedRequiredDocs = documents.filter(
           (d) => d.isRequired && !d.isSubmitted,
         ).length;
@@ -41,29 +44,50 @@ const StaffDocumentRequestContainer = () => {
     fetchData();
   }, [storeId]);
 
-  if (loading) {
-    return <FullScreenLoading />;
-  }
+  if (loading) return <FullScreenLoading />;
 
   return (
     <div className="flex flex-col gap-2 w-full">
       <div className="w-full justify-start items-center title-1">서류 요청</div>
       <div className="flex gap-2 w-full">
+        {/* 근로계약서 카드 */}
         <div
           onClick={() => navigate("/staff/document?type=contract")}
-          className="cursor-pointer flex flex-1 py-3 px-4 border border-grayscale-300 bg-white shadow-basic rounded-xl flex-col justify-center items-start gap-2 self-stretch"
+          className={cn(
+            "cursor-pointer flex flex-1 py-3 px-4 border border-grayscale-300 bg-white rounded-xl flex-col justify-center items-start gap-2 self-stretch",
+            contractRequestCount > 0 ? "shadow-blue-shadow" : "shadow-basic",
+          )}
         >
           <span className="title-2">근로계약서</span>
-          <span className="body-3 text-gray-500">
+          <span
+            className={cn(
+              "body-3",
+              contractRequestCount > 0
+                ? "text-secondary-600"
+                : "text-grayscale-500",
+            )}
+          >
             서명 요청 {contractRequestCount}
           </span>
         </div>
+
+        {/* 기타 서류 카드 */}
         <div
           onClick={() => navigate("/staff/document?type=etc")}
-          className="cursor-pointer flex flex-1 py-3 px-4 border border-grayscale-300 bg-white shadow-basic rounded-xl flex-col justify-center items-start gap-2 self-stretch"
+          className={cn(
+            "cursor-pointer flex flex-1 py-3 px-4 border border-grayscale-300 bg-white rounded-xl flex-col justify-center items-start gap-2 self-stretch",
+            documentRequestCount > 0 ? "shadow-blue-shadow" : "shadow-basic",
+          )}
         >
-          <span className="title-2">기타 문서</span>
-          <span className="body-3 text-gray-500">
+          <span className="title-2">기타 서류</span>
+          <span
+            className={cn(
+              "body-3",
+              documentRequestCount > 0
+                ? "text-secondary-600"
+                : "text-grayscale-500",
+            )}
+          >
             제출 요청 {documentRequestCount}
           </span>
         </div>

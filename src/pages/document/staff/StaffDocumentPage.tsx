@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import clsx from "clsx";
 import { useLayout } from "../../../hooks/useLayout.ts";
@@ -7,19 +7,20 @@ import StaffDocumentListPage from "./StaffDocumentListPage.tsx";
 
 const tabItems = [
   { label: "근로계약서", value: "contract" },
-  { label: "기타 문서", value: "etc" },
+  { label: "기타 서류", value: "etc" },
 ];
 
 const StaffDocumentPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentTab = searchParams.get("type") || "contract";
+  const navigate = useNavigate();
 
   useLayout({
     title: "내 문서",
     theme: "plain",
     headerVisible: true,
     bottomNavVisible: true,
-    onBack: () => history.back(),
+    onBack: () => navigate("/staff"),
     rightIcon: null,
   });
 

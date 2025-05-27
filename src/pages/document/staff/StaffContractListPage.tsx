@@ -23,6 +23,7 @@ const StaffContractListPage = () => {
     const fetch = async () => {
       try {
         const data = await fetchStaffContracts(selectedStore.storeId);
+        console.log(data);
         setContracts(data);
       } catch (e) {
         console.error("근로계약서 조회 실패", e);
@@ -64,13 +65,17 @@ const StaffContractListPage = () => {
               </span>
             </div>
 
-            {contract.isSigned ? (
+            {contract.status === "COMPLETED" ? (
               <Button size="sm" theme="ghost2" state="default">
-                보기
+                확인하기
               </Button>
-            ) : (
+            ) : contract.status === "PENDING_STAFF_SIGNATURE" ? (
               <Button size="sm" theme="ghost2" state="default">
                 서명하기
+              </Button>
+            ) : (
+              <Button size="sm" theme="ghost2" state="disabled">
+                생성 중
               </Button>
             )}
           </div>

@@ -2,12 +2,17 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "../../../libs";
-import { BossContractSummary, statusLabelMap } from "../../../types/contract";
+import {
+  ContractSimple,
+  StaffSimple,
+  statusLabelMap,
+} from "../../../types/contract";
 import useClickOutside from "../../../hooks/useClickOutside";
 import MoreIcon from "../../../components/common/MoreIcon.tsx";
 import PaperAirplaneIcon from "../../../components/icons/PaperAirplainIcon.tsx";
 import useStoreStore from "../../../stores/storeStore.ts";
 import {
+  deleteContract,
   fetchContractPdfDownloadUrl,
   fetchContractPdfViewUrl,
 } from "../../../api/boss/contract.ts";
@@ -15,12 +20,14 @@ import { formatFullDateWithTime } from "../../../utils/date.ts";
 import useSelectedStaffStore from "../../../stores/selectedStaffStore.ts";
 import { parseDateStringToKST } from "../../../libs/date.ts";
 import { toast } from "react-toastify";
+import { showConfirm } from "../../../libs/showConfirm.ts";
 
 interface Props {
-  contract: BossContractSummary;
+  contract: ContractSimple & { staff: StaffSimple };
+  onDelete: () => void;
 }
 
-const statusStyleMap: Record<BossContractSummary["status"], string> = {
+const statusStyleMap: Record<ContractSimple["status"], string> = {
   COMPLETED: "text-green-500 border border-green-200 bg-green-50",
   PENDING_STAFF_SIGNATURE:
     "text-yellow-600 border border-yellow-200 bg-yellow-50",
@@ -28,7 +35,7 @@ const statusStyleMap: Record<BossContractSummary["status"], string> = {
     "text-grayscale-400 border border-grayscale-200 bg-grayscale-100",
 };
 
-const ContractCard = ({ contract }: Props) => {
+const ContractCard = ({ contract, onDelete }: Props) => {
   const navigate = useNavigate();
   const [popupOpen, setPopupOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null);
@@ -78,9 +85,29 @@ const ContractCard = ({ contract }: Props) => {
     }
   };
 
-  // 근로계약서 삭제
   const handleDeleteContract = async () => {
-    toast("아직 준비중인 기능입니다.");
+    if (!storeId || !contract.contractId) return;
+
+    const confirmed = await showConfirm({
+      title: "근로계약서를 삭제하시겠습니까?",
+      text: "삭제된 계약서는 복구할 수 없습니다.",
+      confirmText: "삭제",
+      cancelText: "취소",
+      icon: "warning",
+    });
+
+    if (!confirmed) return;
+
+    try {
+      await deleteContract(storeId, contract.contractId);
+      toast.success("근로계약서가 삭제되었습니다.");
+      onDelete();
+    } catch (error) {
+      console.error("계약서 삭제 오류:", error);
+      toast.error("계약서 삭제에 실패했습니다.");
+    } finally {
+      setPopupOpen(false);
+    }
   };
 
   return (

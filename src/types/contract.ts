@@ -84,21 +84,34 @@ export interface ContractPdfDownloadResponse {
 export interface StaffContractSummary {
   contractId: number;
   modifiedAt: string; // ISO datetime string
-  isSigned: boolean;
+  status: ContractStatus;
+}
+
+export type ContractStatus =
+  | "PENDING_STAFF_SIGNATURE"
+  | "COMPLETED"
+  | "NOT_CREATED";
+
+export interface ContractSimple {
+  contractId: number;
+  modifiedAt: string;
+  bossSignedAt: string;
+  staffSignedAt: string | null;
+  status: ContractStatus;
+}
+
+export interface StaffSimple {
+  staffId: number;
+  name: string;
+  profileImageUrl: string;
 }
 
 export interface BossContractSummary {
-  contractId?: number;
-  modifiedAt?: string;
-  status: "PENDING_STAFF_SIGNATURE" | "NOT_CREATED" | "COMPLETED";
-  staff: {
-    staffId: number;
-    name: string;
-    profileImageUrl: string;
-  };
+  staffSimpleResponse: StaffSimple;
+  contractSimpleResponses: ContractSimple[];
 }
 
-export const statusLabelMap: Record<BossContractSummary["status"], string> = {
+export const statusLabelMap: Record<ContractSimple["status"], string> = {
   COMPLETED: "서명 완료",
   PENDING_STAFF_SIGNATURE: "서명 대기",
   NOT_CREATED: "미작성",
@@ -106,7 +119,7 @@ export const statusLabelMap: Record<BossContractSummary["status"], string> = {
 
 export interface BossStaffContractSummary {
   contractId: number;
-  createdAt: string; // ISO datetime
+  modifiedAt: string; // ISO datetime
   bossSignedAt: string;
   staffSignedAt: string | null;
   status: "PENDING_STAFF_SIGNATURE" | "COMPLETED" | "NOT_CREATED";

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useStoreStore from "../../../stores/storeStore";
 import Button from "../../../components/common/Button.tsx";
 import { BossContractSummary } from "../../../types/contract.ts";
-import ContractCard from "../../contract/boss/ContractCard.tsx";
+import ContractContainer from "../../contract/boss/ContractContainer.tsx"; // 변경된 부분
 import { fetchBossContractList } from "../../../api/boss/contract.ts";
 
 const BossContractListPage = () => {
@@ -12,22 +12,26 @@ const BossContractListPage = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  const fetchContracts = async () => {
+    if (!selectedStore) return;
+    try {
+      setLoading(true); // optional: 로딩 표시
+      const result = await fetchBossContractList(selectedStore.storeId);
+      setContracts(result);
+    } catch (err) {
+      console.error("계약서 목록 조회 실패", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchContracts = async () => {
-      if (!selectedStore) return;
-
-      try {
-        const result = await fetchBossContractList(selectedStore.storeId);
-        setContracts(result);
-      } catch (err) {
-        console.error("계약서 목록 조회 실패", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchContracts();
   }, [selectedStore]);
+
+  const handleDelete = () => {
+    fetchContracts();
+  };
 
   const redirectContractTemplateListPage = () => {
     navigate("/boss/contract/template");
@@ -50,7 +54,7 @@ const BossContractListPage = () => {
       </Button>
 
       {/* 리스트 영역 */}
-      <div className="flex-1 overflow-y-auto mb-24">
+      <div className="flex-1 mb-24">
         {loading ? (
           <div className="text-center text-grayscale-500 p-4 body-3">
             계약서 목록을 불러오는 중입니다...
@@ -60,9 +64,13 @@ const BossContractListPage = () => {
             등록된 계약서가 없습니다.
           </div>
         ) : (
-          <div className="w-full flex flex-col py-2 gap-2 bg-white border border-grayscale-200 rounded-xl shadow-basic">
-            {contracts.map((contract, index) => (
-              <ContractCard key={index} contract={contract} />
+          <div className="w-full flex flex-col gap-3">
+            {contracts.map((summary) => (
+              <ContractContainer
+                key={summary.staffSimpleResponse.staffId}
+                summary={summary}
+                onDeleteContract={handleDelete}
+              />
             ))}
           </div>
         )}
