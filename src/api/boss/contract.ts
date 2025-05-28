@@ -116,3 +116,16 @@ export const fetchBossStaffContracts = async (
   );
   return res.data.result;
 };
+
+/**
+ * 근로계약서 삭제
+ * @param storeId 매장 ID
+ * @param contractId 계약서 ID
+ * @returns void (성공 시 200 OK, 응답 본문 없음)
+ */
+export const deleteContract = async (
+  storeId: number,
+  contractId: number,
+): Promise<void> => {
+  await axiosAuth.delete(`/api/boss/stores/${storeId}/contracts/${contractId}`);
+};

@@ -21,7 +21,7 @@ export const showConfirm = async ({
 }: ShowConfirmOptions): Promise<boolean> => {
   const result = await MySwal.fire({
     title,
-    text,
+    html: text.replace(/\n/g, "<br>"),
     icon,
     showCancelButton: true,
     confirmButtonText: confirmText,

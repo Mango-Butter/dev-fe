@@ -20,7 +20,7 @@ const ContractViewPage = () => {
     theme: "plain",
     headerVisible: true,
     bottomNavVisible: false,
-    onBack: () => history.back(),
+    onBack: () => navigate("/boss/document?type=contract"),
     rightIcon: null,
   });
 

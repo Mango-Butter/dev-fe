@@ -33,7 +33,7 @@ const ContractViewStaffPage = () => {
     theme: "plain",
     headerVisible: true,
     bottomNavVisible: false,
-    onBack: () => navigate("/staff"),
+    onBack: () => navigate("/staff/document?type=contract"),
     rightIcon: null,
   });
 

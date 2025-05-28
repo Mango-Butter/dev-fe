@@ -64,7 +64,7 @@ const StoreBottomSheetContent = () => {
                   매장을 추가해 주세요.
                 </div>
                 <span
-                  className="body-2text-grayscale-900 cursor-pointer"
+                  className="body-3 text-grayscale-900 hover:underline cursor-pointer"
                   onClick={handleStoreRegister}
                 >
                   + 매장 추가하기
@@ -77,7 +77,7 @@ const StoreBottomSheetContent = () => {
                 onClick={handleStoreRegister}
                 className="flex justify-end w-full flex-1  bg-white mb-4"
               >
-                <span className="body-2text-grayscale-900 cursor-pointer">
+                <span className="body-3 text-grayscale-900 hover:underline cursor-pointer">
                   + 매장 추가하기
                 </span>
               </div>

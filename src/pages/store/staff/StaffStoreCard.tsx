@@ -78,7 +78,7 @@ const StaffStoreCard = () => {
           </div>
 
           <span
-            className="body-2text-grayscale-900 cursor-pointer"
+            className="body-3 text-grayscale-900 hover:underline cursor-pointer"
             onClick={handleStoreRegister}
           >
             + 매장 추가하기
