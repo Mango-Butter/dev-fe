@@ -16,6 +16,7 @@ import RoleRoute from "./routes/RoleRoute.tsx";
 import FullScreenLoading from "./components/common/FullScreenLoading.tsx";
 import HomeBoss from "./pages/home/boss/HomeBoss.tsx";
 import HomeStaff from "./pages/home/staff/HomeStaff.tsx";
+import UnifiedPWAPrompt from "./libs/fcm/UnifiedPWAPrompt.tsx";
 
 // Lazy-loaded components (boss)
 const Landing = lazy(() => import("./pages/landing/Landing.tsx"));
@@ -103,6 +104,7 @@ function App() {
         draggable
         theme="light"
       />
+      <UnifiedPWAPrompt />
       <Suspense fallback={<FullScreenLoading />}>
         <Routes>
           <Route path="*" element={<NotFound />} />

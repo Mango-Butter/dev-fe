@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../stores/authStore";
 import { useUserStore } from "../stores/userStore";
 import { fetchUserProfile } from "../api/common/user.ts";
+import { initForegroundFCM } from "../libs/fcm/messaging.tsx";
+import { requestUserPermission } from "../libs/fcm/requestPermission.ts";
 
 const AppInitializer = () => {
   const navigate = useNavigate();
@@ -16,6 +18,11 @@ const AppInitializer = () => {
         try {
           const user = await fetchUserProfile();
           setUser(user);
+          const hasToken = localStorage.getItem("fcmToken");
+          if (!hasToken && Notification.permission !== "granted") {
+            requestUserPermission();
+          }
+          initForegroundFCM();
         } catch (err) {
           logout();
           navigate("/login", { replace: true });
