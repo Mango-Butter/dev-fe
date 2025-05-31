@@ -56,9 +56,9 @@ export default function Modal() {
         ref={modalRef}
         className="max-h-[90vh] w-[94vw] max-w-[28rem] rounded-2xl bg-white p-6 pr-5 tablet:w-[37.5rem] tablet:max-w-none"
       >
-        <div className="relative mb-6 flex w-full justify-center items-center">
+        <div className="relative mb-5 flex w-full justify-center items-center">
           {title ? (
-            <h1 className="title-1">{title}</h1>
+            <h1 className="heading-1">{title}</h1>
           ) : (
             <LogoIcon theme="text" />
           )}

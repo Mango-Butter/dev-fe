@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
-import { useLayout } from "../../../hooks/useLayout.ts";
-import useStoreStore from "../../../stores/storeStore.ts";
-import {
-  PayrollSettingsResponse,
-  StaffPayroll,
-} from "../../../types/payroll.ts";
-import {
-  fetchStaffPayrolls,
-  getPayrollSettings,
-  confirmPayrollTransfers,
-} from "../../../api/boss/payroll.ts";
-import Button from "../../../components/common/Button.tsx";
-import BossPayrollCard from "./BossPayrollCard.tsx";
+import { useLayout } from "../../../../hooks/useLayout.ts";
+import useStoreStore from "../../../../stores/storeStore.ts";
+import Button from "../../../../components/common/Button.tsx";
 import { toast } from "react-toastify";
+import BossAutoTransferCheckCard from "./BossAutoTransferCheckCard.tsx";
+import {
+  confirmPayrollTargets,
+  fetchEstimatedPayrolls,
+  fetchPayrollSettings,
+} from "../../../../api/boss/payroll.ts";
+import {
+  EstimatedPayrollItem,
+  PayrollSettingsResponse,
+} from "../../../../types/payroll.ts";
 
-const BossPayrollEditPage = () => {
+const BossAutoTransferEditPage = () => {
   useLayout({
-    title: "송금인원 수정",
+    title: "송금정보 갱신",
     theme: "plain",
     headerVisible: true,
     bottomNavVisible: false,
@@ -25,7 +25,9 @@ const BossPayrollEditPage = () => {
   });
 
   const { selectedStore } = useStoreStore();
-  const [payrolls, setPayrolls] = useState<StaffPayroll[]>([]);
+  const [estimatedPayrolls, setEstimatedPayrolls] = useState<
+    EstimatedPayrollItem[]
+  >([]);
   const [checkedKeys, setCheckedKeys] = useState<Set<string>>(new Set());
   const [settings, setSettings] = useState<PayrollSettingsResponse | null>(
     null,
@@ -37,14 +39,20 @@ const BossPayrollEditPage = () => {
       if (!selectedStore) return;
 
       try {
-        const [payrollResult, settingsResult] = await Promise.all([
-          fetchStaffPayrolls(selectedStore.storeId),
-          getPayrollSettings(selectedStore.storeId),
+        const [estimatedPayrollResult, settingsResult] = await Promise.all([
+          fetchEstimatedPayrolls(selectedStore.storeId),
+          fetchPayrollSettings(selectedStore.storeId),
         ]);
 
-        setPayrolls(payrollResult);
+        setEstimatedPayrolls(estimatedPayrollResult);
         setSettings(settingsResult);
-        setCheckedKeys(new Set(payrollResult.map((p) => p.payroll.key))); // 초기값: 모두 체크
+        setCheckedKeys(
+          new Set(
+            estimatedPayrollResult
+              .map((p) => p.payroll.key)
+              .filter((key): key is string => key !== null),
+          ),
+        );
       } catch (err) {
         console.error("데이터 불러오기 실패:", err);
       } finally {
@@ -68,7 +76,7 @@ const BossPayrollEditPage = () => {
     const keys = Array.from(checkedKeys);
 
     try {
-      await confirmPayrollTransfers(selectedStore.storeId, keys);
+      await confirmPayrollTargets(selectedStore.storeId, { payrollKeys: keys });
       toast.success("송금 인원을 성공적으로 확정했습니다.");
       history.back();
     } catch (err: any) {
@@ -100,25 +108,25 @@ const BossPayrollEditPage = () => {
           <div className="text-center py-10 text-grayscale-500">
             불러오는 중...
           </div>
-        ) : payrolls.length === 0 ? (
+        ) : estimatedPayrolls.length === 0 ? (
           <div className="text-center py-10 text-grayscale-500">
             급여 정보가 없습니다.
           </div>
         ) : (
-          <ul className="space-y-4">
-            {payrolls.map((item) => (
-              <BossPayrollCard
-                key={item.payroll.key}
-                data={item}
-                editable={true}
-                checked={checkedKeys.has(item.payroll.key)}
-                onToggle={handleToggle}
-              />
-            ))}
-          </ul>
+          <div className="space-y-4 max-h-[50vh] overflow-y-auto">
+            <ul className="space-y-4">
+              {estimatedPayrolls.map((item) => (
+                <BossAutoTransferCheckCard
+                  key={item.staff.staffId}
+                  item={item}
+                  checked={checkedKeys.has(item.payroll.key!)}
+                  onToggle={handleToggle}
+                />
+              ))}
+            </ul>
+          </div>
         )}
       </section>
-
       <Button theme="primary" className="w-full" onClick={handleSave}>
         저장
       </Button>
@@ -126,4 +134,4 @@ const BossPayrollEditPage = () => {
   );
 };
 
-export default BossPayrollEditPage;
+export default BossAutoTransferEditPage;

@@ -17,6 +17,7 @@ import FullScreenLoading from "./components/common/FullScreenLoading.tsx";
 import HomeBoss from "./pages/home/boss/HomeBoss.tsx";
 import HomeStaff from "./pages/home/staff/HomeStaff.tsx";
 import UnifiedPWAPrompt from "./libs/fcm/UnifiedPWAPrompt.tsx";
+import BossPaystubPage from "./pages/payroll/boss/history/BossPaystubPage.tsx";
 
 // Lazy-loaded components (boss)
 const Landing = lazy(() => import("./pages/landing/Landing.tsx"));
@@ -66,8 +67,9 @@ const ContractTemplateEditPage = lazy(
 const BossPayrollPage = lazy(
   () => import("./pages/payroll/boss/BossPayrollPage.tsx"),
 );
-const BossPayrollEditPage = lazy(
-  () => import("./pages/payroll/boss/BossPayrollEditPage.tsx"),
+const BossAutoTransferEditPage = lazy(
+  () =>
+    import("./pages/payroll/boss/autoTransfer/BossAutoTransferEditPage.tsx"),
 );
 
 // Lazy-loaded components (staff)
@@ -175,8 +177,12 @@ function App() {
                 <Route path="/boss/document" element={<BossDocumentPage />} />
                 <Route path="/boss/payroll" element={<BossPayrollPage />} />
                 <Route
+                  path="/boss/payroll/payslip"
+                  element={<BossPaystubPage />}
+                />
+                <Route
                   path="/boss/payroll/edit"
-                  element={<BossPayrollEditPage />}
+                  element={<BossAutoTransferEditPage />}
                 />
               </Route>
 
