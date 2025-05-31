@@ -1,11 +1,34 @@
 import { useNavigate } from "react-router-dom";
-import BossStoreCard from "./BossStoreCard.tsx";
+import BossStoreCard from "../../store/boss/BossStoreCard.tsx";
+import { useUserStore } from "../../../stores/userStore.ts";
 
-const Store = () => {
+const BossStorePage = () => {
+  const { user } = useUserStore();
+
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-1 self-stretch p-5 flex-col items-center justify-start h-full gap-6">
+    <div className="flex flex-1 self-stretch p-5 flex-col items-center justify-start gap-6">
+      <div className="flex w-full p-4 border border-grayscale-300 bg-white shadow-blue-shadow rounded-xl items-start gap-3">
+        <img
+          src={user?.profileImageUrl}
+          alt="profile"
+          className="w-10 h-10 rounded-full object-cover"
+        />
+        <div className="flex flex-col justify-center items-start gap-2">
+          <p className="title-1">{user?.name}</p>
+          <div className="flex flex-col justify-center items-start gap-1">
+            <div className="flex w-full gap-2">
+              <span className="w-fit body-4 text-grayscale-900">전화번호</span>
+              <span className="body-4 text-grayscale-600">{user?.phone}</span>
+            </div>
+            <div className="flex w-full gap-2">
+              <span className="w-fit body-4 text-grayscale-900">이메일</span>
+              <span className="body-4 text-grayscale-600">{user?.email}</span>
+            </div>
+          </div>
+        </div>
+      </div>
       <BossStoreCard />
       {/* 메뉴 카드들 */}
       <div className="flex flex-col items-start gap-3 self-stretch">
@@ -53,4 +76,4 @@ const Store = () => {
   );
 };
 
-export default Store;
+export default BossStorePage;

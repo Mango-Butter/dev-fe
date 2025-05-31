@@ -24,7 +24,7 @@ const Landing = lazy(() => import("./pages/landing/Landing.tsx"));
 const Schedule = lazy(() => import("./pages/schedule/boss/Schedule.tsx"));
 const Employees = lazy(() => import("./pages/employee/boss/Employees.tsx"));
 const Task = lazy(() => import("./pages/Task"));
-const Store = lazy(() => import("./pages/store/boss/Store.tsx"));
+const Store = lazy(() => import("./pages/mypage/boss/BossStorePage.tsx"));
 const StoreRegisterBossPage = lazy(
   () => import("./pages/store/boss/StoreRegisterBossPage.tsx"),
 );
@@ -35,13 +35,13 @@ const StoreInfoEditPage = lazy(
   () => import("./pages/store/boss/StoreInfoEditPage.tsx"),
 );
 const AttendanceSettingPage = lazy(
-  () => import("./pages/store/boss/AttendanceSettingPage.tsx"),
+  () => import("./pages/mypage/boss/AttendanceSettingPage.tsx"),
 );
 const SalarySettingPage = lazy(
-  () => import("./pages/store/boss/SalarySettingPage.tsx"),
+  () => import("./pages/mypage/boss/SalarySettingPage.tsx"),
 );
 const NotificationSettingPage = lazy(
-  () => import("./pages/store/boss/NotificationSettingPage.tsx"),
+  () => import("./pages/mypage/boss/NotificationSettingPage.tsx"),
 );
 const ContractViewPage = lazy(
   () => import("./pages/contract/boss/ContractViewPage.tsx"),
