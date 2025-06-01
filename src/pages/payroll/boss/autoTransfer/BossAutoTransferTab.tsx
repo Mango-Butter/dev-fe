@@ -28,7 +28,7 @@ const BossAutoTransferTab = () => {
   const navigate = useNavigate();
   const getNowMonth = () => {
     const now = getKSTDate();
-    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+    return `${now.getFullYear()}-${String(now.getMonth()).padStart(2, "0")}`;
   };
 
   useEffect(() => {

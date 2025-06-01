@@ -1,36 +1,56 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useStoreStore from "../../../../stores/storeStore.ts";
 import { getKSTDate } from "../../../../libs/date.ts";
-import { MonthlyPayrollItem } from "../../../../types/payroll.ts";
+import {
+  MonthlyPayrollItem,
+  PayrollSettingsResponse,
+} from "../../../../types/payroll.ts";
 import BossPayrollCard from "../BossPayrollCard.tsx";
-import { fetchMonthlyPayrolls } from "../../../../api/boss/payroll.ts";
+import {
+  fetchMonthlyPayrolls,
+  fetchPayrollSettings,
+} from "../../../../api/boss/payroll.ts";
+import { getRemainingDays } from "../../../../utils/date.ts";
 
 const BossPayrollHistoryTab = () => {
   const { selectedStore } = useStoreStore();
   const [loading, setLoading] = useState(true);
   const [payrollItems, setPayrollItems] = useState<MonthlyPayrollItem[]>([]);
+  const [settings, setSettings] = useState<PayrollSettingsResponse | null>(
+    null,
+  );
 
-  const getMaxMonth = () => {
+  const getMaxMonth = useCallback(() => {
     const now = getKSTDate();
-    now.setMonth(now.getMonth());
-    return `${now.getFullYear()}-${String(now.getMonth()).padStart(2, "0")}`;
-  };
+    const year = now.getFullYear();
+
+    let month = now.getMonth();
+
+    if (settings?.transferDate != null) {
+      const remaining = getRemainingDays(settings.transferDate);
+      if (remaining < 0) {
+        month -= 1;
+      }
+    }
+
+    return `${year}-${String(month).padStart(2, "0")}`;
+  }, [settings]);
 
   const [selectedYearMonth, setSelectedYearMonth] = useState(getMaxMonth);
 
   useEffect(() => {
     const loadData = async () => {
       if (!selectedStore) return;
-
       setLoading(true);
-      try {
-        const result = await fetchMonthlyPayrolls(
-          selectedStore.storeId,
-          selectedYearMonth,
-        );
-        setPayrollItems(result);
 
-        // setPayrollItems(dummyPayrollItems);
+      try {
+        const [settingsResult, payrollResult] = await Promise.all([
+          fetchPayrollSettings(selectedStore.storeId),
+          fetchMonthlyPayrolls(selectedStore.storeId, selectedYearMonth),
+        ]);
+
+        setSettings(settingsResult);
+        setPayrollItems(payrollResult);
       } catch (err) {
         console.error("급여 내역 조회 실패:", err);
         setPayrollItems([]);
