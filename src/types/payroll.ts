@@ -154,3 +154,43 @@ export interface StaffHourlyWage {
 export interface UpdateHourlyWageRequest {
   hourlyWage: number;
 }
+
+/* staff */
+
+export interface StaffPayrollData {
+  staffName: string;
+  bankCode: string;
+  account: string;
+  month: string; // YYYY-MM-DD 형식
+  withholdingType: WithholdingType;
+  totalTime: number;
+  baseAmount: number;
+  weeklyAllowance: number;
+  totalCommutingAllowance: number;
+  totalAmount: number;
+  withholdingTax: number;
+  netAmount: number;
+}
+
+export interface StaffPayrollInfo {
+  payrollId: number;
+  transferState: TransferState;
+  payslipId: number;
+}
+
+export interface StaffPayrollResponse {
+  data: StaffPayrollData;
+  info: StaffPayrollInfo | null;
+}
+
+export interface PayslipDownloadResponse {
+  url: string;
+  expiresAt: string; // ISO datetime 문자열
+}
+
+export interface PayrollSettingsResponse {
+  autoTransferEnabled: boolean;
+  transferDate: number | null;
+  deductionUnit: DeductionUnit;
+  commutingAllowance: number;
+}

@@ -70,8 +70,8 @@ const BossAutoTransferEditPage = lazy(
   () =>
     import("./pages/payroll/boss/autoTransfer/BossAutoTransferEditPage.tsx"),
 );
-const BossPaystubPage = lazy(
-  () => import("./pages/payroll/boss/history/BossPaystubPage.tsx"),
+const BossPayslipPage = lazy(
+  () => import("./pages/payroll/boss/history/BossPayslipPage.tsx"),
 );
 const AccountRegisterPage = lazy(
   () => import("./pages/mypage/boss/AccountRegisterPage.tsx"),
@@ -96,6 +96,12 @@ const ContractViewStaffPage = lazy(
 const StaffMyPage = lazy(() => import("./pages/mypage/staff/StaffMyPage.tsx"));
 const StaffDocumentPage = lazy(
   () => import("./pages/document/staff/StaffDocumentPage.tsx"),
+);
+const StaffPayslipPage = lazy(
+  () => import("./pages/payroll/staff/StaffPayslipPage.tsx"),
+);
+const StaffPayrollPage = lazy(
+  () => import("./pages/payroll/staff/StaffPayrollPage.tsx"),
 );
 
 function App() {
@@ -187,7 +193,7 @@ function App() {
                 <Route path="/boss/payroll" element={<BossPayrollPage />} />
                 <Route
                   path="/boss/payroll/payslip"
-                  element={<BossPaystubPage />}
+                  element={<BossPayslipPage />}
                 />
                 <Route
                   path="/boss/payroll/edit"
@@ -200,7 +206,11 @@ function App() {
                 <Route path="staff" element={<HomeStaff />} />
                 <Route path="staff/schedule" element={<ScheduleStaff />} />
                 <Route path="staff/task" element={<NotFound />} />
-                <Route path="staff/payroll" element={<NotFound />} />
+                <Route path="staff/payroll" element={<StaffPayrollPage />} />
+                <Route
+                  path="/staff/payroll/payslip"
+                  element={<StaffPayslipPage />}
+                />
                 <Route path="staff/mypage" element={<StaffMyPage />} />
                 <Route path="staff/document" element={<StaffDocumentPage />} />
                 <Route

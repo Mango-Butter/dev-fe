@@ -1,22 +1,34 @@
 import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
-import { useLayout } from "../../../../hooks/useLayout.ts";
-import useStoreStore from "../../../../stores/storeStore.ts";
+import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
+import { useLayout } from "../../../hooks/useLayout.ts";
+import { StaffPayrollResponse } from "../../../types/payroll.ts";
 import {
-  fetchPayrollDetail,
   fetchPayslipDownloadLink,
-  fetchUnconfirmedPayrollDetail,
-} from "../../../../api/boss/payroll.ts";
-import { PayrollDetailResponse } from "../../../../types/payroll.ts";
-import DownloadIcon from "../../../../components/icons/DownloadIcon.tsx";
+  getStaffPayroll,
+} from "../../../api/staff/payroll.ts";
+import DownloadIcon from "../../../components/icons/DownloadIcon.tsx";
+import ErrorIcon from "../../../components/icons/ErrorIcon.tsx";
+import useClickOutside from "../../../hooks/useClickOutside.ts";
 
-const BossPaystubPage = () => {
-  const { selectedStore } = useStoreStore();
+const StaffPayslipPage = () => {
+  const { selectedStore } = useStaffStoreStore();
   const [searchParams] = useSearchParams();
-  const [paystub, setPaystub] = useState<PayrollDetailResponse | null>(null);
+  const [payslip, setPayslip] = useState<StaffPayrollResponse | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const tooltipRef = useRef<HTMLDivElement | null>(null);
+
+  useClickOutside(tooltipRef, () => setShowTooltip(false));
+
+  useEffect(() => {
+    if (showTooltip) {
+      const timer = setTimeout(() => setShowTooltip(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showTooltip]);
 
   const handleDownload = async () => {
     if (!selectedStore || !info?.payslipId) return;
@@ -37,11 +49,31 @@ const BossPaystubPage = () => {
   };
 
   const downloadButton =
-    paystub?.info?.payslipId && selectedStore ? (
+    payslip?.info?.payslipId && selectedStore ? (
       <button onClick={handleDownload}>
         <DownloadIcon />
       </button>
-    ) : null;
+    ) : (
+      <div className="relative" ref={tooltipRef}>
+        <button onClick={() => setShowTooltip((prev) => !prev)}>
+          <ErrorIcon />
+        </button>
+        {showTooltip && (
+          <div
+            className={`
+            absolute right-0 mt-2 w-max
+            flex items-center justify-center text-center
+            bg-black text-white text-xs rounded px-3 py-2 shadow-md z-10
+            transition-all duration-500 ease-out
+            opacity-100 translate-y-0
+            animate-slide-down
+          `}
+          >
+            급여명세서가 <br /> 생성되지 않았습니다.
+          </div>
+        )}
+      </div>
+    );
 
   useLayout({
     title: "급여명세서 미리보기",
@@ -56,32 +88,21 @@ const BossPaystubPage = () => {
     const load = async () => {
       if (!selectedStore) return;
 
-      const payrollId = searchParams.get("payrollId");
-      const staffId = searchParams.get("staffId");
       const month = searchParams.get("month");
 
       setLoading(true);
       try {
-        let result: PayrollDetailResponse;
+        let result: StaffPayrollResponse;
 
-        if (payrollId) {
-          result = await fetchPayrollDetail(
-            selectedStore.storeId,
-            Number(payrollId),
-          );
-        } else if (staffId && month) {
+        if (month) {
           const formattedMonth = dayjs(month).format("YYYY-MM");
-          result = await fetchUnconfirmedPayrollDetail(
-            selectedStore.storeId,
-            Number(staffId),
-            formattedMonth,
-          );
+          result = await getStaffPayroll(selectedStore.storeId, formattedMonth);
         } else {
           toast.error("잘못된 접근입니다.");
           return;
         }
-
-        setPaystub(result);
+        console.log(result);
+        setPayslip(result);
       } catch (e) {
         console.error("명세서 조회 실패", e);
         toast.error("급여명세서 조회 중 오류가 발생했습니다.");
@@ -98,7 +119,7 @@ const BossPaystubPage = () => {
       <div className="text-center py-20 text-grayscale-500">불러오는 중...</div>
     );
   }
-  if (!paystub) {
+  if (!payslip) {
     return (
       <div className="text-center py-20 text-grayscale-500">
         급여명세서를 찾을 수 없습니다.
@@ -106,7 +127,7 @@ const BossPaystubPage = () => {
     );
   }
 
-  const { data, info } = paystub;
+  const { data, info } = payslip;
   const {
     staffName,
     bankCode,
@@ -204,4 +225,4 @@ const BossPaystubPage = () => {
   );
 };
 
-export default BossPaystubPage;
+export default StaffPayslipPage;
