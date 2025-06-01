@@ -19,6 +19,8 @@ import { useLayout } from "../../../hooks/useLayout.ts";
 import { toast } from "react-toastify";
 import { PayrollSettingsResponse } from "../../../types/payroll.ts";
 import NHBankIcon from "../../../assets/NHBankIcon.png";
+import { useNavigate } from "react-router-dom";
+import { showConfirm } from "../../../libs/showConfirm.ts";
 
 const deductionOptions = [
   { label: "0분 단위", value: "ZERO_MIN" },
@@ -29,7 +31,7 @@ const deductionOptions = [
 
 const transferOptions = [
   { label: "자동송금 사용", value: "true" },
-  { label: "수동송금", value: "false" },
+  { label: "수동 송금", value: "false" },
 ];
 
 const extraWorkOptions = [
@@ -39,10 +41,11 @@ const extraWorkOptions = [
   { label: "90분", value: "90" },
 ];
 
-const SalarySettingPage = () => {
+const PayrollSettingPage = () => {
   const { selectedStore } = useStoreStore();
   const [account, setAccount] =
     useState<PayrollSettingsResponse["account"]>(null);
+  const navigate = useNavigate();
   const {
     control,
     handleSubmit,
@@ -93,13 +96,29 @@ const SalarySettingPage = () => {
     e.preventDefault();
     if (!selectedStore) return;
 
+    const confirmed = await showConfirm({
+      title: "계좌를 삭제하시겠습니까?",
+      text: "계좌 정보는 삭제 후 재등록할 수 있습니다.",
+      confirmText: "삭제",
+      cancelText: "취소",
+      icon: "warning",
+    });
+
+    if (!confirmed) return;
+
     try {
       await deleteAccountInfo(selectedStore.storeId);
       toast.success("계좌 정보가 삭제되었습니다.");
       await loadAndApplySettings();
     } catch (err) {
+      toast.error("계좌 삭제에 실패했습니다.");
       console.error(err);
     }
+  };
+
+  const redirectRegisterAccount = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    navigate("/boss/store/account-register");
   };
 
   return (
@@ -108,6 +127,22 @@ const SalarySettingPage = () => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col h-[90vh] overflow-y-auto gap-4">
+        <div className="w-full pb-6 border-b border-grayscale-300">
+          <Controller
+            control={control}
+            name="autoTransferEnabled"
+            render={({ field }) => (
+              <SelectField
+                title="자동 송금 여부"
+                required
+                options={transferOptions}
+                value={String(field.value)}
+                onChange={(val) => field.onChange(val === "true")}
+              />
+            )}
+          />
+        </div>
+
         {/* 계좌 영역 */}
         <section className="flex flex-col gap-3">
           <label className="title-1 text-grayscale-900">
@@ -141,26 +176,15 @@ const SalarySettingPage = () => {
               <p className="body-2 text-grayscale-700">
                 등록된 계좌가 없습니다.
               </p>
-              <span className="body-3 text-primary hover:underline cursor-pointer">
+              <button
+                className="body-3 text-primary hover:underline"
+                onClick={redirectRegisterAccount}
+              >
                 + 계좌 추가하기
-              </span>
+              </button>
             </div>
           )}
         </section>
-
-        <Controller
-          control={control}
-          name="autoTransferEnabled"
-          render={({ field }) => (
-            <SelectField
-              title="자동 송금 여부"
-              required
-              options={transferOptions}
-              value={String(field.value)}
-              onChange={(val) => field.onChange(val === "true")}
-            />
-          )}
-        />
 
         <Controller
           control={control}
@@ -221,4 +245,4 @@ const SalarySettingPage = () => {
   );
 };
 
-export default SalarySettingPage;
+export default PayrollSettingPage;

@@ -1,9 +1,9 @@
 export interface AccountVerificationRequest {
-  bankName: string;
+  bankName: "농협은행"; // 고정
   accountNumber: string;
-  birthdate: string; // "YYYYMMDD"
+  birthdate: string; // YYYYMMDD
+  password: string; // 숫자 4자리
 }
-
 export interface AccountVerificationResponse {
   bankName: string;
   accountHolder: string;

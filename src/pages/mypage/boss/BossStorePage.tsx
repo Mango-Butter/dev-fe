@@ -53,7 +53,7 @@ const BossStorePage = () => {
         </div>
 
         <div
-          onClick={() => navigate("/boss/store/salary")}
+          onClick={() => navigate("/boss/store/payroll-setting")}
           className="cursor-pointer flex py-3 px-4 border border-grayscale-300 bg-white shadow-basic rounded-xl flex-col justify-center items-start gap-2 self-stretch"
         >
           <span className="title-2">급여 설정</span>

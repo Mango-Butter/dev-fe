@@ -17,7 +17,6 @@ import FullScreenLoading from "./components/common/FullScreenLoading.tsx";
 import HomeBoss from "./pages/home/boss/HomeBoss.tsx";
 import HomeStaff from "./pages/home/staff/HomeStaff.tsx";
 import UnifiedPWAPrompt from "./libs/fcm/UnifiedPWAPrompt.tsx";
-import BossPaystubPage from "./pages/payroll/boss/history/BossPaystubPage.tsx";
 
 // Lazy-loaded components (boss)
 const Landing = lazy(() => import("./pages/landing/Landing.tsx"));
@@ -37,8 +36,8 @@ const StoreInfoEditPage = lazy(
 const AttendanceSettingPage = lazy(
   () => import("./pages/mypage/boss/AttendanceSettingPage.tsx"),
 );
-const SalarySettingPage = lazy(
-  () => import("./pages/mypage/boss/SalarySettingPage.tsx"),
+const PayrollSettingPage = lazy(
+  () => import("./pages/mypage/boss/PayrollSettingPage.tsx"),
 );
 const NotificationSettingPage = lazy(
   () => import("./pages/mypage/boss/NotificationSettingPage.tsx"),
@@ -70,6 +69,12 @@ const BossPayrollPage = lazy(
 const BossAutoTransferEditPage = lazy(
   () =>
     import("./pages/payroll/boss/autoTransfer/BossAutoTransferEditPage.tsx"),
+);
+const BossPaystubPage = lazy(
+  () => import("./pages/payroll/boss/history/BossPaystubPage.tsx"),
+);
+const AccountRegisterPage = lazy(
+  () => import("./pages/mypage/boss/AccountRegisterPage.tsx"),
 );
 
 // Lazy-loaded components (staff)
@@ -147,8 +152,12 @@ function App() {
                   element={<AttendanceSettingPage />}
                 />
                 <Route
-                  path="boss/store/salary"
-                  element={<SalarySettingPage />}
+                  path="boss/store/payroll-setting"
+                  element={<PayrollSettingPage />}
+                />
+                <Route
+                  path="boss/store/account-register"
+                  element={<AccountRegisterPage />}
                 />
                 <Route
                   path="boss/store/notification"
