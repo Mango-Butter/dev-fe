@@ -1,6 +1,7 @@
 import {
   AttendanceEditRequest,
   SubstituteRequest,
+  NotificationItem,
 } from "../../types/notification";
 import axiosAuth from "../common/axiosAuth.ts";
 
@@ -90,4 +91,16 @@ export const rejectAttendanceEditRequest = async (
   await axiosAuth.post(
     `/api/boss/stores/${storeId}/schedules/attendance-edits/${editId}/reject`,
   );
+};
+
+/**
+ * 사장 알림 목록 조회
+ * @param storeId 매장 ID
+ * @returns 알림 리스트
+ */
+export const fetchBossNotifications = async (
+  storeId: number,
+): Promise<NotificationItem[]> => {
+  const res = await axiosAuth.get(`/api/boss/stores/${storeId}/notifications`);
+  return res.data.result;
 };

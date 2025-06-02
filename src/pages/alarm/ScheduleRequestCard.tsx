@@ -1,26 +1,28 @@
-// src/pages/alarm/components/BossScheduleRequestCard.tsx
+// src/pages/alarm/components/ScheduleRequestCard.tsx
 import { toast } from "react-toastify";
-import { SubstituteRequest } from "../../../types/notification.ts";
+import { SubstituteRequest } from "../../types/notification.ts";
 import {
   approveSubstituteRequest,
   rejectSubstituteRequest,
-} from "../../../api/boss/alarm.ts";
-import Button from "../../../components/common/Button.tsx";
-import Label from "../../../components/common/Label.tsx";
-import ArrowIcon from "../../../components/icons/ArrowIcon.tsx";
+} from "../../api/boss/alarm.ts";
+import Button from "../../components/common/Button.tsx";
+import Label from "../../components/common/Label.tsx";
+import ArrowIcon from "../../components/icons/ArrowIcon.tsx";
 import { useState } from "react";
 import clsx from "clsx";
 import dayjs from "dayjs";
-import ApproveIcon from "../../../components/icons/ApproveIcon.tsx";
-import CanceledIcon from "../../../components/icons/CanceledIcon.tsx";
+import ApproveIcon from "../../components/icons/ApproveIcon.tsx";
+import CanceledIcon from "../../components/icons/CanceledIcon.tsx";
+import TimeIcon from "../../components/icons/TimeIcon.tsx";
 
 interface Props {
+  userType: "boss" | "staff";
   data: SubstituteRequest;
   storeId: number;
   refetch: () => void;
 }
 
-const BossScheduleRequestCard = ({ data, storeId, refetch }: Props) => {
+const ScheduleRequestCard = ({ userType, data, storeId, refetch }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const formattedCreatedAt = dayjs(data.createdAt).format(
     "YYYY년 MM월 DD일 HH:mm",
@@ -95,24 +97,31 @@ const BossScheduleRequestCard = ({ data, storeId, refetch }: Props) => {
 
       <div className="flex w-full gap-2 mt-3">
         {data.substituteRequestState === "PENDING" ? (
-          <>
-            <Button
-              theme="outline"
-              size="sm"
-              className="flex-1"
-              onClick={handleReject}
-            >
-              거절
-            </Button>
-            <Button
-              theme="primary"
-              size="sm"
-              className="flex-1"
-              onClick={handleApprove}
-            >
-              승인
-            </Button>
-          </>
+          userType === "boss" ? (
+            <>
+              <Button
+                theme="outline"
+                size="sm"
+                className="flex-1"
+                onClick={handleReject}
+              >
+                거절
+              </Button>
+              <Button
+                theme="secondary"
+                size="sm"
+                className="flex-1 bg-secondary-700"
+                onClick={handleApprove}
+              >
+                승인
+              </Button>
+            </>
+          ) : (
+            <div className="flex w-full items-center gap-1 justify-center border-t pt-4 body-2 text-[#6B6B6B]">
+              <TimeIcon fill="#6B6B6B" className="w-4 h-4" />
+              <div>승인 대기중</div>
+            </div>
+          )
         ) : data.substituteRequestState === "APPROVED" ? (
           <div className="flex w-full items-center gap-1 justify-center border-t pt-4 body-2 text-[#6B6B6B]">
             <ApproveIcon fill="#6B6B6B" className="w-4 h-4" />
@@ -129,4 +138,4 @@ const BossScheduleRequestCard = ({ data, storeId, refetch }: Props) => {
   );
 };
 
-export default BossScheduleRequestCard;
+export default ScheduleRequestCard;

@@ -1,19 +1,19 @@
 // src/pages/alarm/components/BossRequestTab.tsx
 import { useEffect, useState, useCallback } from "react";
 import {
-  fetchAttendanceEditRequests,
-  fetchSubstituteRequests,
-} from "../../../api/boss/alarm.ts";
-import {
   AttendanceEditRequest,
   SubstituteRequest,
 } from "../../../types/notification.ts";
+import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
+import {
+  fetchOwnAttendanceEditRequests,
+  fetchOwnSubstituteRequests,
+} from "../../../api/staff/alarm.ts";
 import ScheduleRequestCard from "../ScheduleRequestCard.tsx";
 import AttendanceRequestCard from "../AttendanceRequestCard.tsx";
-import useStoreStore from "../../../stores/storeStore.ts";
 
-const BossRequestTab = () => {
-  const { selectedStore } = useStoreStore();
+const StaffRequestTab = () => {
+  const { selectedStore } = useStaffStoreStore();
   const [substituteRequests, setSubstituteRequests] = useState<
     SubstituteRequest[]
   >([]);
@@ -27,8 +27,8 @@ const BossRequestTab = () => {
     setIsLoading(true);
     try {
       const [subs, edits] = await Promise.all([
-        fetchSubstituteRequests(selectedStore.storeId),
-        fetchAttendanceEditRequests(selectedStore.storeId),
+        fetchOwnSubstituteRequests(selectedStore.storeId),
+        fetchOwnAttendanceEditRequests(selectedStore.storeId),
       ]);
       setSubstituteRequests(subs);
       setAttendanceEditRequests(edits);
@@ -82,7 +82,7 @@ const BossRequestTab = () => {
           if (item.type === "schedule") {
             return (
               <ScheduleRequestCard
-                userType="boss"
+                userType="staff"
                 key={`s-${item.substituteRequestId}`}
                 data={item}
                 storeId={selectedStore.storeId}
@@ -92,7 +92,7 @@ const BossRequestTab = () => {
           } else {
             return (
               <AttendanceRequestCard
-                userType="boss"
+                userType="staff"
                 key={`a-${item.attendanceEditId}`}
                 data={item}
                 storeId={selectedStore.storeId}
@@ -106,4 +106,4 @@ const BossRequestTab = () => {
   );
 };
 
-export default BossRequestTab;
+export default StaffRequestTab;

@@ -2,15 +2,15 @@ import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import clsx from "clsx";
 import { useLayout } from "../../../hooks/useLayout.ts";
-import BossRequestTab from "./BossRequestTab.tsx";
-import BossNotificationTab from "./BossNotificationTab.tsx";
+import StaffNotificationTab from "./StaffNotificationTab.tsx";
+import StaffRequestTab from "./StaffRequestTab.tsx";
 
 const tabItems = [
   { label: "요청", value: "request" },
   { label: "알림", value: "notification" },
 ];
 
-const BossAlarmPage = () => {
+const StaffAlarmPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentTab = searchParams.get("type") || "request";
 
@@ -55,11 +55,11 @@ const BossAlarmPage = () => {
 
       {/* 탭별 내용 영역 */}
       <div className="p-4">
-        {currentTab === "request" && <BossRequestTab />}
-        {currentTab === "notification" && <BossNotificationTab />}
+        {currentTab === "request" && <StaffRequestTab />}
+        {currentTab === "notification" && <StaffNotificationTab />}
       </div>
     </div>
   );
 };
 
-export default BossAlarmPage;
+export default StaffAlarmPage;
