@@ -1,6 +1,7 @@
 import axiosAuth from "../common/axiosAuth.ts";
 import {
   ClockInRequest,
+  StaffAttendanceEditRequest,
   StaffAttendanceRecord,
   TodayScheduleWithAttendance,
 } from "../../types/attendance.ts";
@@ -65,4 +66,21 @@ export const getStaffAttendanceRecords = async (
     },
   );
   return response.data.result;
+};
+
+/**
+ * 알바생 근태 수정 요청
+ * @param storeId 매장 ID
+ * @param scheduleId 스케줄 ID
+ * @param body 근태 수정 요청 정보
+ */
+export const requestAttendanceEdit = async (
+  storeId: number,
+  scheduleId: number,
+  body: StaffAttendanceEditRequest,
+): Promise<void> => {
+  await axiosAuth.post(
+    `/api/staff/stores/${storeId}/schedules/${scheduleId}/attendance-edits`,
+    body,
+  );
 };

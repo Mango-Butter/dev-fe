@@ -46,3 +46,17 @@ export interface UpdateAttendanceResponse {
   clockInStatus: "NORMAL" | "LATE" | "ABSENT";
   clockOutStatus: "NORMAL" | "EARLY_LEAVE" | "OVERTIME";
 }
+
+export interface StaffSubstitutionRequest {
+  targetStaffId: number;
+  reason: string;
+}
+
+export interface SubstituteCandidate {
+  staff: {
+    staffId: number;
+    name: string;
+    profileImageUrl: string;
+  };
+  valid: boolean;
+}

@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import clsx from "clsx";
 import { useLayout } from "../../../hooks/useLayout.ts";
@@ -13,13 +13,14 @@ const tabItems = [
 const StaffAlarmPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentTab = searchParams.get("type") || "request";
+  const navigate = useNavigate();
 
   useLayout({
     title: "요청 • 알림",
     theme: "plain",
     headerVisible: true,
     bottomNavVisible: false,
-    onBack: () => history.back(),
+    onBack: () => navigate("/staff"),
     rightIcon: null,
   });
 

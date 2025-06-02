@@ -109,6 +109,9 @@ const StaffPayrollPage = lazy(
 const StaffAccountRegisterPage = lazy(
   () => import("./pages/mypage/staff/StaffAccountRegisterPage.tsx"),
 );
+const StaffAlarmPage = lazy(
+  () => import("./pages/alarm/staff/StaffAlarmPage.tsx"),
+);
 
 function App() {
   return (
@@ -240,6 +243,7 @@ function App() {
                   path="staff/attendance"
                   element={<StaffAttendancePage />}
                 />
+                <Route path="/staff/alarm" element={<StaffAlarmPage />} />
               </Route>
             </Route>
           </Route>

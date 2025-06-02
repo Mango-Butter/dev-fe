@@ -24,6 +24,7 @@ interface SelectFieldProps {
   description?: string;
   size?: "lg" | "md" | "sm";
   required?: boolean;
+  disabled?: boolean;
   options: { label: string; value: string }[];
   value: string;
   onChange: (value: string) => void;
@@ -35,6 +36,7 @@ export default function SelectField({
   description,
   size = "md",
   required = false,
+  disabled = false,
   options,
   value,
   onChange,
@@ -78,6 +80,7 @@ export default function SelectField({
           )}
           type="button"
           onClick={() => setIsOpen((prev) => !prev)}
+          disabled={disabled}
         >
           <span
             className={cn(
@@ -97,7 +100,7 @@ export default function SelectField({
         </button>
 
         <AnimatePresence>
-          {isOpen && (
+          {isOpen && !disabled && (
             <motion.ul
               className="absolute z-10 mt-12 w-full overflow-y-scroll max-h-60 rounded-lg border border-grayscale-300 bg-white shadow-md"
               initial={{ opacity: 0, y: -10 }}

@@ -85,3 +85,10 @@ export const clockOutStatusLabelMap: Record<
   EARLY_LEAVE: "조기 퇴근",
   OVERTIME: "연장 근무",
 };
+
+export interface StaffAttendanceEditRequest {
+  reason: string;
+  requestedClockInTime: string; // "HH:mm" 형식
+  requestedClockOutTime: string; // "HH:mm" 형식
+  requestedClockInStatus: "NORMAL" | "LATE" | "ABSENT";
+}
