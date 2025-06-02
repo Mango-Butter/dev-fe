@@ -20,13 +20,20 @@ const NotificationCard = ({ notification }: Props) => {
   return (
     <div
       onClick={handleClick}
-      className="cursor-pointer rounded-xl bg-white px-4 py-3 shadow hover:bg-gray-50 transition-all"
+      className="flex gap-3 cursor-pointer rounded-xl bg-white px-4 py-3 shadow hover:bg-gray-50 transition-all"
     >
-      <div className="font-semibold text-sm text-black mb-1">
-        {notification.title}
+      <div className="flex flex-1 flex-col items-start justify-center">
+        <div className="title-2 text-black mb-1">{notification.title}</div>
+        <div className="body-3 text-grayscale-700">{notification.content}</div>
+        <div className="body-4 text-grayscale-400 mt-1">{formattedDate}</div>
       </div>
-      <div className="text-sm text-grayscale-700">{notification.content}</div>
-      <div className="text-xs text-grayscale-400 mt-1">{formattedDate}</div>
+      {notification.imageUrl && (
+        <img
+          src={notification.imageUrl}
+          alt="notification"
+          className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
+        />
+      )}
     </div>
   );
 };

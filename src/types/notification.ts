@@ -33,6 +33,7 @@ export interface NotificationItem {
   id: number;
   title: string;
   content: string;
+  imageUrl: string | null;
   clickUrl: string;
   type: "CONTRACT" | "DOCUMENT" | string; // enum 확장 가능
   createdAt: string; // ISO datetime
