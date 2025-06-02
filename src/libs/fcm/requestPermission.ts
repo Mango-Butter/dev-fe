@@ -3,6 +3,7 @@ import { getToken } from "firebase/messaging";
 import { messaging } from "./messaging.tsx";
 import { toast } from "react-toastify";
 import { showConfirm } from "../showConfirm.ts";
+import { registerFcmToken } from "../../api/common/user.ts";
 
 export const requestUserPermission = async (
   setIsLoading?: (val: boolean) => void,
@@ -41,6 +42,7 @@ export const requestUserPermission = async (
 
     if (token) {
       localStorage.setItem("fcmToken", token);
+      await registerFcmToken(token);
       toast.success("알림 기능이 활성화되었습니다.");
     } else {
       toast.error("알림기능 설정에 실패했습니다. 관리자에게 문의하세요.");
