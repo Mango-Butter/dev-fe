@@ -6,6 +6,8 @@ const config: Config = {
     extend: {
       animation: {
         "spin-one-time": "spin 1s linear",
+        "slide-up": "slideUp 0.3s ease-out",
+        "slide-down": "slideDown 0.3s ease-out",
       },
       screens: {
         mobile: "320px",
@@ -70,6 +72,16 @@ const config: Config = {
         "blue-shadow": "1px 1px 6px 0px rgba(153, 189, 228, 1)",
         "input-box": "2px 2px 8px 0px rgba(0, 0, 0, 0.25)",
         "layout-box": "0px 8px 36px 0px rgba(0, 0, 0, 0.15)",
+      },
+      keyframes: {
+        slideUp: {
+          "0%": { opacity: "0", transform: "translateY(8px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        slideDown: {
+          "0%": { opacity: "0", transform: "translateY(-8px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
       },
     },
     fontFamily: {

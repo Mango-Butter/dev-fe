@@ -1,40 +1,46 @@
-// src/pages/payroll/BossPayrollTab.tsx
+// src/pages/payroll/BossWithhodingTab.tsx
 import { useEffect, useState } from "react";
-import {
-  fetchConfirmedPayrolls,
-  getPayrollSettings,
-} from "../../../api/boss/payroll";
-import useStoreStore from "../../../stores/storeStore";
-import {
-  StaffPayroll,
-  PayrollSettingsResponse,
-} from "../../../types/payroll.ts";
-import BossPayrollCard from "./BossPayrollCard.tsx";
-import Button from "../../../components/common/Button.tsx";
-import EditIcon from "../../../components/icons/EditIcon.tsx";
-import { getRemainingDays } from "../../../utils/date.ts";
+import useStoreStore from "../../../../stores/storeStore.ts";
+import Button from "../../../../components/common/Button.tsx";
+import { getRemainingDays } from "../../../../utils/date.ts";
 import { useNavigate } from "react-router-dom";
+import {
+  fetchConfirmedTransfers,
+  fetchPayrollSettings,
+} from "../../../../api/boss/payroll.ts";
+import {
+  ConfirmedTransferItem,
+  PayrollSettingsResponse,
+} from "../../../../types/payroll.ts";
+import BossPayrollCard from "../BossPayrollCard.tsx";
+import ResetIcon from "../../../../components/icons/ResetIcon.tsx";
+import { getKSTDate } from "../../../../libs/date.ts";
 
-const BossPayrollTab = () => {
+const BossAutoTransferTab = () => {
   const { selectedStore } = useStoreStore();
-  const [payrolls, setPayrolls] = useState<StaffPayroll[]>([]);
+  const [autoTransferInfo, setAutoTransferInfo] = useState<
+    ConfirmedTransferItem[]
+  >([]);
   const [settings, setSettings] = useState<PayrollSettingsResponse | null>(
     null,
   );
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const getNowMonth = () => {
+    const now = getKSTDate();
+    return `${now.getFullYear()}-${String(now.getMonth()).padStart(2, "0")}`;
+  };
 
   useEffect(() => {
     const loadData = async () => {
       if (!selectedStore) return;
 
       try {
-        const [payrollResult, settingsResult] = await Promise.all([
-          fetchConfirmedPayrolls(selectedStore.storeId),
-          getPayrollSettings(selectedStore.storeId),
+        const [confirmResult, settingsResult] = await Promise.all([
+          fetchConfirmedTransfers(selectedStore.storeId),
+          fetchPayrollSettings(selectedStore.storeId),
         ]);
-
-        setPayrolls(payrollResult);
+        setAutoTransferInfo(confirmResult);
         setSettings(settingsResult);
       } catch (err) {
         console.log(err);
@@ -46,7 +52,7 @@ const BossPayrollTab = () => {
     loadData();
   }, [selectedStore]);
 
-  const handlePayrollEdit = () => {
+  const handleAutoTransferEdit = () => {
     navigate("/boss/payroll/edit");
   };
 
@@ -69,7 +75,25 @@ const BossPayrollTab = () => {
       {/* 상단 급여일 안내 */}
       {settings && remainingDays !== null && (
         <section className="w-full flex flex-col gap-2">
-          {remainingDays === 0 ? (
+          <input
+            type="month"
+            value={getNowMonth()}
+            disabled={true}
+            className="title-1 bg-white"
+          />
+          {remainingDays > 0 ? (
+            <>
+              <p className="heading-1">
+                이번달 급여지급일이
+                <br />
+                지났습니다.
+              </p>
+              <p className="body-2 text-grayscale-500">
+                이전 자동송금내역 및 급여명세서는 <br />
+                급여 내역 탭에서 확인해 주세요.
+              </p>
+            </>
+          ) : remainingDays === 0 ? (
             <>
               <p className="heading-1">
                 급여지급일
@@ -102,10 +126,11 @@ const BossPayrollTab = () => {
         <Button
           size="sm"
           theme="outline"
-          icon={<EditIcon />}
-          onClick={handlePayrollEdit}
+          icon={<ResetIcon className="w-4 h-4" />}
+          onClick={handleAutoTransferEdit}
+          className="text-grayscale-600 body-3"
         >
-          송금인원 수정
+          송금정보 갱신
         </Button>
       </div>
 
@@ -115,20 +140,14 @@ const BossPayrollTab = () => {
           <div className="text-center py-10 text-grayscale-500">
             불러오는 중...
           </div>
-        ) : payrolls.length === 0 ? (
+        ) : autoTransferInfo.length === 0 ? (
           <div className="text-center py-10 text-grayscale-500">
             급여 정보가 없습니다.
           </div>
         ) : (
           <ul className="space-y-4">
-            {payrolls.map((item) => (
-              <BossPayrollCard
-                key={item.staff.staffId}
-                data={item}
-                editable={false}
-                checked={true}
-                onToggle={() => {}}
-              />
+            {autoTransferInfo.map((item) => (
+              <BossPayrollCard key={item.staff.staffId} item={item} />
             ))}
           </ul>
         )}
@@ -137,4 +156,4 @@ const BossPayrollTab = () => {
   );
 };
 
-export default BossPayrollTab;
+export default BossAutoTransferTab;

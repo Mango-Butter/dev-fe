@@ -81,7 +81,7 @@ export default function SelectField({
         >
           <span
             className={cn(
-              "body-1 mr-2 truncate",
+              "body-2 mr-2 truncate",
               !value && "text-grayscale-500",
             )}
           >
@@ -109,7 +109,7 @@ export default function SelectField({
                 <motion.li
                   key={opt.value}
                   onClick={() => handleSelect(opt.value)}
-                  className="body-2 cursor-pointer px-4 py-3 hover:bg-grayscale-100"
+                  className="body-3 cursor-pointer px-4 py-3 hover:bg-grayscale-100"
                 >
                   {opt.label}
                 </motion.li>

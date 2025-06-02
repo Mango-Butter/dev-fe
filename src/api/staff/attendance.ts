@@ -1,6 +1,7 @@
 import axiosAuth from "../common/axiosAuth.ts";
 import {
   ClockInRequest,
+  StaffAttendanceRecord,
   TodayScheduleWithAttendance,
 } from "../../types/attendance.ts";
 
@@ -46,4 +47,22 @@ export const getTodayScheduleAndAttendance = async (
     `/api/staff/stores/${storeId}/schedules/today`,
   );
   return res.data.result;
+};
+
+/**
+ * 알바생 본인의 월별 근태기록 조회
+ * GET /api/staff/stores/{storeId}/schedules/attendances?start=YYYY-MM-DD&end=YYYY-MM-DD
+ */
+export const getStaffAttendanceRecords = async (
+  storeId: number,
+  start: string,
+  end: string,
+): Promise<StaffAttendanceRecord[]> => {
+  const response = await axiosAuth.get(
+    `/api/staff/stores/${storeId}/schedules/attendances`,
+    {
+      params: { start, end },
+    },
+  );
+  return response.data.result;
 };
