@@ -1,6 +1,7 @@
 import StaffStoreCard from "../../store/staff/StaffStoreCard.tsx";
 import { useUserStore } from "../../../stores/userStore.ts";
 import StaffDocumentContainer from "./StaffDocumentContainer.tsx";
+import StaffPayrollSettingContainer from "./StaffPayrollSettingContainer.tsx";
 
 const StaffMyPage = () => {
   const { user } = useUserStore();
@@ -30,9 +31,8 @@ const StaffMyPage = () => {
         <div className="w-full justify-start items-center title-1">내 매장</div>
         <StaffStoreCard />
       </div>
-      <div className="w-full">
-        <StaffDocumentContainer />
-      </div>
+      <StaffPayrollSettingContainer />
+      <StaffDocumentContainer />
     </div>
   );
 };

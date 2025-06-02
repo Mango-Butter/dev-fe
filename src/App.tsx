@@ -103,6 +103,9 @@ const StaffPayslipPage = lazy(
 const StaffPayrollPage = lazy(
   () => import("./pages/payroll/staff/StaffPayrollPage.tsx"),
 );
+const StaffAccountRegisterPage = lazy(
+  () => import("./pages/mypage/staff/StaffAccountRegisterPage.tsx"),
+);
 
 function App() {
   return (
@@ -220,6 +223,10 @@ function App() {
                 <Route
                   path="staff/store/register"
                   element={<StoreRegisterStaffPage />}
+                />
+                <Route
+                  path="staff/store/account-register"
+                  element={<StaffAccountRegisterPage />}
                 />
                 <Route
                   path="staff/contract/:id"

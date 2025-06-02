@@ -194,3 +194,25 @@ export interface PayrollSettingsResponse {
   deductionUnit: DeductionUnit;
   commutingAllowance: number;
 }
+
+export interface VerifyAccountRequest {
+  bankName: string;
+  accountNumber: string;
+}
+
+export interface VerifyAccountResponse {
+  bankName: string;
+  accountHolder: string;
+  accountNumber: string;
+}
+
+export interface StaffAccountInfo {
+  bankName: string | null;
+  accountHolder: string | null;
+  accountNumber: string | null;
+}
+
+export interface StaffPayrollBriefInfo {
+  hourlyWage: number;
+  withholdingType: WithholdingType;
+}
