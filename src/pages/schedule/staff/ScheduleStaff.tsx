@@ -13,12 +13,12 @@ import ScheduleFilter from "../boss/ScheduleFilter.tsx";
 import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
 import useStaffScheduleStore from "../../../stores/staff/useStaffScheduleStore.ts";
 import StaffScheduleList from "../boss/StaffScheduleList.tsx";
-import SingleScheduleEditForm from "../boss/SingleScheduleEditForm.tsx";
-import AttendanceEditForm from "../boss/AttendanceEditForm.tsx";
 import { getKSTDate } from "../../../libs/date.ts";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import StaffAttendanceEditForm from "./StaffAttendanceEditForm.tsx";
+import StaffScheduleEditForm from "./StaffScheduleEditForm.tsx";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -59,7 +59,6 @@ const ScheduleStaff = () => {
     });
   });
 
-  // TODO: 알바생 바텀시트 따로 만들어야 함
   // 스케줄 상세 보기 바텀시트 오픈 함수
   const handleOpenScheduleDetail = (
     schedule: DailyAttendanceRecord["schedule"],
@@ -67,7 +66,7 @@ const ScheduleStaff = () => {
     attendance: DailyAttendanceRecord["attendance"],
   ) => {
     setBottomSheetContent(
-      <SingleScheduleEditForm
+      <StaffScheduleEditForm
         schedule={schedule}
         staff={staff}
         attendance={attendance}
@@ -86,7 +85,7 @@ const ScheduleStaff = () => {
     attendance: DailyAttendanceRecord["attendance"],
   ) => {
     setBottomSheetContent(
-      <AttendanceEditForm
+      <StaffAttendanceEditForm
         schedule={schedule}
         staff={staff}
         attendance={attendance}

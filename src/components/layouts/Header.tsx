@@ -34,6 +34,16 @@ const Header: React.FC = () => {
     }
   };
 
+  const handleAlarmPage = () => {
+    if (user?.role === "BOSS") {
+      navigate("/boss/alarm");
+    } else if (user?.role === "STAFF") {
+      navigate("/staff/alarm");
+    } else {
+      navigate("/");
+    }
+  };
+
   return (
     <header
       className={`w-full px-5 py-4 bg-white ${
@@ -62,7 +72,7 @@ const Header: React.FC = () => {
       <div className="flex items-center gap-3">
         {theme === "default" ? (
           <>
-            <button aria-label="알림">
+            <button aria-label="알림" onClick={handleAlarmPage}>
               <AlarmIcon className="w-6 h-6" />
             </button>
             <button aria-label="마이페이지" onClick={handleMypage}>

@@ -25,8 +25,9 @@ self.addEventListener("push", (event) => {
     data.notification.title,
     {
       body: data.notification.body,
-      icon: data.notification.icon || "/logo192.png", // fallback icon
-      badge: data.notification.badge || "/badge-icon.png", // optional
+      image: data.notification?.image,
+      icon: data.notification.icon || "/logo-192x192.png", // fallback icon
+      badge: data.notification.badge || "/logo-192x192.png",
       data: { click_action: clickAction },
     },
   );

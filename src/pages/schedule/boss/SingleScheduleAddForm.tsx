@@ -70,8 +70,9 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
 
   useEffect(() => {
     const fetchStaffs = async () => {
+      if (!storeId) return;
       try {
-        const data = await getStaffBriefList(1); // storeId: 1
+        const data = await getStaffBriefList(storeId);
         setStaffList(data);
       } catch (err) {
         console.error("알바생 목록 조회 실패", err);
