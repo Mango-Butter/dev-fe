@@ -28,3 +28,12 @@ export interface AttendanceRecord {
   clockOutTime: string | null;
   clockInStatus: ClockInStatus;
 }
+
+export interface NotificationItem {
+  id: number;
+  title: string;
+  content: string;
+  clickUrl: string;
+  type: "CONTRACT" | "DOCUMENT" | string; // enum 확장 가능
+  createdAt: string; // ISO datetime
+}
