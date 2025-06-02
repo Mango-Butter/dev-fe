@@ -76,6 +76,9 @@ const BossPayslipPage = lazy(
 const AccountRegisterPage = lazy(
   () => import("./pages/mypage/boss/AccountRegisterPage.tsx"),
 );
+const BossAlarmPage = lazy(
+  () => import("./pages/alarm/boss/BossAlarmPage.tsx"),
+);
 
 // Lazy-loaded components (staff)
 const ScheduleStaff = lazy(
@@ -202,6 +205,7 @@ function App() {
                   path="/boss/payroll/edit"
                   element={<BossAutoTransferEditPage />}
                 />
+                <Route path="/boss/alarm" element={<BossAlarmPage />} />
               </Route>
 
               {/* STAFF Routes */}
