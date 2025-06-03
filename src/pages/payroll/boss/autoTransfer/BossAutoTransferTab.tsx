@@ -10,7 +10,7 @@ import {
 } from "../../../../api/boss/payroll.ts";
 import {
   ConfirmedTransferItem,
-  PayrollSettingsResponse,
+  BossPayrollSettingsResponse,
 } from "../../../../types/payroll.ts";
 import BossPayrollCard from "../BossPayrollCard.tsx";
 import ResetIcon from "../../../../components/icons/ResetIcon.tsx";
@@ -21,7 +21,7 @@ const BossAutoTransferTab = () => {
   const [autoTransferInfo, setAutoTransferInfo] = useState<
     ConfirmedTransferItem[]
   >([]);
-  const [settings, setSettings] = useState<PayrollSettingsResponse | null>(
+  const [settings, setSettings] = useState<BossPayrollSettingsResponse | null>(
     null,
   );
   const [loading, setLoading] = useState(true);

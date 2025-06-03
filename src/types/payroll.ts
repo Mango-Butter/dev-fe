@@ -19,7 +19,7 @@ export interface PayrollSettingsRequest {
   commutingAllowance: number;
 }
 
-export interface PayrollSettingsResponse {
+export interface BossPayrollSettingsResponse {
   account: {
     bankName: string;
     accountNumber: string;
@@ -188,7 +188,7 @@ export interface PayslipDownloadResponse {
   expiresAt: string; // ISO datetime 문자열
 }
 
-export interface PayrollSettingsResponse {
+export interface StaffPayrollSettingsResponse {
   autoTransferEnabled: boolean;
   transferDate: number | null;
   deductionUnit: DeductionUnit;

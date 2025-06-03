@@ -11,7 +11,7 @@ import {
 } from "../../../../api/boss/payroll.ts";
 import {
   EstimatedPayrollItem,
-  PayrollSettingsResponse,
+  BossPayrollSettingsResponse,
 } from "../../../../types/payroll.ts";
 
 const BossAutoTransferEditPage = () => {
@@ -29,7 +29,7 @@ const BossAutoTransferEditPage = () => {
     EstimatedPayrollItem[]
   >([]);
   const [checkedKeys, setCheckedKeys] = useState<Set<string>>(new Set());
-  const [settings, setSettings] = useState<PayrollSettingsResponse | null>(
+  const [settings, setSettings] = useState<BossPayrollSettingsResponse | null>(
     null,
   );
   const [loading, setLoading] = useState(true);

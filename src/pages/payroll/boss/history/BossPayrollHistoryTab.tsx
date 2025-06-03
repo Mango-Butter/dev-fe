@@ -3,7 +3,7 @@ import useStoreStore from "../../../../stores/storeStore.ts";
 import { getKSTDate } from "../../../../libs/date.ts";
 import {
   MonthlyPayrollItem,
-  PayrollSettingsResponse,
+  BossPayrollSettingsResponse,
 } from "../../../../types/payroll.ts";
 import BossPayrollCard from "../BossPayrollCard.tsx";
 import {
@@ -16,7 +16,7 @@ const BossPayrollHistoryTab = () => {
   const { selectedStore } = useStoreStore();
   const [loading, setLoading] = useState(true);
   const [payrollItems, setPayrollItems] = useState<MonthlyPayrollItem[]>([]);
-  const [settings, setSettings] = useState<PayrollSettingsResponse | null>(
+  const [settings, setSettings] = useState<BossPayrollSettingsResponse | null>(
     null,
   );
 

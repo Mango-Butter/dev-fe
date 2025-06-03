@@ -17,7 +17,7 @@ import ErrorIcon from "../../../components/icons/ErrorIcon.tsx";
 import DeleteIcon from "../../../components/icons/DeleteIcon.tsx";
 import { useLayout } from "../../../hooks/useLayout.ts";
 import { toast } from "react-toastify";
-import { PayrollSettingsResponse } from "../../../types/payroll.ts";
+import { BossPayrollSettingsResponse } from "../../../types/payroll.ts";
 import NHBankIcon from "../../../assets/NHBankIcon.png";
 import { useNavigate } from "react-router-dom";
 import { showConfirm } from "../../../libs/showConfirm.ts";
@@ -45,7 +45,7 @@ const extraWorkOptions = [
 const PayrollSettingPage = () => {
   const { selectedStore } = useStoreStore();
   const [account, setAccount] =
-    useState<PayrollSettingsResponse["account"]>(null);
+    useState<BossPayrollSettingsResponse["account"]>(null);
   const navigate = useNavigate();
   const { tooltipRef, toggleTooltip, TooltipBox } = useTooltip({
     duration: 3000,

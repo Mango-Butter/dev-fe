@@ -8,7 +8,7 @@ import {
 } from "../../../api/staff/payroll.ts";
 import {
   StaffPayrollResponse,
-  PayrollSettingsResponse,
+  StaffPayrollSettingsResponse,
 } from "../../../types/payroll.ts";
 import StaffAttendanceRecordContainer from "./StaffAttendanceRecordContainer.tsx";
 import StaffPayrollCard from "./StaffPayrollCard.tsx";
@@ -26,7 +26,7 @@ const StaffPayrollPage = () => {
   const [staffPayroll, setStaffPayroll] = useState<StaffPayrollResponse | null>(
     null,
   );
-  const [settings, setSettings] = useState<PayrollSettingsResponse | null>(
+  const [settings, setSettings] = useState<StaffPayrollSettingsResponse | null>(
     null,
   );
   const [loading, setLoading] = useState(true);
