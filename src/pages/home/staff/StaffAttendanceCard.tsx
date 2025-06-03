@@ -123,18 +123,19 @@ const StaffAttendanceCard = ({
           <span className="body-3 text-grayscale-600">
             {clockOutTime.format("HH:mm")}
           </span>
-          {attendance?.clockOutStatus && (
-            <div className="flex items-center gap-1">
-              <span
-                className={`w-2 h-2 rounded-full ${getClockOutStyle(attendance.clockOutStatus).dotClassName}`}
-              />
-              <span
-                className={`body-3 ${getClockOutStyle(attendance.clockOutStatus).className}`}
-              >
-                {getClockOutStyle(attendance.clockOutStatus).label}
-              </span>
-            </div>
-          )}
+          {attendance?.clockOutStatus &&
+            attendance.clockOutStatus !== "NORMAL" && (
+              <div className="flex items-center gap-1">
+                <span
+                  className={`w-2 h-2 rounded-full ${getClockOutStyle(attendance.clockOutStatus).dotClassName}`}
+                />
+                <span
+                  className={`body-3 ${getClockOutStyle(attendance.clockOutStatus).className}`}
+                >
+                  {getClockOutStyle(attendance.clockOutStatus).label}
+                </span>
+              </div>
+            )}
         </div>
       ) : (
         clockInTime &&
