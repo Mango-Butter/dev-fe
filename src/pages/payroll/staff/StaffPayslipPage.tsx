@@ -135,20 +135,20 @@ const StaffPayslipPage = () => {
             </div>
           </div>
         </div>
-        <span className="text-sm text-gray-500">
+        <span className="body-3 text-gray-500">
           {dayjs(month).format("YYYY년 M월")}
         </span>
       </div>
 
       {/* 지급 영역 */}
-      <section className="bg-white rounded-xl p-4 shadow-sm space-y-2">
+      <section className="bg-white rounded-xl p-4 shadow-sm space-y-3">
         <p className="font-semibold text-sm text-gray-800">
           총 급여
           <span className="text-green-600 float-right">
             {totalAmount.toLocaleString()}원
           </span>
         </p>
-        <div className="text-sm text-gray-700 space-y-1">
+        <div className="text-sm text-gray-700 space-y-2">
           <div className="flex justify-between">
             <span>기본급</span>
             <span>{baseAmount.toLocaleString()}원</span>
@@ -165,7 +165,7 @@ const StaffPayslipPage = () => {
       </section>
 
       {/* 공제 영역 */}
-      <section className="bg-white rounded-xl p-4 shadow-sm space-y-2">
+      <section className="bg-white rounded-xl p-4 shadow-sm space-y-3">
         <p className="font-semibold text-sm text-gray-800">
           공제 총액
           <span className="text-red-500 float-right">
@@ -173,7 +173,7 @@ const StaffPayslipPage = () => {
           </span>
         </p>
         {withholdingType !== "NONE" && (
-          <div className="text-sm text-gray-700 space-y-1">
+          <div className="text-sm text-gray-700 space-y-2">
             <div className="flex justify-between">
               <span>
                 {withholdingType === "INCOME_TAX" ? "원천징수" : "4대보험"}
@@ -185,7 +185,7 @@ const StaffPayslipPage = () => {
       </section>
 
       {/* 최종 금액 영역 */}
-      <section className="bg-white rounded-xl p-4 shadow-sm text-sm text-gray-700 space-y-2">
+      <section className="bg-white rounded-xl p-4 shadow-sm text-sm text-gray-700 space-y-3">
         <div className="flex justify-end gap-3 text-grayscale-500">
           <span>총 급여</span>
           <span>{totalAmount.toLocaleString()}원</span>
@@ -194,7 +194,7 @@ const StaffPayslipPage = () => {
           <span>공제 총액</span>
           <span>-{withholdingTax.toLocaleString()}원</span>
         </div>
-        <div className="flex justify-end gap-3 pt-2 heading-2 border-t border-gray-100">
+        <div className="flex justify-end gap-3 pt-2 title-1 border-t border-gray-100">
           실 지급액
           <span className="text-xl font-bold ml-1">
             {netAmount.toLocaleString()}원

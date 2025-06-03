@@ -99,7 +99,7 @@ const ContractTemplateRegisterPage = () => {
 
       await createContractTemplate(selectedStore.storeId, payload);
       toast.success("템플릿이 성공적으로 등록되었습니다.");
-      navigate("/boss/contract/template");
+      navigate("/boss/contract/template", { replace: true });
     } catch (err) {
       console.error("템플릿 저장 실패", err);
     } finally {
