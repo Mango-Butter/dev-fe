@@ -3,8 +3,12 @@ import { useLayout } from "../../../hooks/useLayout.ts";
 
 const AddressSearchPopup = () => {
   useLayout({
-    headerVisible: false,
+    title: "주소 검색",
+    theme: "plain",
+    headerVisible: true,
     bottomNavVisible: false,
+    onBack: () => window.close(),
+    rightIcon: null,
   });
 
   const handleComplete = (data: any) => {
@@ -20,7 +24,6 @@ const AddressSearchPopup = () => {
 
   return (
     <div className="h-full p-4">
-      <h2 className="text-lg font-bold mb-2">주소 검색</h2>
       <DaumPostcodeEmbed onComplete={handleComplete} />
     </div>
   );

@@ -92,9 +92,15 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
                 className={cn(
                   "w-full rounded-lg border px-5 py-3 body-1 transition-colors",
                   suffix && "pr-12",
-                  state === "disable" && "overflow-x-auto",
+                  state === "disable" &&
+                    "overflow-x-auto cursor-text touch-pan-x", // 필수
                   inputClassName,
                 )}
+                style={
+                  state === "disable"
+                    ? { WebkitOverflowScrolling: "touch" }
+                    : undefined
+                }
                 readOnly={state === "disable"}
                 placeholder={placeholder}
                 required={required}
