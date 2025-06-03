@@ -15,6 +15,7 @@ import {
 import BossPayrollCard from "../BossPayrollCard.tsx";
 import ResetIcon from "../../../../components/icons/ResetIcon.tsx";
 import { getKSTDate } from "../../../../libs/date.ts";
+import { toast } from "react-toastify";
 
 const BossAutoTransferTab = () => {
   const { selectedStore } = useStoreStore();
@@ -32,7 +33,7 @@ const BossAutoTransferTab = () => {
   };
   const getMonthLabel = (yearMonth: string) => {
     const [year, month] = yearMonth.split("-");
-    return `${year}년 ${parseInt(month)}월`;
+    return `${year}년 ${parseInt(month)}월분 급여`;
   };
 
   useEffect(() => {
@@ -57,7 +58,15 @@ const BossAutoTransferTab = () => {
   }, [selectedStore]);
 
   const handleAutoTransferEdit = () => {
-    navigate("/boss/payroll/edit");
+    const allPending = autoTransferInfo.every(
+      (item) => item.info.transferState === "PENDING",
+    );
+
+    if (allPending) {
+      navigate("/boss/payroll/edit");
+    } else {
+      toast.info("자동송금이 이미 시작되었습니다.");
+    }
   };
 
   const getRemainingDaysStyle = (remaining: number): string => {

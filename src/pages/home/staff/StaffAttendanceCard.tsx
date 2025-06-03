@@ -43,12 +43,7 @@ const StaffAttendanceCard = ({
     startTime.diff(now, "second") <= 600 &&
     now.isBefore(endTime);
 
-  const canClockOut =
-    clockInTime &&
-    !clockOutTime &&
-    now.isAfter(startTime) &&
-    now.isBefore(endTime);
-
+  const canClockOut = clockInTime && !clockOutTime && now.isAfter(startTime);
   const remainingSeconds = clockOutTime
     ? 0
     : Math.max(0, endTime.diff(now, "second"));

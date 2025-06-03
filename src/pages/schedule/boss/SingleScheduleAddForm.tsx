@@ -59,7 +59,7 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
     resolver: zodResolver(schema),
     mode: "onChange",
     defaultValues: {
-      staffId: 0,
+      staffId: staffList.length === 0 ? 0 : staffList[0].staffId,
       date: defaultDate ?? getKSTDate(),
       startTime,
       endTime,
