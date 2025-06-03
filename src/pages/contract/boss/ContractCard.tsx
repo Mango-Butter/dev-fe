@@ -52,7 +52,7 @@ const ContractCard = ({ contract, onDelete }: Props) => {
 
   // PDF 보기
   const handleViewPdf = async () => {
-    if (!storeId || !contract.contractId) return;
+    if (typeof storeId !== "number" || !contract.contractId) return;
     try {
       const { url } = await fetchContractPdfViewUrl(
         storeId,
@@ -68,7 +68,7 @@ const ContractCard = ({ contract, onDelete }: Props) => {
 
   // PDF 다운로드
   const handleDownloadPdf = async () => {
-    if (!storeId || !contract.contractId) return;
+    if (typeof storeId !== "number" || !contract.contractId) return;
     try {
       const { url } = await fetchContractPdfDownloadUrl(
         storeId,
@@ -86,7 +86,7 @@ const ContractCard = ({ contract, onDelete }: Props) => {
   };
 
   const handleDeleteContract = async () => {
-    if (!storeId || !contract.contractId) return;
+    if (typeof storeId !== "number" || !contract.contractId) return;
 
     const confirmed = await showConfirm({
       title: "근로계약서를 삭제하시겠습니까?",

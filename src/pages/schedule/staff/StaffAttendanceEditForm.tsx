@@ -87,7 +87,7 @@ const StaffAttendanceEditForm = ({
   }, [clockInStatus, setValue]);
 
   const onSubmit = async (data: FormData) => {
-    if (!storeId) return;
+    if (typeof storeId !== "number") return;
     try {
       await requestAttendanceEdit(storeId, schedule.scheduleId, {
         requestedClockInStatus: data.clockInStatus,
@@ -222,7 +222,7 @@ const StaffAttendanceEditForm = ({
           />
         </section>
       )}
-      {selectedStore.staffId === staff.staffId && (
+      {selectedStore.staff.staffId === staff.staffId && (
         <div className="mt-4 flex justify-between gap-3 bg-white">
           {isEditMode ? (
             <>

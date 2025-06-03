@@ -1,10 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useStoreStore from "../../../../stores/storeStore.ts";
 import { getKSTDate } from "../../../../libs/date.ts";
-import {
-  MonthlyPayrollItem,
-  BossPayrollSettingsResponse,
-} from "../../../../types/payroll.ts";
+import { MonthlyPayrollItem } from "../../../../types/payroll.ts";
 import BossPayrollCard from "../BossPayrollCard.tsx";
 import {
   fetchMonthlyPayrolls,
@@ -17,41 +14,53 @@ const BossPayrollHistoryTab = () => {
   const { selectedStore } = useStoreStore();
   const [loading, setLoading] = useState(true);
   const [payrollItems, setPayrollItems] = useState<MonthlyPayrollItem[]>([]);
-  const [settings, setSettings] = useState<BossPayrollSettingsResponse | null>(
+  const [selectedYearMonth, setSelectedYearMonth] = useState<string | null>(
     null,
   );
-
-  const getMaxMonth = useCallback(() => {
-    const now = getKSTDate();
-    const year = now.getFullYear();
-
-    let month = now.getMonth();
-
-    if (settings?.transferDate != null) {
-      const remaining = getRemainingDays(settings.transferDate);
-      if (remaining < 0) {
-        month -= 1;
-      }
-    }
-
-    return `${year}-${String(month).padStart(2, "0")}`;
-  }, [settings]);
-
-  const [selectedYearMonth, setSelectedYearMonth] = useState(getMaxMonth);
+  const [maxMonth, setMaxMonth] = useState<string | null>(null);
 
   useEffect(() => {
-    const loadData = async () => {
+    const fetchSettingsAndInit = async () => {
       if (!selectedStore) return;
-      setLoading(true);
 
       try {
-        const [settingsResult, payrollResult] = await Promise.all([
-          fetchPayrollSettings(selectedStore.storeId),
-          fetchMonthlyPayrolls(selectedStore.storeId, selectedYearMonth),
-        ]);
+        const settingsResult = await fetchPayrollSettings(
+          selectedStore.storeId,
+        );
 
-        setSettings(settingsResult);
-        setPayrollItems(payrollResult);
+        const now = getKSTDate();
+        const year = now.getFullYear();
+        let month = now.getMonth(); // 0-indexed
+
+        if (settingsResult.transferDate != null) {
+          const remaining = getRemainingDays(settingsResult.transferDate);
+          if (remaining < 0) {
+            month += 1; // 급여일 지났으면 이번달까지
+          }
+        }
+
+        const computedMonth = `${year}-${String(month - 1).padStart(2, "0")}`;
+        setSelectedYearMonth(computedMonth);
+        setMaxMonth(computedMonth);
+      } catch (err) {
+        console.error("급여 설정 불러오기 실패:", err);
+      }
+    };
+
+    fetchSettingsAndInit();
+  }, [selectedStore]);
+
+  // 급여 내역 불러오기
+  useEffect(() => {
+    const loadPayrolls = async () => {
+      if (!selectedStore || !selectedYearMonth) return;
+      setLoading(true);
+      try {
+        const result = await fetchMonthlyPayrolls(
+          selectedStore.storeId,
+          selectedYearMonth,
+        );
+        setPayrollItems(result);
       } catch (err) {
         console.error("급여 내역 조회 실패:", err);
         setPayrollItems([]);
@@ -60,19 +69,22 @@ const BossPayrollHistoryTab = () => {
       }
     };
 
-    loadData();
+    loadPayrolls();
   }, [selectedStore, selectedYearMonth]);
 
   return (
     <div className="w-full flex flex-col gap-2">
       {/* 상단 급여일 안내 */}
-      <div className="flex items-center">
-        <MonthPicker
-          value={selectedYearMonth}
-          onChange={(val) => setSelectedYearMonth(val)}
-          max={getMaxMonth()}
-        />
-      </div>
+      {selectedYearMonth && maxMonth && (
+        <div className="flex items-center">
+          <MonthPicker
+            value={selectedYearMonth}
+            onChange={(val) => setSelectedYearMonth(val)}
+            max={maxMonth}
+          />
+        </div>
+      )}
+
       {/* 목록 */}
       <section>
         {loading ? (

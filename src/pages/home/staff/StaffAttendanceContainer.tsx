@@ -7,27 +7,35 @@ import StaffAttendanceCard from "./StaffAttendanceCard.tsx";
 import { parseDateStringToKST } from "../../../libs/date.ts";
 
 const StaffAttendanceContainer = () => {
-  const { selectedStore } = useStaffStoreStore();
   const navigate = useNavigate();
+  const { selectedStore } = useStaffStoreStore();
+  const storeId = selectedStore?.storeId;
 
   const [schedules, setSchedules] = useState<TodayScheduleWithAttendance[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (typeof storeId !== "number") return;
+
     const fetch = async () => {
-      if (!selectedStore) return;
       setLoading(true);
-      const result = await getTodayScheduleAndAttendance(selectedStore.storeId);
-      result.sort(
-        (a, b) =>
-          parseDateStringToKST(a.schedule.startTime).getTime() -
-          parseDateStringToKST(b.schedule.startTime).getTime(),
-      );
-      setSchedules(result);
-      setLoading(false);
+      try {
+        const result = await getTodayScheduleAndAttendance(storeId);
+        result.sort(
+          (a, b) =>
+            parseDateStringToKST(a.schedule.startTime).getTime() -
+            parseDateStringToKST(b.schedule.startTime).getTime(),
+        );
+        setSchedules(result);
+      } catch (error) {
+        console.error("스케줄 로딩 실패:", error);
+      } finally {
+        setLoading(false);
+      }
     };
+
     fetch();
-  }, [selectedStore]);
+  }, [storeId]);
 
   if (!selectedStore) return null;
 

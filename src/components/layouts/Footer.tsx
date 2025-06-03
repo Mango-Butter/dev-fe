@@ -9,7 +9,7 @@ const Footer: FC = () => {
   };
 
   return (
-    <footer className="bg-grayscale-200 flex flex-col gap-5 border-t border-grayscale-200 text-sm text-grayscale-800 p-5">
+    <footer className="bg-grayscale-200 flex w-full flex-col gap-5 border-t border-grayscale-200 text-sm text-grayscale-800 p-5">
       <div className="max-w-screen-xl space-y-5">
         {/* 약관 링크 */}
         <div className="flex flex-wrap gap-x-2 justify-start items-center text-center">

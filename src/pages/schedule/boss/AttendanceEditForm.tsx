@@ -59,7 +59,7 @@ const AttendanceEditForm = ({
   const clockInStatus = watch("clockInStatus");
 
   const onSubmit = async (data: FormData) => {
-    if (!storeId) return;
+    if (typeof storeId !== "number") return;
     try {
       await updateAttendance(storeId, schedule.scheduleId, {
         clockInStatus: data.clockInStatus,
@@ -79,7 +79,7 @@ const AttendanceEditForm = ({
   };
 
   const onDelete = async () => {
-    if (!storeId) return;
+    if (typeof storeId !== "number") return;
 
     const confirmed = await showConfirm({
       title: "정말 삭제할까요?",

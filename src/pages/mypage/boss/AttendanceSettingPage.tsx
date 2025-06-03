@@ -115,7 +115,7 @@ const AttendanceSettingPage = () => {
         attendanceMethod: method,
       });
       setAttendanceMethod(method);
-
+      toast.success("출퇴근 방식이 변경되었습니다.");
       if (method === "QR" || method === "BOTH") {
         const qr = await getQrCodeSettings(selectedStore.storeId);
         setQrCodeUrl(qr.qrCode);

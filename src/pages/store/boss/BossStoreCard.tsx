@@ -20,9 +20,9 @@ const BossStoreCard = () => {
     const fetchStores = async () => {
       try {
         const stores = await getStoreList();
-        setStoreList(stores);
-
         if (stores.length === 0) return;
+
+        setStoreList(stores);
 
         const firstStore = stores[0];
 
