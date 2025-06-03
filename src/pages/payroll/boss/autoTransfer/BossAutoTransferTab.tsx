@@ -30,6 +30,10 @@ const BossAutoTransferTab = () => {
     const now = getKSTDate();
     return `${now.getFullYear()}-${String(now.getMonth()).padStart(2, "0")}`;
   };
+  const getMonthLabel = (yearMonth: string) => {
+    const [year, month] = yearMonth.split("-");
+    return `${year}년 ${parseInt(month)}월`;
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -75,12 +79,7 @@ const BossAutoTransferTab = () => {
       {/* 상단 급여일 안내 */}
       {settings && remainingDays !== null && (
         <section className="w-full flex flex-col gap-2">
-          <input
-            type="month"
-            value={getNowMonth()}
-            disabled={true}
-            className="title-1 bg-white"
-          />
+          <span className="body-2"> {getMonthLabel(getNowMonth())} </span>
           {remainingDays > 0 ? (
             <>
               <p className="heading-1">

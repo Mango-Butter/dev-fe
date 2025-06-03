@@ -9,6 +9,7 @@ import { getStartAndEndDates } from "../../../utils/date.ts";
 import { getKSTDate } from "../../../libs/date.ts";
 import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx";
 import { toast } from "react-toastify";
+import MonthPicker from "../../../components/common/MonthPicker.tsx";
 
 interface Props {
   staff: {
@@ -84,11 +85,10 @@ const AttendanceRecordContainer = ({ staff, storeId }: Props) => {
       <p className="title-1 mb-3">근태 기록 관리</p>
 
       <div className="flex gap-1 items-center mb-2">
-        <input
-          type="month"
+        <MonthPicker
           value={selectedYearMonth}
-          onChange={(e) => setSelectedYearMonth(e.target.value)}
-          className="text-sm border px-2 py-1 rounded-md"
+          onChange={(val) => setSelectedYearMonth(val)}
+          max={selectedYearMonth}
         />
       </div>
 

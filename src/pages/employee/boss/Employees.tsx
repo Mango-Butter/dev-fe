@@ -7,6 +7,7 @@ import { useSearchParams } from "react-router-dom";
 import { getStartAndEndDates } from "../../../utils/date.ts";
 import { getKSTDate } from "../../../libs/date.ts";
 import SkeletonStaffCard from "../../../components/skeleton/SkeletonStaffCard.tsx";
+import MonthPicker from "../../../components/common/MonthPicker.tsx";
 
 const Employees = () => {
   const { selectedStore } = useStoreStore();
@@ -48,11 +49,10 @@ const Employees = () => {
     <div className="flex flex-col w-full h-full">
       <div className="flex flex-col gap-5 px-5 py-4 flex-1 self-stretch">
         <div className="flex items-center">
-          <input
-            type="month"
+          <MonthPicker
             value={selectedYearMonth}
-            onChange={(e) => setSelectedYearMonth(e.target.value)}
-            className="text-sm border px-2 py-1 rounded-md"
+            onChange={(val) => setSelectedYearMonth(val)}
+            max={selectedYearMonth}
           />
         </div>
         {!selectedStore ? (

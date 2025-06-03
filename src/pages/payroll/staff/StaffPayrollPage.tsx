@@ -14,6 +14,7 @@ import StaffAttendanceRecordContainer from "./StaffAttendanceRecordContainer.tsx
 import StaffPayrollCard from "./StaffPayrollCard.tsx";
 import { useNavigate } from "react-router-dom";
 import { getRemainingDays } from "../../../utils/date.ts";
+import MonthPicker from "../../../components/common/MonthPicker.tsx";
 
 const getCurrentMonth = (): string => {
   const now = getKSTDate();
@@ -141,12 +142,10 @@ const StaffPayrollPage = () => {
       {staffPayroll && (
         <section className="flex flex-col gap-2 w-full">
           <div className="flex justify-between w-full">
-            <input
-              type="month"
-              max={currentMonth}
+            <MonthPicker
               value={selectedMonth}
-              onChange={(e) => setSelectedMonth(e.target.value)}
-              className="title-1 bg-white max-w-fit"
+              max={currentMonth}
+              onChange={(val) => setSelectedMonth(val)}
             />
             <button
               className="text-sm font-semibold text-right text-primary underline"
