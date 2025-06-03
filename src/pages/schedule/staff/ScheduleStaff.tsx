@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import ArrowIcon from "../../../components/icons/ArrowIcon.tsx";
-import { formatFullDate } from "../../../utils/date.ts";
+import { formatFullDate, formatKRDate } from "../../../utils/date.ts";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import "../../../styles/schedulePageCalendar.css";
 import { getClockInStyle } from "../../../utils/attendance.ts";
@@ -26,6 +26,7 @@ const ScheduleStaff = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(getKSTDate());
   const [calendarViewDate, setCalendarViewDate] = useState<Date>(getKSTDate());
   const dateKey = formatFullDate(selectedDate);
+  const displayDate = formatKRDate(selectedDate);
 
   const { scheduleMap, dotMap, fetchDailySchedule, fetchDotRange } =
     useStaffScheduleStore();
@@ -181,12 +182,15 @@ const ScheduleStaff = () => {
         }}
       />
 
-      <div className="flex w-full h-full flex-col bg-grayscale-100 px-5 py-4">
-        <div className="mt-4">
+      <div className="flex w-full h-full flex-col bg-grayscale-100 pb-4 border-t border-grayscale-200">
+        <div className="flex w-full justify-between bg-white itmes-center px-4 py-1 shadow-basic">
+          <div className="title-1 py-2.5 px-3">{displayDate}</div>
+        </div>
+        <div className="px-5 mt-4">
           <ScheduleFilter />
         </div>
 
-        <div className="mt-8 text-center">
+        <div className="px-5 mt-8 text-center">
           <StaffScheduleList
             records={filteredRecords}
             onClick={(schedule, staff, attendance) => {
