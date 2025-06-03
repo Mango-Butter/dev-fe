@@ -108,13 +108,8 @@ const SignupStep2 = ({ role, onBack }: SignupStep2Props) => {
     try {
       const { accessToken, refreshToken } = await signup(data.role);
       useAuthStore.getState().setTokens(accessToken, refreshToken);
-      if (role === "BOSS") {
-        navigate("/boss");
-      } else if (role === "STAFF") {
-        navigate("/staff");
-      } else {
-        navigate("/");
-      }
+      toast.success("가입이 완료되었습니다!");
+      navigate("/login", { replace: true });
     } catch (error: any) {
       if (error.response?.status === 409) {
         toast.error("이미 가입된 사용자입니다.");

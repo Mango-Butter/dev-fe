@@ -98,19 +98,23 @@ const StaffScheduleList = ({ records, onClick, emptyMessage }: Props) => {
                   </span>
 
                   {/* 퇴근 상태 */}
-                  {attendance?.clockInStatus !== "ABSENT" && (
-                    <span
-                      className={cn("body-3 flex items-center", clockOutClass)}
-                    >
+                  {attendance?.clockInStatus &&
+                    attendance?.clockOutStatus !== "NORMAL" && (
                       <span
                         className={cn(
-                          "w-1.5 h-1.5 rounded-full mr-1",
-                          clockOutDot,
+                          "body-3 flex items-center",
+                          clockOutClass,
                         )}
-                      />
-                      {clockOutLabel} {extraLabel}
-                    </span>
-                  )}
+                      >
+                        <span
+                          className={cn(
+                            "w-1.5 h-1.5 rounded-full mr-1",
+                            clockOutDot,
+                          )}
+                        />
+                        {clockOutLabel} {extraLabel}
+                      </span>
+                    )}
                 </div>
               </div>
             </div>

@@ -8,7 +8,7 @@ import {
   MonthlyPayrollItem,
   PayrollDetailResponse,
   PayrollSettingsRequest,
-  PayrollSettingsResponse,
+  BossPayrollSettingsResponse,
   PayslipDownloadLink,
   StaffHourlyWage,
   StaffWithholdingItem,
@@ -59,7 +59,7 @@ export const updatePayrollSettings = async (
  */
 export const fetchPayrollSettings = async (
   storeId: number,
-): Promise<PayrollSettingsResponse> => {
+): Promise<BossPayrollSettingsResponse> => {
   const response = await axiosAuth.get(
     `/api/boss/stores/${storeId}/payrolls/settings`,
   );

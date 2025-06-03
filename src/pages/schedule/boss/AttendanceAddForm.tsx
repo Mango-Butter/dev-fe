@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
-import TextField from "../../../components/common/TextField.tsx";
 import SingleDatePicker from "../../../components/common/SingleDatePicker.tsx";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import useStoreStore from "../../../stores/storeStore.ts";
@@ -14,6 +13,7 @@ import { createAttendance } from "../../../api/boss/schedule.ts";
 import useScheduleStore from "../../../stores/useScheduleStore.ts";
 import { formatDateToKSTString, getKSTDate } from "../../../libs/date.ts";
 import { toast } from "react-toastify";
+import TimeInput from "../../../components/common/TimeInput.tsx";
 
 interface AddAttendanceFormProps {
   defaultDate?: Date;
@@ -38,7 +38,6 @@ const AttendanceAddForm = ({ defaultDate }: AddAttendanceFormProps) => {
   const [staffList, setStaffList] = useState<StaffBrief[]>([]);
 
   const {
-    register,
     handleSubmit,
     setValue,
     watch,
@@ -153,10 +152,28 @@ const AttendanceAddForm = ({ defaultDate }: AddAttendanceFormProps) => {
           <label className="title-1 text-grayscale-900">출근 / 퇴근 시간</label>
           <span className="title-1 text-warning">*</span>
         </div>
-        <div className="flex w-full gap-2 overflow-x-auto scrollbar-hide">
-          <TextField type="time" {...register("clockInTime")} size="sm" />
+        <div className="flex w-full gap-2 flex-wrap">
+          <TimeInput
+            value={watch("clockInTime") || ""}
+            onChange={(val) =>
+              setValue("clockInTime", val, {
+                shouldValidate: true,
+                shouldDirty: true,
+              })
+            }
+            error={!!errors.clockInTime}
+          />
           <span className="self-center text-gray-400">~</span>
-          <TextField type="time" {...register("clockOutTime")} size="sm" />
+          <TimeInput
+            value={watch("clockOutTime") || ""}
+            onChange={(val) =>
+              setValue("clockOutTime", val, {
+                shouldValidate: true,
+                shouldDirty: true,
+              })
+            }
+            error={!!errors.clockOutTime}
+          />
         </div>
         {(errors.clockInTime || errors.clockOutTime) && (
           <p className="text-xs text-red-500 mt-1">

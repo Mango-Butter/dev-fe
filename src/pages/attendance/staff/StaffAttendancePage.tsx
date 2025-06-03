@@ -49,10 +49,16 @@ const StaffAttendancePage = () => {
         await clockOut(selectedStore.storeId, parsed);
         toast.success("퇴근이 완료되었습니다.");
       }
-      await qrInstanceRef.current?.stop();
-      await qrInstanceRef.current?.clear();
 
-      navigate("/staff");
+      // 🚀 먼저 페이지 이동
+      navigate("/staff", { replace: true });
+
+      setTimeout(() => {
+        qrInstanceRef.current
+          ?.stop()
+          .then(() => qrInstanceRef.current?.clear())
+          .catch((err) => console.warn("QR 종료 오류:", err));
+      }, 300);
     } catch (err) {
       console.error(err);
     }

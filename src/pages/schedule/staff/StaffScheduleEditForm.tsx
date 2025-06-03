@@ -16,6 +16,7 @@ import {
 import { DailyAttendanceRecord } from "../../../types/calendar.ts";
 import { SubstituteCandidate } from "../../../types/schedule.ts";
 import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
+import TimeInput from "../../../components/common/TimeInput.tsx";
 
 const schema = z.object({
   targetStaffId: z.number({ required_error: "대타 근무자를 선택해주세요" }),
@@ -101,31 +102,35 @@ const StaffScheduleEditForm = ({ schedule, staff }: Props) => {
       <section>
         <h2 className="title-1 mb-3">근무자</h2>
         {isEditMode ? (
-          <ul className="flex gap-3 overflow-x-auto">
-            {candidates.map(({ staff: s }) => (
-              <li
-                key={s.staffId}
-                onClick={() =>
-                  setValue("targetStaffId", s.staffId, { shouldValidate: true })
-                }
-                className={`flex flex-col items-center cursor-pointer my-1 ${
-                  selectedStaffId === s.staffId
-                    ? "font-bold text-yellow-500"
-                    : ""
-                }`}
-              >
-                <img
-                  src={s.profileImageUrl}
-                  alt={s.name}
-                  className={`w-12 h-12 rounded-full object-cover ring-4 ${
+          <ul className="mt-2 flex gap-3 overflow-x-auto w-full scrollbar-hide">
+            <div className="flex gap-3 w-max">
+              {candidates.map(({ staff: s }) => (
+                <li
+                  key={s.staffId}
+                  onClick={() =>
+                    setValue("targetStaffId", s.staffId, {
+                      shouldValidate: true,
+                    })
+                  }
+                  className={`flex flex-col items-center cursor-pointer my-1 ${
                     selectedStaffId === s.staffId
-                      ? "ring-yellow-400"
-                      : "ring-transparent"
+                      ? "font-bold text-yellow-500"
+                      : ""
                   }`}
-                />
-                <span className="text-xs mt-1">{s.name}</span>
-              </li>
-            ))}
+                >
+                  <img
+                    src={s.profileImageUrl}
+                    alt={s.name}
+                    className={`w-12 h-12 rounded-full object-cover ring-4 ${
+                      selectedStaffId === s.staffId
+                        ? "ring-yellow-400"
+                        : "ring-transparent"
+                    }`}
+                  />
+                  <span className="text-xs mt-1">{s.name}</span>
+                </li>
+              ))}
+            </div>
           </ul>
         ) : (
           <div className="flex flex-col items-start gap-3">
@@ -150,18 +155,16 @@ const StaffScheduleEditForm = ({ schedule, staff }: Props) => {
 
       <section>
         <label className="title-1 block mb-3">근무 시간</label>
-        <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-          <TextField
-            type="time"
+        <div className="flex w-full gap-2 flex-wrap">
+          <TimeInput
             value={schedule.startTime.slice(11, 16)}
-            size="sm"
+            onChange={() => {}}
             disabled
           />
           <span className="self-center text-gray-400">~</span>
-          <TextField
-            type="time"
+          <TimeInput
             value={schedule.endTime.slice(11, 16)}
-            size="sm"
+            onChange={() => {}}
             disabled
           />
         </div>

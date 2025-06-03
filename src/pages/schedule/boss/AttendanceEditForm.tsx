@@ -12,24 +12,17 @@ import {
   updateAttendance,
   deleteAttendance,
 } from "../../../api/boss/schedule.ts";
-import { useEffect } from "react";
 import { DailyAttendanceRecord } from "../../../types/calendar.ts";
 import { parseDateStringToKST } from "../../../libs/date.ts";
 import { toast } from "react-toastify";
 import { showConfirm } from "../../../libs/showConfirm.ts";
+import TimeInput from "../../../components/common/TimeInput.tsx";
 
-const schema = z.discriminatedUnion("clockInStatus", [
-  z.object({
-    clockInStatus: z.literal("ABSENT"),
-    clockInTime: z.literal(null),
-    clockOutTime: z.literal(null),
-  }),
-  z.object({
-    clockInStatus: z.enum(["NORMAL", "LATE"]),
-    clockInTime: z.string().min(1, "출근 시간을 입력해주세요"),
-    clockOutTime: z.string().min(1, "퇴근 시간을 입력해주세요"),
-  }),
-]);
+const schema = z.object({
+  clockInStatus: z.enum(["NORMAL", "LATE", "ABSENT"]),
+  clockInTime: z.string().min(1, "출근 시간을 입력해주세요"),
+  clockOutTime: z.string().min(1, "퇴근 시간을 입력해주세요"),
+});
 
 type FormData = z.infer<typeof schema>;
 
@@ -43,7 +36,6 @@ const AttendanceEditForm = ({
   const storeId = selectedStore?.storeId;
 
   const {
-    register,
     handleSubmit,
     setValue,
     watch,
@@ -51,36 +43,30 @@ const AttendanceEditForm = ({
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     mode: "onChange",
-    defaultValues:
-      attendance?.clockInStatus === "ABSENT"
-        ? {
-            clockInStatus: "ABSENT",
-            clockInTime: null,
-            clockOutTime: null,
-          }
-        : {
-            clockInStatus: attendance?.clockInStatus ?? "NORMAL",
-            clockInTime: attendance?.clockInTime?.slice(11, 16) ?? "",
-            clockOutTime: attendance?.clockOutTime?.slice(11, 16) ?? "",
-          },
+    defaultValues: {
+      clockInStatus: attendance?.clockInStatus ?? "NORMAL",
+      clockInTime:
+        attendance?.clockInStatus === "ABSENT"
+          ? "00:00"
+          : (attendance?.clockInTime?.slice(11, 16) ?? ""),
+      clockOutTime:
+        attendance?.clockInStatus === "ABSENT"
+          ? "00:00"
+          : (attendance?.clockOutTime?.slice(11, 16) ?? ""),
+    },
   });
 
   const clockInStatus = watch("clockInStatus");
-
-  useEffect(() => {
-    if (clockInStatus === "ABSENT") {
-      setValue("clockInTime", null);
-      setValue("clockOutTime", null);
-    }
-  }, [clockInStatus, setValue]);
 
   const onSubmit = async (data: FormData) => {
     if (!storeId) return;
     try {
       await updateAttendance(storeId, schedule.scheduleId, {
         clockInStatus: data.clockInStatus,
-        clockInTime: data.clockInTime ?? null,
-        clockOutTime: data.clockOutTime ?? null,
+        clockInTime:
+          data.clockInStatus === "ABSENT" ? "00:00" : data.clockInTime,
+        clockOutTime:
+          data.clockInStatus === "ABSENT" ? "00:00" : data.clockOutTime,
       });
       const dateKey = formatFullDate(parseDateStringToKST(schedule.workDate));
       await useScheduleStore.getState().syncScheduleAndDot(storeId, dateKey);
@@ -142,24 +128,22 @@ const AttendanceEditForm = ({
         <TextField
           type="text"
           value={formatFullDate(parseDateStringToKST(schedule.workDate))}
-          disabled
+          state="disable"
         />
       </section>
 
       <section>
         <label className="title-1 block mb-3">근무 시간</label>
-        <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-          <TextField
-            type="time"
+        <div className="flex w-full gap-2 flex-wrap">
+          <TimeInput
             value={schedule.startTime.slice(11, 16)}
-            size="sm"
+            onChange={() => {}}
             disabled
           />
           <span className="self-center text-gray-400">~</span>
-          <TextField
-            type="time"
+          <TimeInput
             value={schedule.endTime.slice(11, 16)}
-            size="sm"
+            onChange={() => {}}
             disabled
           />
         </div>
@@ -186,23 +170,34 @@ const AttendanceEditForm = ({
       {clockInStatus !== "ABSENT" && (
         <section>
           <label className="title-1 block mb-3">근태 시간</label>
-          <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-            <TextField
-              type="time"
-              {...register("clockInTime")}
-              state={errors.clockInTime ? "warning" : "none"}
-              size="sm"
-              required
+          <div className="flex w-full gap-2 flex-wrap">
+            <TimeInput
+              value={watch("clockInTime") ?? ""}
+              onChange={(val) =>
+                setValue("clockInTime", val, {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                })
+              }
+              error={!!errors.clockInTime}
             />
             <span className="self-center text-gray-400">~</span>
-            <TextField
-              type="time"
-              {...register("clockOutTime")}
-              state={errors.clockOutTime ? "warning" : "none"}
-              size="sm"
-              required
+            <TimeInput
+              value={watch("clockOutTime") ?? ""}
+              onChange={(val) =>
+                setValue("clockOutTime", val, {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                })
+              }
+              error={!!errors.clockOutTime}
             />
           </div>
+          {(errors.clockInTime || errors.clockOutTime) && (
+            <p className="text-xs text-red-500 mt-1">
+              {errors.clockInTime?.message || errors.clockOutTime?.message}
+            </p>
+          )}
         </section>
       )}
 

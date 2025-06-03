@@ -9,6 +9,7 @@ import {
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
+import { showConfirm } from "../../../libs/showConfirm.ts";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -59,6 +60,22 @@ const StaffAttendanceCard = ({
     return `${h}시간 ${m}분 ${s}초`;
   };
 
+  const handleClickClockOut = async () => {
+    if (remainingSeconds > 0) {
+      const confirmed = await showConfirm({
+        title: "조퇴하실래요?",
+        text: `지금 퇴근하면 ${formatDuration(remainingSeconds)} 조퇴입니다.\n퇴근하시겠어요?`,
+        confirmText: "확인",
+        cancelText: "취소",
+        icon: "warning",
+      });
+
+      if (!confirmed) return;
+    }
+
+    onClickClockOut(schedule.scheduleId);
+  };
+
   return (
     <div className="flex p-4 bg-white flex-col border-y justify-center items-start gap-3 self-stretch">
       <div className="w-full flex flex-col gap-2">
@@ -106,18 +123,19 @@ const StaffAttendanceCard = ({
           <span className="body-3 text-grayscale-600">
             {clockOutTime.format("HH:mm")}
           </span>
-          {attendance?.clockOutStatus && (
-            <div className="flex items-center gap-1">
-              <span
-                className={`w-2 h-2 rounded-full ${getClockOutStyle(attendance.clockOutStatus).dotClassName}`}
-              />
-              <span
-                className={`body-3 ${getClockOutStyle(attendance.clockOutStatus).className}`}
-              >
-                {getClockOutStyle(attendance.clockOutStatus).label}
-              </span>
-            </div>
-          )}
+          {attendance?.clockOutStatus &&
+            attendance.clockOutStatus !== "NORMAL" && (
+              <div className="flex items-center gap-1">
+                <span
+                  className={`w-2 h-2 rounded-full ${getClockOutStyle(attendance.clockOutStatus).dotClassName}`}
+                />
+                <span
+                  className={`body-3 ${getClockOutStyle(attendance.clockOutStatus).className}`}
+                >
+                  {getClockOutStyle(attendance.clockOutStatus).label}
+                </span>
+              </div>
+            )}
         </div>
       ) : (
         clockInTime &&
@@ -146,7 +164,7 @@ const StaffAttendanceCard = ({
           className="w-full body-3"
           theme="secondary"
           size="sm"
-          onClick={() => onClickClockOut(schedule.scheduleId)}
+          onClick={handleClickClockOut}
         >
           퇴근하기
         </Button>

@@ -3,7 +3,7 @@ import useStoreStore from "../../../../stores/storeStore.ts";
 import { getKSTDate } from "../../../../libs/date.ts";
 import {
   MonthlyPayrollItem,
-  PayrollSettingsResponse,
+  BossPayrollSettingsResponse,
 } from "../../../../types/payroll.ts";
 import BossPayrollCard from "../BossPayrollCard.tsx";
 import {
@@ -11,12 +11,13 @@ import {
   fetchPayrollSettings,
 } from "../../../../api/boss/payroll.ts";
 import { getRemainingDays } from "../../../../utils/date.ts";
+import MonthPicker from "../../../../components/common/MonthPicker.tsx";
 
 const BossPayrollHistoryTab = () => {
   const { selectedStore } = useStoreStore();
   const [loading, setLoading] = useState(true);
   const [payrollItems, setPayrollItems] = useState<MonthlyPayrollItem[]>([]);
-  const [settings, setSettings] = useState<PayrollSettingsResponse | null>(
+  const [settings, setSettings] = useState<BossPayrollSettingsResponse | null>(
     null,
   );
 
@@ -66,12 +67,10 @@ const BossPayrollHistoryTab = () => {
     <div className="w-full flex flex-col gap-2">
       {/* 상단 급여일 안내 */}
       <div className="flex items-center">
-        <input
-          type="month"
+        <MonthPicker
           value={selectedYearMonth}
+          onChange={(val) => setSelectedYearMonth(val)}
           max={getMaxMonth()}
-          onChange={(e) => setSelectedYearMonth(e.target.value)}
-          className="title-1 pb-2"
         />
       </div>
       {/* 목록 */}

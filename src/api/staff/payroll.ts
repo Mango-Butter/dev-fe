@@ -1,10 +1,10 @@
 import axiosAuth from "../common/axiosAuth.ts";
 import {
-  PayrollSettingsResponse,
   PayslipDownloadResponse,
   StaffAccountInfo,
   StaffPayrollBriefInfo,
   StaffPayrollResponse,
+  StaffPayrollSettingsResponse,
   VerifyAccountRequest,
   VerifyAccountResponse,
 } from "../../types/payroll.ts";
@@ -46,8 +46,8 @@ export const fetchPayslipDownloadLink = async (
  */
 export const getPayrollSettings = async (
   storeId: number,
-): Promise<PayrollSettingsResponse> => {
-  const response = await axiosAuth.get<PayrollSettingsResponse>(
+): Promise<StaffPayrollSettingsResponse> => {
+  const response = await axiosAuth.get<StaffPayrollSettingsResponse>(
     `/api/staff/stores/${storeId}/payrolls/settings`,
   );
   return response.data;

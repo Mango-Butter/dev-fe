@@ -133,7 +133,7 @@ const ContractTemplateEditPage = () => {
     try {
       await deleteContractTemplate(selectedStore.storeId, Number(templateId));
       toast.success("템플릿이 삭제되었습니다.");
-      navigate("/boss/contract/template");
+      navigate("/boss/contract/template", { replace: true });
     } catch (err) {
       console.error("템플릿 삭제 실패", err);
       toast.error("템플릿 삭제에 실패했어요.");
@@ -255,12 +255,14 @@ const ContractTemplateEditPage = () => {
             <div className="mt-1 flex gap-2">
               <input
                 type="time"
+                step="600"
                 {...register(`time.${day}.start`)}
                 className="flex-1 rounded-md border px-3 py-2 text-sm"
               />
               <span className="self-center text-gray-400">~</span>
               <input
                 type="time"
+                step="600"
                 {...register(`time.${day}.end`)}
                 className="flex-1 rounded-md border px-3 py-2 text-sm"
               />

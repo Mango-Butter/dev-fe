@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SingleDatePicker from "../../../components/common/SingleDatePicker.tsx";
-import TextField from "../../../components/common/TextField.tsx";
 import Button from "../../../components/common/Button.tsx";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
 import useStoreStore from "../../../stores/storeStore.ts";
@@ -19,6 +18,7 @@ import {
 } from "../../../libs/date.ts";
 import { toast } from "react-toastify";
 import { showConfirm } from "../../../libs/showConfirm.ts";
+import TimeInput from "../../../components/common/TimeInput.tsx";
 
 interface SingleScheduleEditFormProps {
   schedule: DailyAttendanceRecord["schedule"];
@@ -43,7 +43,6 @@ const SingleScheduleEditForm = ({
   const storeId = selectedStore?.storeId;
 
   const {
-    register,
     handleSubmit,
     setValue,
     watch,
@@ -57,6 +56,9 @@ const SingleScheduleEditForm = ({
       endTime: schedule.endTime.slice(11, 16),
     },
   });
+
+  const startTime = watch("startTime");
+  const endTime = watch("endTime");
 
   const onSubmit = async (data: FormData) => {
     if (!storeId) return;
@@ -149,21 +151,27 @@ const SingleScheduleEditForm = ({
         <label className="title-1 block mb-3">
           근무 시간 <span className="text-red-500">*</span>
         </label>
-        <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-          <TextField
-            type="time"
-            {...register("startTime")}
-            state={errors.startTime ? "warning" : "none"}
-            size="sm"
-            required
+        <div className="flex w-full gap-2 flex-wrap">
+          <TimeInput
+            value={startTime}
+            onChange={(val) =>
+              setValue("startTime", val, {
+                shouldValidate: true,
+                shouldDirty: true,
+              })
+            }
+            error={!!errors.startTime}
           />
           <span className="self-center text-gray-400">~</span>
-          <TextField
-            type="time"
-            {...register("endTime")}
-            state={errors.endTime ? "warning" : "none"}
-            size="sm"
-            required
+          <TimeInput
+            value={endTime}
+            onChange={(val) =>
+              setValue("endTime", val, {
+                shouldValidate: true,
+                shouldDirty: true,
+              })
+            }
+            error={!!errors.endTime}
           />
         </div>
         {(errors.startTime || errors.endTime) && (

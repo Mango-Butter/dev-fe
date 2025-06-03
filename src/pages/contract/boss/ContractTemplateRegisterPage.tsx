@@ -99,7 +99,7 @@ const ContractTemplateRegisterPage = () => {
 
       await createContractTemplate(selectedStore.storeId, payload);
       toast.success("템플릿이 성공적으로 등록되었습니다.");
-      navigate("/boss/contract/template");
+      navigate("/boss/contract/template", { replace: true });
     } catch (err) {
       console.error("템플릿 저장 실패", err);
     } finally {
@@ -174,12 +174,14 @@ const ContractTemplateRegisterPage = () => {
             <div className="mt-1 flex gap-2">
               <input
                 type="time"
+                step="600"
                 {...register(`time.${day}.start`)}
                 className="flex-1 rounded-md border px-3 py-2 text-sm"
               />
               <span className="self-center text-gray-400">~</span>
               <input
                 type="time"
+                step="600"
                 {...register(`time.${day}.end`)}
                 className="flex-1 rounded-md border px-3 py-2 text-sm"
               />

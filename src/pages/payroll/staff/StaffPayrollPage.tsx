@@ -8,12 +8,13 @@ import {
 } from "../../../api/staff/payroll.ts";
 import {
   StaffPayrollResponse,
-  PayrollSettingsResponse,
+  StaffPayrollSettingsResponse,
 } from "../../../types/payroll.ts";
 import StaffAttendanceRecordContainer from "./StaffAttendanceRecordContainer.tsx";
 import StaffPayrollCard from "./StaffPayrollCard.tsx";
 import { useNavigate } from "react-router-dom";
 import { getRemainingDays } from "../../../utils/date.ts";
+import MonthPicker from "../../../components/common/MonthPicker.tsx";
 
 const getCurrentMonth = (): string => {
   const now = getKSTDate();
@@ -26,7 +27,7 @@ const StaffPayrollPage = () => {
   const [staffPayroll, setStaffPayroll] = useState<StaffPayrollResponse | null>(
     null,
   );
-  const [settings, setSettings] = useState<PayrollSettingsResponse | null>(
+  const [settings, setSettings] = useState<StaffPayrollSettingsResponse | null>(
     null,
   );
   const [loading, setLoading] = useState(true);
@@ -114,9 +115,9 @@ const StaffPayrollPage = () => {
               </span>
             </p>
             <p className="body-2 text-grayscale-500">
-              급여지급일 하루 전까지 자신의 근태기록을
+              급여가 확정된 이후에는 근태 변경 요청이 급여에 반영되지 않습니다.
               <br />
-              확인하세요. 이후 요청은 반영되지 않습니다.
+              변경이 필요한 경우, 사장님에게 직접 문의해 주세요.
             </p>
           </>
         )}
@@ -141,12 +142,10 @@ const StaffPayrollPage = () => {
       {staffPayroll && (
         <section className="flex flex-col gap-2 w-full">
           <div className="flex justify-between w-full">
-            <input
-              type="month"
-              max={currentMonth}
+            <MonthPicker
               value={selectedMonth}
-              onChange={(e) => setSelectedMonth(e.target.value)}
-              className="title-1 bg-white max-w-fit"
+              max={currentMonth}
+              onChange={(val) => setSelectedMonth(val)}
             />
             <button
               className="text-sm font-semibold text-right text-primary underline"

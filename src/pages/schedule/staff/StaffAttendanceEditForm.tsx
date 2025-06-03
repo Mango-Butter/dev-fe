@@ -12,6 +12,7 @@ import { parseDateStringToKST } from "../../../libs/date.ts";
 import { toast } from "react-toastify";
 import { requestAttendanceEdit } from "../../../api/staff/attendance.ts";
 import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
+import TimeInput from "../../../components/common/TimeInput.tsx";
 
 const schema = z
   .object({
@@ -136,24 +137,22 @@ const StaffAttendanceEditForm = ({
         <TextField
           type="text"
           value={formatFullDate(parseDateStringToKST(schedule.workDate))}
-          disabled
+          state="disable"
         />
       </section>
 
       <section>
         <label className="title-1 block mb-3">근무 시간</label>
         <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-          <TextField
-            type="time"
+          <TimeInput
             value={schedule.startTime.slice(11, 16)}
-            size="sm"
+            onChange={() => {}}
             disabled
           />
           <span className="self-center text-gray-400">~</span>
-          <TextField
-            type="time"
+          <TimeInput
             value={schedule.endTime.slice(11, 16)}
-            size="sm"
+            onChange={() => {}}
             disabled
           />
         </div>
@@ -182,24 +181,27 @@ const StaffAttendanceEditForm = ({
         <section>
           <label className="title-1 block mb-3">근태 시간</label>
           <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-            <TextField
-              type="time"
-              {...register("clockInTime")}
-              state={errors.clockInTime ? "warning" : "none"}
-              size="sm"
-              required
-              readOnly={!isEditMode}
+            <TimeInput
+              value={watch("clockInTime") || ""}
+              onChange={(val) =>
+                setValue("clockInTime", val, {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                })
+              }
+              error={!!errors.clockInTime}
               disabled={!isEditMode}
             />
-
             <span className="self-center text-gray-400">~</span>
-            <TextField
-              type="time"
-              {...register("clockOutTime")}
-              state={errors.clockOutTime ? "warning" : "none"}
-              size="sm"
-              required
-              readOnly={!isEditMode}
+            <TimeInput
+              value={watch("clockOutTime") || ""}
+              onChange={(val) =>
+                setValue("clockOutTime", val, {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                })
+              }
+              error={!!errors.clockOutTime}
               disabled={!isEditMode}
             />
           </div>

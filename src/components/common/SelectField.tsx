@@ -27,6 +27,7 @@ interface SelectFieldProps {
   disabled?: boolean;
   options: { label: string; value: string }[];
   value: string;
+  icon?: React.ReactNode;
   onChange: (value: string) => void;
 }
 
@@ -38,6 +39,7 @@ export default function SelectField({
   required = false,
   disabled = false,
   options,
+  icon,
   value,
   onChange,
 }: SelectFieldProps) {
@@ -57,12 +59,17 @@ export default function SelectField({
     <div className={cn(variantClass)}>
       {title && (
         <div className="flex flex-col items-start justify-center gap-2 self-stretch">
-          <div className="flex items-center gap-2 self-stretch">
+          <div className="flex items-center gap-2 w-full justify-start">
             <label className="title-1 text-grayscale-900">{title}</label>
             {required && <span className="title-1 text-warning">*</span>}
+            {icon && (
+              <div id="icon" className="flex items-center justify-center">
+                {icon}
+              </div>
+            )}
           </div>
           {description && (
-            <label className="label-2 text-grayscale-700">{description}</label>
+            <label className="body-4 text-grayscale-500">{description}</label>
           )}
         </div>
       )}
