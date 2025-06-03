@@ -9,6 +9,7 @@ import {
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
+import { showConfirm } from "../../../libs/showConfirm.ts";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -57,6 +58,22 @@ const StaffAttendanceCard = ({
     const m = Math.floor((sec % 3600) / 60);
     const s = sec % 60;
     return `${h}시간 ${m}분 ${s}초`;
+  };
+
+  const handleClickClockOut = async () => {
+    if (remainingSeconds > 0) {
+      const confirmed = await showConfirm({
+        title: "조퇴하실래요?",
+        text: `지금 퇴근하면 ${formatDuration(remainingSeconds)} 조퇴입니다.\n퇴근하시겠어요?`,
+        confirmText: "확인",
+        cancelText: "취소",
+        icon: "warning",
+      });
+
+      if (!confirmed) return;
+    }
+
+    onClickClockOut(schedule.scheduleId);
   };
 
   return (
@@ -146,7 +163,7 @@ const StaffAttendanceCard = ({
           className="w-full body-3"
           theme="secondary"
           size="sm"
-          onClick={() => onClickClockOut(schedule.scheduleId)}
+          onClick={handleClickClockOut}
         >
           퇴근하기
         </Button>

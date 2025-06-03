@@ -21,6 +21,7 @@ import { PayrollSettingsResponse } from "../../../types/payroll.ts";
 import NHBankIcon from "../../../assets/NHBankIcon.png";
 import { useNavigate } from "react-router-dom";
 import { showConfirm } from "../../../libs/showConfirm.ts";
+import { useTooltip } from "../../../hooks/useTooltip.tsx";
 
 const deductionOptions = [
   { label: "0분 단위", value: "ZERO_MIN" },
@@ -46,6 +47,10 @@ const PayrollSettingPage = () => {
   const [account, setAccount] =
     useState<PayrollSettingsResponse["account"]>(null);
   const navigate = useNavigate();
+  const { tooltipRef, toggleTooltip, TooltipBox } = useTooltip({
+    duration: 3000,
+  });
+
   const {
     control,
     handleSubmit,
@@ -127,7 +132,7 @@ const PayrollSettingPage = () => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col h-[90vh] overflow-y-auto gap-4">
-        <div className="w-full pb-6 border-b border-grayscale-300">
+        <div className="w-full border-grayscale-300">
           <Controller
             control={control}
             name="autoTransferEnabled"
@@ -193,6 +198,22 @@ const PayrollSettingPage = () => {
             <SelectField
               title="급여지급일"
               required
+              icon={
+                <div className="relative">
+                  <div ref={tooltipRef}>
+                    <span className="cursor-pointer" onClick={toggleTooltip}>
+                      <ErrorIcon className="w-5 h-5 rotate-180" />
+                    </span>
+                  </div>
+                  <TooltipBox>
+                    이미 확정된 급여는 당시 지급일 기준으로
+                    <br />
+                    계산되어, 현재 설정 변경과는 무관합니다.
+                    <br />
+                    지급일 변경은 다음 미확정 급여부터 적용됩니다.
+                  </TooltipBox>
+                </div>
+              }
               options={Array.from({ length: 28 }, (_, i) => ({
                 label: `${i + 1}일`,
                 value: String(i + 1),
