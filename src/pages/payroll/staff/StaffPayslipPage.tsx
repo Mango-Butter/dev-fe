@@ -11,7 +11,7 @@ import {
 } from "../../../api/staff/payroll.ts";
 import DownloadIcon from "../../../components/icons/DownloadIcon.tsx";
 import ErrorIcon from "../../../components/icons/ErrorIcon.tsx";
-import { useTooltip } from "../../../hooks/useTooltip.ts";
+import { useTooltip } from "../../../hooks/useTooltip.tsx";
 
 const StaffPayslipPage = () => {
   const { selectedStore } = useStaffStoreStore();
