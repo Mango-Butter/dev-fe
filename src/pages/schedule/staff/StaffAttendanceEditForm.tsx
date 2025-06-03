@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import { requestAttendanceEdit } from "../../../api/staff/attendance.ts";
 import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
 import TimeInput from "../../../components/common/TimeInput.tsx";
+import { isValidStoreId } from "../../../utils/store.ts";
 
 const schema = z
   .object({
@@ -87,7 +88,11 @@ const StaffAttendanceEditForm = ({
   }, [clockInStatus, setValue]);
 
   const onSubmit = async (data: FormData) => {
-    if (typeof storeId !== "number") return;
+    if (!isValidStoreId(storeId)) {
+      setBottomSheetOpen(false);
+      return;
+    }
+
     try {
       await requestAttendanceEdit(storeId, schedule.scheduleId, {
         requestedClockInStatus: data.clockInStatus,

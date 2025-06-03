@@ -9,6 +9,7 @@ import { useUserStore } from "../../../stores/userStore.ts";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { getKSTDate } from "../../../libs/date.ts";
+import { isValidStoreId } from "../../../utils/store.ts";
 
 const HomeBoss = () => {
   const koreaNow = getKSTDate();
@@ -23,7 +24,7 @@ const HomeBoss = () => {
   const todayRecords = scheduleMap[dateKey] || [];
 
   useEffect(() => {
-    if (typeof storeId !== "number") return;
+    if (!isValidStoreId(storeId)) return;
     fetchDailySchedule(storeId, dateKey);
   }, [storeId, dateKey, fetchDailySchedule]);
 

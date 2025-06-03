@@ -10,6 +10,7 @@ import { getKSTDate } from "../../../libs/date.ts";
 import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx";
 import { toast } from "react-toastify";
 import MonthPicker from "../../../components/common/MonthPicker.tsx";
+import { isValidStoreId } from "../../../utils/store.ts";
 
 interface Props {
   staff: {
@@ -57,7 +58,10 @@ const AttendanceRecordContainer = ({ staff, storeId }: Props) => {
   };
 
   useEffect(() => {
-    if (!storeId) return;
+    if (!isValidStoreId(storeId)) {
+      setLoading(false);
+      return;
+    }
 
     const fetch = async () => {
       setLoading(true);

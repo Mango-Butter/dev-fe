@@ -20,6 +20,7 @@ import { useScheduleFilters } from "../../../hooks/useScheduleFilters.ts";
 import StaffScheduleList from "./StaffScheduleList.tsx";
 import dayjs from "dayjs";
 import { getKSTDate } from "../../../libs/date.ts";
+import { isValidStoreId } from "../../../utils/store.ts";
 
 const Schedule = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(getKSTDate());
@@ -120,13 +121,13 @@ const Schedule = () => {
   };
 
   useEffect(() => {
-    if (storeId && calendarViewDate) {
+    if (isValidStoreId(storeId) && calendarViewDate) {
       fetchDotRange(storeId, calendarViewDate);
     }
   }, [storeId, calendarViewDate, fetchDotRange]);
 
   useEffect(() => {
-    if (storeId) {
+    if (isValidStoreId(storeId)) {
       fetchDailySchedule(storeId, dateKey);
     }
   }, [storeId, dateKey, fetchDailySchedule]);

@@ -21,6 +21,7 @@ import useSelectedStaffStore from "../../../stores/selectedStaffStore.ts";
 import { parseDateStringToKST } from "../../../libs/date.ts";
 import { toast } from "react-toastify";
 import { showConfirm } from "../../../libs/showConfirm.ts";
+import { isValidStoreId } from "../../../utils/store.ts";
 
 interface Props {
   contract: ContractSimple & { staff: StaffSimple };
@@ -52,7 +53,10 @@ const ContractCard = ({ contract, onDelete }: Props) => {
 
   // PDF 보기
   const handleViewPdf = async () => {
-    if (typeof storeId !== "number" || !contract.contractId) return;
+    if (!isValidStoreId(storeId) || !contract.contractId) {
+      setPopupOpen(false);
+      return;
+    }
     try {
       const { url } = await fetchContractPdfViewUrl(
         storeId,
@@ -68,7 +72,10 @@ const ContractCard = ({ contract, onDelete }: Props) => {
 
   // PDF 다운로드
   const handleDownloadPdf = async () => {
-    if (typeof storeId !== "number" || !contract.contractId) return;
+    if (!isValidStoreId(storeId) || !contract.contractId) {
+      setPopupOpen(false);
+      return;
+    }
     try {
       const { url } = await fetchContractPdfDownloadUrl(
         storeId,
@@ -86,7 +93,10 @@ const ContractCard = ({ contract, onDelete }: Props) => {
   };
 
   const handleDeleteContract = async () => {
-    if (typeof storeId !== "number" || !contract.contractId) return;
+    if (!isValidStoreId(storeId) || !contract.contractId) {
+      setPopupOpen(false);
+      return;
+    }
 
     const confirmed = await showConfirm({
       title: "근로계약서를 삭제하시겠습니까?",

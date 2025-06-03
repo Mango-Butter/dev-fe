@@ -13,6 +13,7 @@ import {
   StaffDocumentStatus,
 } from "../../../types/document.ts";
 import SkeletonStaffCard from "../../../components/skeleton/SkeletonStaffCard.tsx";
+import { isValidStoreId } from "../../../utils/store.ts";
 
 interface Props {
   documentType: BossRequiredDocumentType;
@@ -34,7 +35,11 @@ const BossDocumentEtcCard = ({
   const [clicked, setClicked] = useState<number | null>(null); // 버튼 중복 클릭 방지용
 
   const handleView = async (documentId: number) => {
-    if (typeof storeId !== "number") return;
+    if (!isValidStoreId(storeId)) {
+      setClicked(null);
+      return;
+    }
+
     try {
       setClicked(documentId);
       const { url } = await getDocumentViewUrl(storeId, documentId);
@@ -47,7 +52,11 @@ const BossDocumentEtcCard = ({
   };
 
   const handleDownload = async (documentId: number) => {
-    if (typeof storeId !== "number") return;
+    if (!isValidStoreId(storeId)) {
+      setClicked(null);
+      return;
+    }
+
     try {
       setClicked(documentId);
       const { url } = await getDocumentDownloadUrl(storeId, documentId);

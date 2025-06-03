@@ -14,6 +14,7 @@ import useScheduleStore from "../../../stores/useScheduleStore.ts";
 import { formatDateToKSTString, getKSTDate } from "../../../libs/date.ts";
 import { toast } from "react-toastify";
 import TimeInput from "../../../components/common/TimeInput.tsx";
+import { isValidStoreId } from "../../../utils/store.ts";
 
 interface AddAttendanceFormProps {
   defaultDate?: Date;
@@ -56,9 +57,9 @@ const AttendanceAddForm = ({ defaultDate }: AddAttendanceFormProps) => {
   const selectedStaffId = watch("staffId");
 
   useEffect(() => {
+    if (!isValidStoreId(storeId)) return;
     const fetchStaff = async () => {
       try {
-        if (typeof storeId !== "number") return;
         const data = await getStaffBriefList(storeId);
         setStaffList(data);
       } catch (err) {
@@ -69,7 +70,10 @@ const AttendanceAddForm = ({ defaultDate }: AddAttendanceFormProps) => {
   }, [storeId]);
 
   const onSubmit = async (data: FormData) => {
-    if (typeof storeId !== "number") return;
+    if (!isValidStoreId(storeId)) {
+      setBottomSheetOpen(false);
+      return;
+    }
 
     const workDate = formatDateToKSTString(data.date);
     const dateKey = formatFullDate(data.date); // YYYY-MM-DD 형식 문자열

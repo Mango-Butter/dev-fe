@@ -10,6 +10,7 @@ import MailIcon from "../../../components/icons/MailIcon.tsx";
 import { BusinessOff } from "../../../components/icons/BusinessIcon.tsx";
 import useStoreStore from "../../../stores/storeStore.ts";
 import { useNavigate } from "react-router-dom";
+import { isValidStoreId } from "../../../utils/store.ts";
 
 const StaffDocumentContainer = () => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const StaffDocumentContainer = () => {
   const isDocsCountZero = documents.length + contracts.length === 0;
 
   useEffect(() => {
-    if (typeof storeId !== "number") return;
+    if (!isValidStoreId(storeId)) return;
 
     const fetch = async () => {
       try {

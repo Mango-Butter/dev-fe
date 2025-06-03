@@ -5,6 +5,7 @@ import { fetchStaffContracts } from "../../../api/staff/constract.ts";
 import { getStaffDocumentSummary } from "../../../api/staff/document.ts";
 import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx";
 import { cn } from "../../../libs";
+import { isValidStoreId } from "../../../utils/store.ts";
 
 const StaffDocumentRequestContainer = () => {
   const navigate = useNavigate();
@@ -17,7 +18,10 @@ const StaffDocumentRequestContainer = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (typeof storeId !== "number") return;
+      if (!isValidStoreId(storeId)) {
+        setLoading(false);
+        return;
+      }
 
       try {
         const [contracts, documents] = await Promise.all([

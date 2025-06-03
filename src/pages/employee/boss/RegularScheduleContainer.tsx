@@ -7,6 +7,7 @@ import {
 import { deleteRegularSchedule } from "../../../api/boss/staff";
 import Button from "../../../components/common/Button";
 import { showConfirm } from "../../../libs/showConfirm.ts";
+import { isValidStoreId } from "../../../utils/store.ts";
 
 interface Props {
   storeId: number;
@@ -30,7 +31,9 @@ const RegularScheduleContainer = ({
   onDeleteSuccess,
 }: Props) => {
   const handleDelete = async (regularGroupId: number) => {
-    if (!storeId || !staffId) return;
+    if (!isValidStoreId(storeId)) {
+      return;
+    }
 
     const confirmed = await showConfirm({
       title: "정말 삭제할까요?",

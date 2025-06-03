@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { getStaffAttendanceRecords } from "../../../api/staff/attendance.ts";
 import StaffAttendanceEditForm from "../../schedule/staff/StaffAttendanceEditForm.tsx";
 import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
+import { isValidStoreId } from "../../../utils/store.ts";
 
 interface Props {
   storeId: number;
@@ -50,7 +51,10 @@ const AttendanceRecordContainer = ({ storeId, currentMonth }: Props) => {
   };
 
   useEffect(() => {
-    if (!storeId) return;
+    if (!isValidStoreId(storeId)) {
+      setLoading(false);
+      return;
+    }
 
     const fetch = async () => {
       setLoading(true);

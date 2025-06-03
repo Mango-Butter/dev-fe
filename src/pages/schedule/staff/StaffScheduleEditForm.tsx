@@ -17,6 +17,7 @@ import { DailyAttendanceRecord } from "../../../types/calendar.ts";
 import { SubstituteCandidate } from "../../../types/schedule.ts";
 import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
 import TimeInput from "../../../components/common/TimeInput.tsx";
+import { isValidStoreId } from "../../../utils/store.ts";
 
 const schema = z.object({
   targetStaffId: z.number({ required_error: "대타 근무자를 선택해주세요" }),
@@ -57,20 +58,24 @@ const StaffScheduleEditForm = ({ schedule, staff }: Props) => {
   const selectedStaffId = watch("targetStaffId");
 
   const onSubmit = async (data: FormData) => {
-    if (typeof storeId !== "number") return;
+    if (!isValidStoreId(storeId)) {
+      setBottomSheetOpen(false);
+      return;
+    }
 
     try {
       await requestSubstitution(storeId, schedule.scheduleId, data);
       toast.success("대타 근무 요청을 보냈습니다.");
-      setBottomSheetOpen(false);
     } catch (err) {
       console.error("대타 요청 실패", err);
       toast.error("요청에 실패했습니다.");
+    } finally {
+      setBottomSheetOpen(false);
     }
   };
 
   useEffect(() => {
-    if (typeof storeId !== "number") return;
+    if (!isValidStoreId(storeId)) return;
 
     const fetch = async () => {
       try {

@@ -19,6 +19,7 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import StaffAttendanceEditForm from "./StaffAttendanceEditForm.tsx";
 import StaffScheduleEditForm from "./StaffScheduleEditForm.tsx";
+import { isValidStoreId } from "../../../utils/store.ts";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -99,13 +100,13 @@ const ScheduleStaff = () => {
   };
 
   useEffect(() => {
-    if (storeId && calendarViewDate) {
+    if (isValidStoreId(storeId) && calendarViewDate) {
       fetchDotRange(storeId, calendarViewDate);
     }
   }, [storeId, calendarViewDate, fetchDotRange]);
 
   useEffect(() => {
-    if (storeId) {
+    if (isValidStoreId(storeId)) {
       fetchDailySchedule(storeId, dateKey);
     }
   }, [storeId, dateKey, fetchDailySchedule]);

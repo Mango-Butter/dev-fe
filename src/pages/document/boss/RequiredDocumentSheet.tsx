@@ -12,6 +12,7 @@ import {
   CheckboxOff,
 } from "../../../components/icons/CheckboxIcon.tsx";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore.ts";
+import { isValidStoreId } from "../../../utils/store.ts";
 
 interface Props {
   initialSettings: RequiredDocumentSetting[];
@@ -53,7 +54,10 @@ const RequiredDocumentSheet = ({ initialSettings, onSaveSuccess }: Props) => {
   };
 
   const handleSave = async () => {
-    if (typeof storeId !== "number") return;
+    if (!isValidStoreId(storeId)) {
+      setBottomSheetOpen(false);
+      return;
+    }
 
     const payload: RequiredDocumentSetting[] = ALL_DOCUMENT_TYPES.map(
       (type) => ({
@@ -65,9 +69,9 @@ const RequiredDocumentSheet = ({ initialSettings, onSaveSuccess }: Props) => {
     try {
       await setRequiredDocuments(storeId, payload);
       onSaveSuccess();
-      setBottomSheetOpen(false);
     } catch (e) {
       console.error("필수 서류 설정 저장 실패", e);
+    } finally {
       setBottomSheetOpen(false);
     }
   };

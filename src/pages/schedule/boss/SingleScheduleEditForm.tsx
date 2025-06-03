@@ -19,6 +19,7 @@ import {
 import { toast } from "react-toastify";
 import { showConfirm } from "../../../libs/showConfirm.ts";
 import TimeInput from "../../../components/common/TimeInput.tsx";
+import { isValidStoreId } from "../../../utils/store.ts";
 
 interface SingleScheduleEditFormProps {
   schedule: DailyAttendanceRecord["schedule"];
@@ -61,7 +62,9 @@ const SingleScheduleEditForm = ({
   const endTime = watch("endTime");
 
   const onSubmit = async (data: FormData) => {
-    if (!storeId) return;
+    if (!isValidStoreId(storeId)) {
+      return;
+    }
 
     try {
       await updateSingleSchedule(storeId, schedule.scheduleId, {
@@ -82,7 +85,9 @@ const SingleScheduleEditForm = ({
   };
 
   const onDelete = async () => {
-    if (!storeId) return;
+    if (!isValidStoreId(storeId)) {
+      return;
+    }
 
     const confirmed = await showConfirm({
       title: "정말로 삭제할까요?",

@@ -12,6 +12,7 @@ import {
 } from "../../../api/boss/document.ts";
 import BossDocumentEtcCard from "./BossDocumentEtcCard.tsx";
 import RequiredDocumentSheet from "./RequiredDocumentSheet.tsx";
+import { isValidStoreId } from "../../../utils/store.ts";
 
 const BossDocumentEtcPage = () => {
   const { selectedStore } = useStoreStore();
@@ -29,14 +30,15 @@ const BossDocumentEtcPage = () => {
   const storeId = selectedStore?.storeId;
 
   useEffect(() => {
-    if (typeof storeId !== "number") return;
+    if (!isValidStoreId(storeId)) return;
+
     getRequiredDocuments(storeId).then((res) => {
       setRequiredDocs(res.result);
     });
   }, [storeId]);
 
   const handleToggle = async (documentType: string) => {
-    if (typeof storeId !== "number") return;
+    if (!isValidStoreId(storeId)) return;
 
     const isOpen = expanded[documentType];
     setExpanded((prev) => ({ ...prev, [documentType]: !isOpen }));
@@ -55,7 +57,7 @@ const BossDocumentEtcPage = () => {
         initialSettings={requiredDocs}
         onSaveSuccess={() => {
           setBottomSheetContent(null);
-          if (storeId) {
+          if (isValidStoreId(storeId)) {
             getRequiredDocuments(storeId).then((res) => {
               setRequiredDocs(res.result);
             });

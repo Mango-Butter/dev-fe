@@ -17,6 +17,7 @@ import { parseDateStringToKST } from "../../../libs/date.ts";
 import { toast } from "react-toastify";
 import { showConfirm } from "../../../libs/showConfirm.ts";
 import TimeInput from "../../../components/common/TimeInput.tsx";
+import { isValidStoreId } from "../../../utils/store.ts";
 
 const schema = z.object({
   clockInStatus: z.enum(["NORMAL", "LATE", "ABSENT"]),
@@ -59,7 +60,10 @@ const AttendanceEditForm = ({
   const clockInStatus = watch("clockInStatus");
 
   const onSubmit = async (data: FormData) => {
-    if (typeof storeId !== "number") return;
+    if (!isValidStoreId(storeId)) {
+      setBottomSheetOpen(false);
+      return;
+    }
     try {
       await updateAttendance(storeId, schedule.scheduleId, {
         clockInStatus: data.clockInStatus,
@@ -79,7 +83,10 @@ const AttendanceEditForm = ({
   };
 
   const onDelete = async () => {
-    if (typeof storeId !== "number") return;
+    if (!isValidStoreId(storeId)) {
+      setBottomSheetOpen(false);
+      return;
+    }
 
     const confirmed = await showConfirm({
       title: "정말 삭제할까요?",

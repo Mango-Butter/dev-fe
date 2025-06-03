@@ -5,6 +5,7 @@ import { TodayScheduleWithAttendance } from "../../../types/attendance.ts";
 import { getTodayScheduleAndAttendance } from "../../../api/staff/attendance.ts";
 import StaffAttendanceCard from "./StaffAttendanceCard.tsx";
 import { parseDateStringToKST } from "../../../libs/date.ts";
+import { isValidStoreId } from "../../../utils/store.ts";
 
 const StaffAttendanceContainer = () => {
   const navigate = useNavigate();
@@ -15,7 +16,10 @@ const StaffAttendanceContainer = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (typeof storeId !== "number") return;
+    if (!isValidStoreId(storeId)) {
+      setLoading(false);
+      return;
+    }
 
     const fetch = async () => {
       setLoading(true);

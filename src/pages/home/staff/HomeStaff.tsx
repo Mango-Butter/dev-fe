@@ -5,9 +5,12 @@ import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import StaffDocumentRequestContainer from "./StaffDocumentRequestContainer.tsx";
 import { getKSTDate } from "../../../libs/date.ts";
+import useStoreStore from "../../../stores/storeStore.ts";
 
 const HomeStaff = () => {
   const { user } = useUserStore();
+  const { selectedStore } = useStoreStore();
+  const storeId = selectedStore?.storeId;
   const todayDate = getKSTDate();
   const today = format(todayDate, "yyyy.MM.dd EEEE", { locale: ko });
 
@@ -21,8 +24,12 @@ const HomeStaff = () => {
       </div>
 
       <StaffStoreCard />
-      <StaffAttendanceContainer />
-      <StaffDocumentRequestContainer />
+      {storeId && Number.isInteger(storeId) && storeId! > 0 && (
+        <>
+          <StaffAttendanceContainer />
+          <StaffDocumentRequestContainer />
+        </>
+      )}
     </div>
   );
 };

@@ -15,6 +15,7 @@ import Button from "../../../components/common/Button.tsx";
 import { formatDateToKSTString, getKSTDate } from "../../../libs/date.ts";
 import { toast } from "react-toastify";
 import TimeInput from "../../../components/common/TimeInput.tsx";
+import { isValidStoreId } from "../../../utils/store.ts";
 
 interface SingleScheduleAddFormProps {
   defaultDate?: Date;
@@ -69,8 +70,9 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
   const selectedStaffId = watch("staffId");
 
   useEffect(() => {
+    if (!isValidStoreId(storeId)) return;
+
     const fetchStaffs = async () => {
-      if (typeof storeId !== "number") return;
       try {
         const data = await getStaffBriefList(storeId);
         setStaffList(data);
@@ -82,7 +84,10 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
   }, []);
 
   const onSubmit = async (data: FormData) => {
-    if (typeof storeId !== "number" || !data.date) return;
+    if (!isValidStoreId(storeId) || !data.date) {
+      setBottomSheetOpen(false);
+      return;
+    }
 
     const workDate = formatDateToKSTString(data.date);
     const dateKey = formatFullDate(data.date);
