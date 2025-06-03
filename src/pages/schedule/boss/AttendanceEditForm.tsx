@@ -12,11 +12,11 @@ import {
   updateAttendance,
   deleteAttendance,
 } from "../../../api/boss/schedule.ts";
-import { useEffect } from "react";
 import { DailyAttendanceRecord } from "../../../types/calendar.ts";
 import { parseDateStringToKST } from "../../../libs/date.ts";
 import { toast } from "react-toastify";
 import { showConfirm } from "../../../libs/showConfirm.ts";
+import TimeInput from "../../../components/common/TimeInput.tsx";
 
 const schema = z.discriminatedUnion("clockInStatus", [
   z.object({
@@ -43,7 +43,6 @@ const AttendanceEditForm = ({
   const storeId = selectedStore?.storeId;
 
   const {
-    register,
     handleSubmit,
     setValue,
     watch,
@@ -66,13 +65,6 @@ const AttendanceEditForm = ({
   });
 
   const clockInStatus = watch("clockInStatus");
-
-  useEffect(() => {
-    if (clockInStatus === "ABSENT") {
-      setValue("clockInTime", null);
-      setValue("clockOutTime", null);
-    }
-  }, [clockInStatus, setValue]);
 
   const onSubmit = async (data: FormData) => {
     if (!storeId) return;
@@ -142,24 +134,22 @@ const AttendanceEditForm = ({
         <TextField
           type="text"
           value={formatFullDate(parseDateStringToKST(schedule.workDate))}
-          disabled
+          state="disable"
         />
       </section>
 
       <section>
         <label className="title-1 block mb-3">근무 시간</label>
-        <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-          <TextField
-            type="time"
+        <div className="flex w-full gap-2 flex-wrap">
+          <TimeInput
             value={schedule.startTime.slice(11, 16)}
-            size="sm"
+            onChange={() => {}}
             disabled
           />
           <span className="self-center text-gray-400">~</span>
-          <TextField
-            type="time"
+          <TimeInput
             value={schedule.endTime.slice(11, 16)}
-            size="sm"
+            onChange={() => {}}
             disabled
           />
         </div>
@@ -186,25 +176,34 @@ const AttendanceEditForm = ({
       {clockInStatus !== "ABSENT" && (
         <section>
           <label className="title-1 block mb-3">근태 시간</label>
-          <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-            <TextField
-              type="time"
-              step="600"
-              {...register("clockInTime")}
-              state={errors.clockInTime ? "warning" : "none"}
-              size="sm"
-              required
+          <div className="flex w-full gap-2 flex-wrap">
+            <TimeInput
+              value={watch("clockInTime") ?? ""}
+              onChange={(val) =>
+                setValue("clockInTime", val, {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                })
+              }
+              error={!!errors.clockInTime}
             />
             <span className="self-center text-gray-400">~</span>
-            <TextField
-              type="time"
-              step="600"
-              {...register("clockOutTime")}
-              state={errors.clockOutTime ? "warning" : "none"}
-              size="sm"
-              required
+            <TimeInput
+              value={watch("clockOutTime") ?? ""}
+              onChange={(val) =>
+                setValue("clockOutTime", val, {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                })
+              }
+              error={!!errors.clockOutTime}
             />
           </div>
+          {(errors.clockInTime || errors.clockOutTime) && (
+            <p className="text-xs text-red-500 mt-1">
+              {errors.clockInTime?.message || errors.clockOutTime?.message}
+            </p>
+          )}
         </section>
       )}
 

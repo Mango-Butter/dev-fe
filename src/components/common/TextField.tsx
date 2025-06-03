@@ -15,7 +15,7 @@ const textFieldVariants = cva(
         active:
           "[&_input]:text-grayscale-900 [&_input]:placeholder:text-grayscale-500 [&_input]:border-grayscale-500",
         disable:
-          "[&_input]:text-grayscale-600 [&_input]:placeholder:text-grayscale-600 [&_input]:border-grayscale-300",
+          "[&_input]:text-grayscale-500 [&_input]:placeholder:text-grayscale-500 [&_input]:border-grayscale-300 [&_input]:bg-gray-50",
       },
       size: {
         lg: "[&_input]:h-14 body-1 [&_input]:px-6",

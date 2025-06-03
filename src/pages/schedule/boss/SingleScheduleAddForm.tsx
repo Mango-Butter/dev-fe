@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
@@ -11,10 +11,10 @@ import useStoreStore from "../../../stores/storeStore.ts";
 import useScheduleStore from "../../../stores/useScheduleStore.ts";
 import { formatFullDate } from "../../../utils/date.ts";
 import { getDefaultScheduleTimes } from "../../../utils/time.ts";
-import TextField from "../../../components/common/TextField.tsx";
 import Button from "../../../components/common/Button.tsx";
 import { formatDateToKSTString, getKSTDate } from "../../../libs/date.ts";
 import { toast } from "react-toastify";
+import TimeInput from "../../../components/common/TimeInput.tsx";
 
 interface SingleScheduleAddFormProps {
   defaultDate?: Date;
@@ -50,7 +50,7 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
   const { startTime, endTime } = getDefaultScheduleTimes("half");
 
   const {
-    register,
+    control,
     handleSubmit,
     setValue,
     watch,
@@ -116,32 +116,36 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
           <label className="title-1 text-grayscale-900">근무자</label>
           <span className="title-1 text-warning">*</span>
         </div>
-        <ul className="mt-2 flex gap-3 overflow-x-auto">
-          {staffList.map((staff) => (
-            <li
-              key={staff.staffId}
-              className={`flex flex-col items-center cursor-pointer m-1 ${
-                selectedStaffId === staff.staffId
-                  ? "font-bold text-yellow-500"
-                  : ""
-              }`}
-              onClick={() =>
-                setValue("staffId", staff.staffId, { shouldValidate: true })
-              }
-            >
-              <img
-                src={staff.profileImageUrl}
-                alt={staff.name}
-                className={`h-12 w-12 rounded-full object-cover ring-4 ${
+
+        <div className="overflow-x-auto w-full scrollbar-hide">
+          <ul className="flex gap-3 w-max pb-1">
+            {staffList.map((staff) => (
+              <li
+                key={staff.staffId}
+                className={`flex flex-col items-center cursor-pointer m-1 ${
                   selectedStaffId === staff.staffId
-                    ? "ring-yellow-400"
-                    : "ring-transparent"
+                    ? "font-bold text-yellow-500"
+                    : ""
                 }`}
-              />
-              <span className="text-xs mt-1">{staff.name}</span>
-            </li>
-          ))}
-        </ul>
+                onClick={() =>
+                  setValue("staffId", staff.staffId, { shouldValidate: true })
+                }
+              >
+                <img
+                  src={staff.profileImageUrl}
+                  alt={staff.name}
+                  className={`h-12 w-12 rounded-full object-cover ring-4 ${
+                    selectedStaffId === staff.staffId
+                      ? "ring-yellow-400"
+                      : "ring-transparent"
+                  }`}
+                />
+                <span className="text-xs mt-1">{staff.name}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
         {errors.staffId && (
           <p className="text-xs text-red-500 mt-1">{errors.staffId.message}</p>
         )}
@@ -166,23 +170,29 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
         <label className="title-1 block mb-3 text-grayscale-900">
           근무 시간 <span className="text-red-500">*</span>
         </label>
-        <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-          <TextField
-            type="time"
-            step="600"
-            {...register("startTime")}
-            state={errors.startTime ? "warning" : "none"}
-            size="sm"
-            required
+        <div className="flex w-full gap-2 flex-wrap">
+          <Controller
+            name="startTime"
+            control={control}
+            render={({ field }) => (
+              <TimeInput
+                value={field.value}
+                onChange={field.onChange}
+                error={!!errors.startTime}
+              />
+            )}
           />
           <span className="self-center text-gray-400">~</span>
-          <TextField
-            type="time"
-            step="600"
-            {...register("endTime")}
-            state={errors.endTime ? "warning" : "none"}
-            size="sm"
-            required
+          <Controller
+            name="endTime"
+            control={control}
+            render={({ field }) => (
+              <TimeInput
+                value={field.value}
+                onChange={field.onChange}
+                error={!!errors.endTime}
+              />
+            )}
           />
         </div>
         {(errors.startTime || errors.endTime) && (
