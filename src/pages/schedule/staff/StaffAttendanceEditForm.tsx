@@ -137,7 +137,7 @@ const StaffAttendanceEditForm = ({
         <TextField
           type="text"
           value={formatFullDate(parseDateStringToKST(schedule.workDate))}
-          disabled
+          state="disable"
         />
       </section>
 

@@ -18,18 +18,11 @@ import { toast } from "react-toastify";
 import { showConfirm } from "../../../libs/showConfirm.ts";
 import TimeInput from "../../../components/common/TimeInput.tsx";
 
-const schema = z.discriminatedUnion("clockInStatus", [
-  z.object({
-    clockInStatus: z.literal("ABSENT"),
-    clockInTime: z.literal(null),
-    clockOutTime: z.literal(null),
-  }),
-  z.object({
-    clockInStatus: z.enum(["NORMAL", "LATE"]),
-    clockInTime: z.string().min(1, "출근 시간을 입력해주세요"),
-    clockOutTime: z.string().min(1, "퇴근 시간을 입력해주세요"),
-  }),
-]);
+const schema = z.object({
+  clockInStatus: z.enum(["NORMAL", "LATE", "ABSENT"]),
+  clockInTime: z.string().min(1, "출근 시간을 입력해주세요"),
+  clockOutTime: z.string().min(1, "퇴근 시간을 입력해주세요"),
+});
 
 type FormData = z.infer<typeof schema>;
 
@@ -50,18 +43,17 @@ const AttendanceEditForm = ({
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     mode: "onChange",
-    defaultValues:
-      attendance?.clockInStatus === "ABSENT"
-        ? {
-            clockInStatus: "ABSENT",
-            clockInTime: null,
-            clockOutTime: null,
-          }
-        : {
-            clockInStatus: attendance?.clockInStatus ?? "NORMAL",
-            clockInTime: attendance?.clockInTime?.slice(11, 16) ?? "",
-            clockOutTime: attendance?.clockOutTime?.slice(11, 16) ?? "",
-          },
+    defaultValues: {
+      clockInStatus: attendance?.clockInStatus ?? "NORMAL",
+      clockInTime:
+        attendance?.clockInStatus === "ABSENT"
+          ? "00:00"
+          : (attendance?.clockInTime?.slice(11, 16) ?? ""),
+      clockOutTime:
+        attendance?.clockInStatus === "ABSENT"
+          ? "00:00"
+          : (attendance?.clockOutTime?.slice(11, 16) ?? ""),
+    },
   });
 
   const clockInStatus = watch("clockInStatus");
@@ -71,8 +63,10 @@ const AttendanceEditForm = ({
     try {
       await updateAttendance(storeId, schedule.scheduleId, {
         clockInStatus: data.clockInStatus,
-        clockInTime: data.clockInTime ?? null,
-        clockOutTime: data.clockOutTime ?? null,
+        clockInTime:
+          data.clockInStatus === "ABSENT" ? "00:00" : data.clockInTime,
+        clockOutTime:
+          data.clockInStatus === "ABSENT" ? "00:00" : data.clockOutTime,
       });
       const dateKey = formatFullDate(parseDateStringToKST(schedule.workDate));
       await useScheduleStore.getState().syncScheduleAndDot(storeId, dateKey);
