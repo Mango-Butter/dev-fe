@@ -7,8 +7,8 @@ import GpsMapPreview from "../../../components/common/GpsMapPreview.tsx";
 import { clockIn, clockOut } from "../../../api/staff/attendance.ts";
 import Button from "../../../components/common/Button.tsx";
 import { schemaUnion } from "../../../schemas/attendanceSchema.ts";
-import { getKoreaISOString } from "../../../utils/date.ts";
 import { toast } from "react-toastify";
+import { getKSTISOString } from "../../../libs/date.ts";
 
 const StaffAttendancePage = () => {
   const [params] = useSearchParams();
@@ -50,7 +50,6 @@ const StaffAttendancePage = () => {
         toast.success("퇴근이 완료되었습니다.");
       }
 
-      // 🚀 먼저 페이지 이동
       navigate("/staff", { replace: true });
 
       setTimeout(() => {
@@ -72,7 +71,7 @@ const StaffAttendancePage = () => {
             latitude: pos.coords.latitude,
             longitude: pos.coords.longitude,
           });
-          setLocationFetchedAt(getKoreaISOString());
+          setLocationFetchedAt(getKSTISOString());
         },
         (err) => {
           console.error(err);
