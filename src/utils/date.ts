@@ -69,7 +69,7 @@ export const getStartAndEndDates = (ym: string): [string, string] => {
  */
 export const getRemainingDays = (transferDate: number): number => {
   const today = getKSTDate();
-  return transferDate - today.getDate();
+  return today.getDate() - transferDate;
 };
 
 /**
