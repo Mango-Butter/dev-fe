@@ -174,12 +174,14 @@ const ContractTemplateRegisterPage = () => {
             <div className="mt-1 flex gap-2">
               <input
                 type="time"
+                step="600"
                 {...register(`time.${day}.start`)}
                 className="flex-1 rounded-md border px-3 py-2 text-sm"
               />
               <span className="self-center text-gray-400">~</span>
               <input
                 type="time"
+                step="600"
                 {...register(`time.${day}.end`)}
                 className="flex-1 rounded-md border px-3 py-2 text-sm"
               />

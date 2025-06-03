@@ -169,6 +169,7 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
         <div className="flex gap-2 overflow-x-auto scrollbar-hide">
           <TextField
             type="time"
+            step="600"
             {...register("startTime")}
             state={errors.startTime ? "warning" : "none"}
             size="sm"
@@ -177,6 +178,7 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
           <span className="self-center text-gray-400">~</span>
           <TextField
             type="time"
+            step="600"
             {...register("endTime")}
             state={errors.endTime ? "warning" : "none"}
             size="sm"

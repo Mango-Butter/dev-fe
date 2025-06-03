@@ -189,6 +189,7 @@ const AttendanceEditForm = ({
           <div className="flex gap-2 overflow-x-auto scrollbar-hide">
             <TextField
               type="time"
+              step="600"
               {...register("clockInTime")}
               state={errors.clockInTime ? "warning" : "none"}
               size="sm"
@@ -197,6 +198,7 @@ const AttendanceEditForm = ({
             <span className="self-center text-gray-400">~</span>
             <TextField
               type="time"
+              step="600"
               {...register("clockOutTime")}
               state={errors.clockOutTime ? "warning" : "none"}
               size="sm"

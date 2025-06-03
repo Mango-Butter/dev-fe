@@ -184,6 +184,7 @@ const StaffAttendanceEditForm = ({
           <div className="flex gap-2 overflow-x-auto scrollbar-hide">
             <TextField
               type="time"
+              step="600"
               {...register("clockInTime")}
               state={errors.clockInTime ? "warning" : "none"}
               size="sm"
