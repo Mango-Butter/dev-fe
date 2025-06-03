@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { StaffAttendanceRecord } from "../../../types/attendance";
 import { cn } from "../../../libs";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore";
-import AttendanceEditForm from "../../schedule/boss/AttendanceEditForm.tsx";
 import { getStartAndEndDates } from "../../../utils/date.ts";
 import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx";
 import { toast } from "react-toastify";
 import { getStaffAttendanceRecords } from "../../../api/staff/attendance.ts";
+import StaffAttendanceEditForm from "../../schedule/staff/StaffAttendanceEditForm.tsx";
+import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
 
 interface Props {
   storeId: number;
@@ -15,12 +16,14 @@ interface Props {
 
 const AttendanceRecordContainer = ({ storeId, currentMonth }: Props) => {
   const { setBottomSheetContent } = useBottomSheetStore();
+  const { selectedStore } = useStaffStoreStore();
   const [records, setRecords] = useState<StaffAttendanceRecord[]>([]);
   const [loading, setLoading] = useState(true);
 
   const handleClickRecord = (record: StaffAttendanceRecord) => {
+    if (!selectedStore) return;
     setBottomSheetContent(
-      <AttendanceEditForm
+      <StaffAttendanceEditForm
         schedule={{
           scheduleId: record.scheduleId,
           workDate: record.workDate,
@@ -32,6 +35,11 @@ const AttendanceRecordContainer = ({ storeId, currentMonth }: Props) => {
           clockOutTime: record.clockOutTime,
           clockInStatus: record.clockInStatus,
           clockOutStatus: record.clockOutStatus,
+        }}
+        staff={{
+          staffId: selectedStore.staff.staffId,
+          name: selectedStore.staff.name,
+          profileImageUrl: selectedStore.staff.profileImageUrl,
         }}
       />,
       {

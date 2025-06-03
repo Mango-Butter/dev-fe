@@ -59,5 +59,9 @@ export interface StaffStore {
   address: string;
   storeType: "CAFE" | "RESTAURANT" | "CONVENIENCE_STORE";
   attendanceMethod: string;
-  staffId: number;
+  staff: {
+    staffId: number;
+    name: string;
+    profileImageUrl: string;
+  };
 }

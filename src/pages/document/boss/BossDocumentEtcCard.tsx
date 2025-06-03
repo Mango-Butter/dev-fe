@@ -34,7 +34,7 @@ const BossDocumentEtcCard = ({
   const [clicked, setClicked] = useState<number | null>(null); // 버튼 중복 클릭 방지용
 
   const handleView = async (documentId: number) => {
-    if (!storeId) return;
+    if (typeof storeId !== "number") return;
     try {
       setClicked(documentId);
       const { url } = await getDocumentViewUrl(storeId, documentId);
@@ -47,7 +47,7 @@ const BossDocumentEtcCard = ({
   };
 
   const handleDownload = async (documentId: number) => {
-    if (!storeId) return;
+    if (typeof storeId !== "number") return;
     try {
       setClicked(documentId);
       const { url } = await getDocumentDownloadUrl(storeId, documentId);

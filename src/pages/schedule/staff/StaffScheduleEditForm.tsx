@@ -57,7 +57,7 @@ const StaffScheduleEditForm = ({ schedule, staff }: Props) => {
   const selectedStaffId = watch("targetStaffId");
 
   const onSubmit = async (data: FormData) => {
-    if (!storeId) return;
+    if (typeof storeId !== "number") return;
 
     try {
       await requestSubstitution(storeId, schedule.scheduleId, data);
@@ -70,7 +70,7 @@ const StaffScheduleEditForm = ({ schedule, staff }: Props) => {
   };
 
   useEffect(() => {
-    if (!storeId) return;
+    if (typeof storeId !== "number") return;
 
     const fetch = async () => {
       try {
@@ -188,7 +188,7 @@ const StaffScheduleEditForm = ({ schedule, staff }: Props) => {
         </section>
       )}
 
-      {selectedStore.staffId === staff.staffId && (
+      {selectedStore.staff.staffId === staff.staffId && (
         <div className="mt-4 flex justify-between gap-3 bg-white">
           {isEditMode ? (
             <>

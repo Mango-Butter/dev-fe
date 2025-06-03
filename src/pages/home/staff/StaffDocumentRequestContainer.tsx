@@ -17,7 +17,7 @@ const StaffDocumentRequestContainer = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!storeId) return;
+      if (typeof storeId !== "number") return;
 
       try {
         const [contracts, documents] = await Promise.all([

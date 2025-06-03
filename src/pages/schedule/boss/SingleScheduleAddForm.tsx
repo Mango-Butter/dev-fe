@@ -70,7 +70,7 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
 
   useEffect(() => {
     const fetchStaffs = async () => {
-      if (!storeId) return;
+      if (typeof storeId !== "number") return;
       try {
         const data = await getStaffBriefList(storeId);
         setStaffList(data);
@@ -82,7 +82,7 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
   }, []);
 
   const onSubmit = async (data: FormData) => {
-    if (!storeId || !data.date) return;
+    if (typeof storeId !== "number" || !data.date) return;
 
     const workDate = formatDateToKSTString(data.date);
     const dateKey = formatFullDate(data.date);

@@ -21,7 +21,7 @@ const StaffDocumentContainer = () => {
   const isDocsCountZero = documents.length + contracts.length === 0;
 
   useEffect(() => {
-    if (!storeId) return;
+    if (typeof storeId !== "number") return;
 
     const fetch = async () => {
       try {

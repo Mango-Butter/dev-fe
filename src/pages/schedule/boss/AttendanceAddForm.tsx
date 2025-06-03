@@ -58,7 +58,7 @@ const AttendanceAddForm = ({ defaultDate }: AddAttendanceFormProps) => {
   useEffect(() => {
     const fetchStaff = async () => {
       try {
-        if (!storeId) return;
+        if (typeof storeId !== "number") return;
         const data = await getStaffBriefList(storeId);
         setStaffList(data);
       } catch (err) {
@@ -69,7 +69,7 @@ const AttendanceAddForm = ({ defaultDate }: AddAttendanceFormProps) => {
   }, [storeId]);
 
   const onSubmit = async (data: FormData) => {
-    if (!storeId) return;
+    if (typeof storeId !== "number") return;
 
     const workDate = formatDateToKSTString(data.date);
     const dateKey = formatFullDate(data.date); // YYYY-MM-DD 형식 문자열

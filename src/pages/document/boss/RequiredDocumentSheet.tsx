@@ -53,7 +53,7 @@ const RequiredDocumentSheet = ({ initialSettings, onSaveSuccess }: Props) => {
   };
 
   const handleSave = async () => {
-    if (!storeId) return;
+    if (typeof storeId !== "number") return;
 
     const payload: RequiredDocumentSetting[] = ALL_DOCUMENT_TYPES.map(
       (type) => ({

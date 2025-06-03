@@ -29,14 +29,14 @@ const BossDocumentEtcPage = () => {
   const storeId = selectedStore?.storeId;
 
   useEffect(() => {
-    if (!storeId) return;
+    if (typeof storeId !== "number") return;
     getRequiredDocuments(storeId).then((res) => {
       setRequiredDocs(res.result);
     });
   }, [storeId]);
 
   const handleToggle = async (documentType: string) => {
-    if (!storeId) return;
+    if (typeof storeId !== "number") return;
 
     const isOpen = expanded[documentType];
     setExpanded((prev) => ({ ...prev, [documentType]: !isOpen }));

@@ -16,7 +16,7 @@ const Landing = () => {
   useLayout({
     theme: "default",
     rightIcon: false,
-    headerVisible: true,
+    headerVisible: false,
     bottomNavVisible: false,
   });
 

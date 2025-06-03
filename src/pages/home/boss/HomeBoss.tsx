@@ -23,9 +23,8 @@ const HomeBoss = () => {
   const todayRecords = scheduleMap[dateKey] || [];
 
   useEffect(() => {
-    if (storeId) {
-      fetchDailySchedule(storeId, dateKey);
-    }
+    if (typeof storeId !== "number") return;
+    fetchDailySchedule(storeId, dateKey);
   }, [storeId, dateKey, fetchDailySchedule]);
 
   return (
