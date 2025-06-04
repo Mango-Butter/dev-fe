@@ -261,7 +261,7 @@ const StaffAttendanceEditForm = ({
               state="default"
               onClick={() => setIsEditMode(true)}
             >
-              근태 수정하기
+              근태 수정 요청하기
             </Button>
           )}
         </div>

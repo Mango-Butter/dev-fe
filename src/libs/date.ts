@@ -13,7 +13,7 @@ export const getKSTDate = (): Date => {
 
 // 2. KST 기준 ISO 문자열 반환
 export const getKSTISOString = (): string => {
-  return dayjs().tz("Asia/Seoul").format(); // ISO 8601: "2025-05-26T14:20:00+09:00"
+  return dayjs().tz("Asia/Seoul").format("YYYY-MM-DDTHH:mm:ss");
 };
 
 export const parseDateStringToKST = (dateStr: string): Date =>

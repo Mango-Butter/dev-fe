@@ -86,6 +86,12 @@ const ScheduleStaff = () => {
     staff: DailyAttendanceRecord["staff"],
     attendance: DailyAttendanceRecord["attendance"],
   ) => {
+    const { clockInTime, clockOutTime, clockInStatus } = attendance;
+
+    const shouldOpen =
+      (clockInTime && clockOutTime) || clockInStatus === "ABSENT";
+
+    if (!shouldOpen) return;
     setBottomSheetContent(
       <StaffAttendanceEditForm
         schedule={schedule}
