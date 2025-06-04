@@ -8,13 +8,13 @@ import {
 import { StaffContractSummary } from "../../../types/contract.ts";
 import MailIcon from "../../../components/icons/MailIcon.tsx";
 import { BusinessOff } from "../../../components/icons/BusinessIcon.tsx";
-import useStoreStore from "../../../stores/storeStore.ts";
 import { useNavigate } from "react-router-dom";
 import { isValidStoreId } from "../../../utils/store.ts";
+import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
 
 const StaffDocumentContainer = () => {
   const navigate = useNavigate();
-  const { selectedStore } = useStoreStore();
+  const { selectedStore } = useStaffStoreStore();
   const storeId = selectedStore?.storeId;
 
   const [documents, setDocuments] = useState<StaffDocumentSummary[]>([]);

@@ -5,11 +5,11 @@ import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import StaffDocumentRequestContainer from "./StaffDocumentRequestContainer.tsx";
 import { getKSTDate } from "../../../libs/date.ts";
-import useStoreStore from "../../../stores/storeStore.ts";
+import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
 
 const HomeStaff = () => {
   const { user } = useUserStore();
-  const { selectedStore } = useStoreStore();
+  const { selectedStore } = useStaffStoreStore();
   const storeId = selectedStore?.storeId;
   const todayDate = getKSTDate();
   const today = format(todayDate, "yyyy.MM.dd EEEE", { locale: ko });
