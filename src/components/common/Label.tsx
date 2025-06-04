@@ -22,7 +22,7 @@ const labelVariants = cva(
       theme: "solid",
       size: "sm",
     },
-  },
+  }
 );
 
 export interface LabelProps extends ComponentProps<"div"> {
@@ -40,7 +40,11 @@ export default function Label({
   ...props
 }: LabelProps) {
   return (
-    <div className={cn(labelVariants({ theme, size }), className)} {...props}>
+    <div
+      className={cn(labelVariants({ theme, size }), className)}
+      {...props}
+      ref={undefined}
+    >
       {icon && <span className="flex items-center justify-center">{icon}</span>}
       <p>{children}</p>
     </div>

@@ -21,3 +21,10 @@ export const parseDateStringToKST = (dateStr: string): Date =>
 
 export const formatDateToKSTString = (date: Date): string =>
   dayjs(date).tz("Asia/Seoul").format("YYYY-MM-DD");
+
+export const getKSTISOStringFromDateAndTime = (
+  dateStr: string,
+  timeStr: string,
+): string => {
+  return dayjs(`${dateStr} ${timeStr}`).format("YYYY-MM-DDTHH:mm:ss");
+};
