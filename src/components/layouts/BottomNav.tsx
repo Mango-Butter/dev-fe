@@ -84,7 +84,7 @@ const BottomNav = () => {
 
   return (
     <nav
-      className={`h-20 ${
+      className={`h-20 w-full fixed bottom-0 right-0 left-0 ${
         bottomNavVisible ? "flex" : "hidden"
       } justify-around items-center bg-white border-t pb-5`}
     >

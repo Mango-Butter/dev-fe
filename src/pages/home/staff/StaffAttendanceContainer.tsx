@@ -53,14 +53,20 @@ const StaffAttendanceContainer = () => {
 
   if (schedules.length === 0) {
     return (
-      <div className="text-center text-grayscale-400 body-3 py-4 shadow-basic rounded-lg">
+      <div className="text-center text-grayscale-400 body-3 py-4 shadow-basic rounded-lg h-[130px]">
         오늘 스케줄이 없습니다.
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col p-4 pt-0 shadow-basic rounded-lg h-[260px] overflow-y-auto">
+    <div
+      className={`flex flex-col p-4 pt-0 shadow-basic rounded-lg overflow-y-auto ${
+        schedules.length <= 2
+          ? `h-[${48 + 32 + 44 + schedules.length * 82}px]`
+          : "h-[288px]" // 48(기본) + 32(제목) + 126*2
+      }`}
+    >
       <div className="w-full title-1 p-4 pb-2 border-b sticky top-0 bg-white z-10">
         오늘의 스케줄
       </div>

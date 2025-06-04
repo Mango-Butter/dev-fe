@@ -31,7 +31,7 @@ const StaffStoreCard = () => {
     const fetchStores = async () => {
       try {
         const stores = await fetchStaffStores();
-
+        console.log(stores);
         if (stores.length === 0) return;
 
         setStoreList(stores);

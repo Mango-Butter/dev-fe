@@ -5,7 +5,7 @@ import MailIcon from "../../../components/icons/MailIcon.tsx";
 
 const DocumentContainer = () => {
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full pb-4">
       <p className="title-1 mb-3">문서함</p>
       <div className="grid grid-cols-2 gap-3">
         <DocumentCard

@@ -96,7 +96,7 @@ const StaffPayrollSettingContainer = () => {
             <div className="w-3/4 h-4 animate-pulse bg-grayscale-200 rounded" />
           </div>
         ) : payrollInfo ? (
-          <div className="flex justify-between items-center w-full rounded-lg border border-grayscale-300 px-4 py-3">
+          <div className="flex justify-between items-center w-full rounded-lg border border-grayscale-300 shadow-basic px-4 py-3">
             <div className="title-3 text-grayscale-800 space-y-1">
               <p>시급: {payrollInfo.hourlyWage.toLocaleString()}원</p>
               <p>
