@@ -9,6 +9,8 @@ import Button from "../../../components/common/Button.tsx";
 import { schemaUnion } from "../../../schemas/attendanceSchema.ts";
 import { toast } from "react-toastify";
 import { getKSTISOString } from "../../../libs/date.ts";
+import ApproveIcon from "../../../components/icons/ApproveIcon.tsx";
+import ErrorIcon from "../../../components/icons/ErrorIcon.tsx";
 
 const StaffAttendancePage = () => {
   const [params] = useSearchParams();
@@ -33,6 +35,8 @@ const StaffAttendancePage = () => {
 
   const needsLocation =
     attendanceMethod === "GPS" || attendanceMethod === "BOTH";
+
+  const gpsReady = currentPosition && locationFetchedAt;
 
   const handleSubmit = async () => {
     if (!isValid || !selectedStore) return;
@@ -121,13 +125,17 @@ const StaffAttendancePage = () => {
         ? "QR 출근"
         : attendanceMethod === "GPS"
           ? "GPS 출근"
-          : "QR 출근",
+          : attendanceMethod === "BOTH"
+            ? "QR•GPS 출근"
+            : "출근",
     "clock-out":
       attendanceMethod === "QR"
         ? "QR 퇴근"
         : attendanceMethod === "GPS"
           ? "GPS 퇴근"
-          : "QR 퇴근",
+          : attendanceMethod === "BOTH"
+            ? "QR•GPS 퇴근"
+            : "퇴근",
   };
 
   useLayout({
@@ -152,9 +160,9 @@ const StaffAttendancePage = () => {
 
   return (
     <div className="w-full p-4">
-      <div className="w-full flex flex-col gap-9">
+      <div className="w-full flex flex-col gap-5">
         <div className="w-full aspect-square rounded-xl border-[5px] border-secondary-500 bg-grayscale-200 overflow-hidden">
-          {attendanceMethod === "GPS" || attendanceMethod === "BOTH" ? (
+          {attendanceMethod === "GPS" ? (
             currentPosition ? (
               <GpsMapPreview
                 latitude={currentPosition.latitude}
@@ -166,7 +174,7 @@ const StaffAttendancePage = () => {
                 위치 정보를 받아오는 중입니다...
               </div>
             )
-          ) : attendanceMethod === "QR" ? (
+          ) : attendanceMethod === "QR" || attendanceMethod === "BOTH" ? (
             <>
               <div
                 id="qr-reader"
@@ -186,7 +194,67 @@ const StaffAttendancePage = () => {
           )}
         </div>
 
-        {attendanceMethod === "QR" ? (
+        {attendanceMethod === "BOTH" && (
+          <div className="w-full flex justify-center gap-4 items-center p-4 rounded-xl border border-secondary-500 body-2 shadow-blue-shadow">
+            <div
+              className={`flex items-center gap-2 text-sm ${
+                qrCode ? "text-green-600" : "text-gray-700"
+              }`}
+            >
+              {qrCode ? <ApproveIcon /> : <ErrorIcon />}
+              QR 스캔 {qrCode ? "확인됨" : "필요"}
+            </div>
+            <div
+              className={`flex items-center gap-2 text-sm ${
+                gpsReady ? "text-green-600" : "text-gray-700"
+              }`}
+            >
+              {gpsReady ? <ApproveIcon /> : <ErrorIcon />}
+              {gpsReady ? "GPS 위치 확인됨" : "위치 새로고침 필요"}
+            </div>
+          </div>
+        )}
+
+        {attendanceMethod === "QR" && (
+          <div className="w-full flex justify-center items-center p-4 rounded-xl border border-secondary-500 body-2 shadow-blue-shadow">
+            <div
+              className={`flex items-center gap-2 text-sm ${
+                qrCode ? "text-green-600" : "text-gray-700"
+              }`}
+            >
+              {qrCode ? <ApproveIcon /> : <ErrorIcon />}
+              QR 스캔 {qrCode ? "확인됨" : "필요"}
+            </div>
+          </div>
+        )}
+
+        {attendanceMethod === "GPS" && (
+          <div className="w-full flex justify-center items-center p-4 rounded-xl border border-secondary-500 body-2 shadow-blue-shadow">
+            <div
+              className={`flex items-center gap-2 text-sm ${
+                gpsReady ? "text-green-600" : "text-gray-700"
+              }`}
+            >
+              {gpsReady ? <ApproveIcon /> : <ErrorIcon />}
+              {gpsReady ? "GPS 위치 확인됨" : "위치 새로고침 필요"}
+            </div>
+          </div>
+        )}
+
+        {attendanceMethod === "BOTH" ? (
+          <div className="w-full p-5 rounded-xl border border-secondary-500 body-2 text-grayscale-600 shadow-blue-shadow">
+            <p>
+              이 매장은 QR 스캔과 GPS 위치 정보를 모두 활용해 출퇴근을 확인해요.
+            </p>
+            <p>
+              매장에 도착하면 QR을 스캔하고, 위치 정보도 자동으로 함께 기록돼요.
+            </p>
+            <p>
+              두 가지 방식이 모두 만족되어야 출퇴근이 정상적으로 기록되므로,
+              스캔 후 위치 정보 허용 상태도 꼭 확인하세요.
+            </p>
+          </div>
+        ) : attendanceMethod === "QR" ? (
           <div className="w-full p-5 rounded-xl border border-secondary-500 body-2 text-grayscale-600 shadow-blue-shadow">
             <p>매장에 도착하면 QR 코드를 스캔해 출근을 시작할 수 있어요.</p>
             <p>
@@ -198,7 +266,7 @@ const StaffAttendancePage = () => {
               기록하세요.
             </p>
           </div>
-        ) : (
+        ) : attendanceMethod === "GPS" ? (
           <div className="w-full p-5 rounded-xl border border-secondary-500 body-2 text-grayscale-600 shadow-blue-shadow">
             <p>매장 내와 자신의 GPS 위치를 비교하여 매장 출퇴근을 확인해요.</p>
             <p>
@@ -206,8 +274,7 @@ const StaffAttendancePage = () => {
               시도하세요.
             </p>
           </div>
-        )}
-
+        ) : null}
         <Button
           className="w-full mt-2"
           size="sm"
