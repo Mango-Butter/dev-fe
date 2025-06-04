@@ -12,7 +12,7 @@ export const gpsSchema = z.object({
   scheduleId: z.string().min(1),
   latitude: z.number(),
   longitude: z.number(),
-  locationFetchedAt: z.string().datetime(),
+  locationFetchedAt: z.string(),
 });
 
 export const bothSchema = z.object({
@@ -21,7 +21,7 @@ export const bothSchema = z.object({
   qrCode: z.string().min(1),
   latitude: z.number(),
   longitude: z.number(),
-  locationFetchedAt: z.string().datetime(),
+  locationFetchedAt: z.string(),
 });
 
 export const schemaUnion = z.union([qrSchema, gpsSchema, bothSchema]);
