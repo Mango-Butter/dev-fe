@@ -185,7 +185,7 @@ const StaffAttendanceEditForm = ({
       {clockInStatus !== "ABSENT" && (
         <section>
           <label className="title-1 block mb-3">근태 시간</label>
-          <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+          <div className="flex gap-2 flex-wrap">
             <TimeInput
               value={watch("clockInTime") || ""}
               onChange={(val) =>
@@ -215,14 +215,14 @@ const StaffAttendanceEditForm = ({
       {isEditMode && (
         <section>
           <label htmlFor="reason" className="title-1 block mb-3">
-            사유 (선택)
+            사유
           </label>
           <textarea
             id="reason"
             {...register("reason")}
             placeholder="근태 수정 요청 사유를 입력해주세요"
             rows={3}
-            className="w-full resize-none rounded-lg border border-gray-300 px-3 py-2 text-sm placeholder:text-gray-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            className="w-full resize-none rounded-lg border border-gray-300 p-4 text-sm placeholder:text-gray-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
             readOnly={!isEditMode}
           />
         </section>

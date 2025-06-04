@@ -108,7 +108,7 @@ const StaffScheduleEditForm = ({ schedule, staff }: Props) => {
         <h2 className="title-1 mb-3">근무자</h2>
         {isEditMode ? (
           <ul className="mt-2 flex gap-3 overflow-x-auto w-full scrollbar-hide">
-            <div className="flex gap-3 w-max">
+            <div className="flex gap-3 w-max px-2">
               {candidates.map(({ staff: s }) => (
                 <li
                   key={s.staffId}
@@ -185,7 +185,7 @@ const StaffScheduleEditForm = ({ schedule, staff }: Props) => {
             {...register("reason")}
             placeholder="대타 근무 요청 사유를 입력해주세요"
             rows={3}
-            className="w-full resize-none rounded-lg border border-gray-300 px-3 py-2 text-sm placeholder:text-gray-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            className="w-full resize-none rounded-lg border border-gray-300 p-4 text-sm placeholder:text-gray-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           />
           {errors.reason && (
             <p className="text-xs text-red-500 mt-1">{errors.reason.message}</p>
