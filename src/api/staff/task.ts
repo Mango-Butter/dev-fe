@@ -1,5 +1,5 @@
 import {
-  StaffTask,
+  TaskStatus,
   StaffTaskListResponse,
   TaskUploadUrlResponse,
 } from "../../types/task";
@@ -7,9 +7,9 @@ import axiosAuth from "../common/axiosAuth";
 
 // 날짜별 업무 목록 조회
 export const getTasksByDate = async (
-  storeId: string,
+  storeId: number,
   date: string,
-): Promise<StaffTask[]> => {
+): Promise<TaskStatus[]> => {
   const response = await axiosAuth.get<StaffTaskListResponse>(
     `/api/staff/stores/${storeId}/tasks?date=${date}`,
   );
@@ -18,26 +18,29 @@ export const getTasksByDate = async (
 
 // 업무 세부 조회
 export const getTaskDetail = async (
-  storeId: string,
+  storeId: number,
   taskId: number,
-): Promise<StaffTask> => {
-  const response = await axiosAuth.get<StaffTask>(
+): Promise<TaskStatus> => {
+  const response = await axiosAuth.get<TaskStatus>(
     `/api/staff/stores/${storeId}/tasks/${taskId}`,
   );
   return response.data;
 };
 
-// 업무 완료 처리
 export const completeTask = async (
-  storeId: string,
+  storeId: number,
   taskId: number,
+  reportImageUrl: string | null,
 ): Promise<void> => {
-  await axiosAuth.post(`/api/staff/stores/${storeId}/tasks/${taskId}/complete`);
+  await axiosAuth.post(
+    `/api/staff/stores/${storeId}/tasks/${taskId}/complete`,
+    { reportImageUrl }, // ✅ 필수 요청 바디 추가
+  );
 };
 
 // 업무 완료 취소
 export const cancelTaskCompletion = async (
-  storeId: string,
+  storeId: number,
   taskId: number,
 ): Promise<void> => {
   await axiosAuth.delete(
@@ -47,7 +50,7 @@ export const cancelTaskCompletion = async (
 
 // 업무 보고 사진 업로드용 presignedUrl 발급
 export const getTaskLogImageUploadUrl = async (
-  storeId: string,
+  storeId: number,
   extension: string,
   contentType: string,
 ): Promise<TaskUploadUrlResponse> => {
@@ -61,4 +64,17 @@ export const getTaskLogImageUploadUrl = async (
     },
   );
   return response.data;
+};
+
+export const uploadReferenceImage = async (
+  uploadUrl: string,
+  file: File,
+): Promise<void> => {
+  await fetch(uploadUrl, {
+    method: "PUT",
+    body: file,
+    headers: {
+      "Content-Type": file.type,
+    },
+  });
 };

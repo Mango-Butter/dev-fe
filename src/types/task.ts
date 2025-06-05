@@ -1,5 +1,3 @@
-export type VerificationType = "PHOTO" | "CHECKBOX";
-export type TaskState = "IN_PROGRESS" | "COMPLETED";
 export type TaskRoutineRepeatType = "DAILY" | "WEEKLY" | "MONTHLY";
 export type DayOfWeek =
   | "MONDAY"
@@ -9,12 +7,6 @@ export type DayOfWeek =
   | "FRIDAY"
   | "SATURDAY"
   | "SUNDAY";
-
-export interface Staff {
-  id: string;
-  name: string;
-  profileImageUrl?: string;
-}
 
 // 단일 업무 생성 요청
 export interface SingleTaskRequest {
@@ -73,21 +65,8 @@ export type TaskRoutineRequest =
 // 참고 사진 업로드 URL 응답
 export interface ReferenceImageUploadUrlResponse {
   uploadUrl: string;
-  fileKey: string;
+  publicUrl: string;
   expiresAt: string;
-}
-
-// Task 응답 타입
-export interface Task {
-  id: string;
-  title: string;
-  description: string;
-  verificationType: VerificationType;
-  startTime: string;
-  endTime: string;
-  taskState: TaskState;
-  contributorStaff: Staff[];
-  referenceImageFileKey?: string;
 }
 
 // 업무 상세 조회 응답
@@ -146,19 +125,6 @@ export interface TaskStatus {
   };
 }
 
-// 알바생용 타입 정의
-export interface StaffTask {
-  taskId: number;
-  title: string;
-  description: string | null;
-  taskDate: string;
-  startTime: string;
-  endTime: string;
-  isPhotoRequired: boolean;
-  referenceImageUrl: string | null;
-  taskLog: TaskLog | null;
-}
-
 export interface TaskLog {
   taskLogImageUrl: string | null;
   checkedStaff: CheckedStaff | null;
@@ -177,5 +143,5 @@ export interface TaskUploadUrlResponse {
 }
 
 export interface StaffTaskListResponse {
-  result: StaffTask[];
+  result: TaskStatus[];
 }

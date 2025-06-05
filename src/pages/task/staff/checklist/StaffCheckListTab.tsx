@@ -1,13 +1,13 @@
 import React from "react";
-import { TaskStatus } from "../../../types/task";
-import { TaskCard } from "./TaskCard";
+import { TaskStatus } from "../../../../types/task.ts";
+import { StaffChecklistCard } from "./StaffChecklistCard.tsx";
 
 interface TaskListProps {
   tasks: TaskStatus[];
   isLoading: boolean;
 }
 
-const TaskList: React.FC<TaskListProps> = ({ tasks, isLoading }) => {
+const StaffCheckListTab: React.FC<TaskListProps> = ({ tasks, isLoading }) => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-40">
@@ -27,10 +27,10 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, isLoading }) => {
   return (
     <div className="space-y-4">
       {tasks.map((task) => (
-        <TaskCard key={task.taskId} {...task} />
+        <StaffChecklistCard key={task.taskId} {...task} />
       ))}
     </div>
   );
 };
 
-export default TaskList;
+export default StaffCheckListTab;

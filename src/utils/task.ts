@@ -49,3 +49,10 @@ export const validateImageFile = (file: File): boolean => {
 
   return validTypes.includes(file.type) && file.size <= maxSize;
 };
+
+export const toISOStringWithTime = (date: Date, time: string): string => {
+  const [hour, minute] = time.split(":");
+  const result = new Date(date);
+  result.setHours(Number(hour), Number(minute), 0, 0);
+  return result.toISOString();
+};

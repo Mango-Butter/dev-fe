@@ -10,25 +10,22 @@ import {
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "react-calendar/dist/Calendar.css";
 import "../../../styles/taskPageCalendar.css";
-import { TaskStatus } from "../../../types/task";
-import { BossTaskAPI } from "../../../api/boss/task";
-import { useTaskFilters } from "../../../hooks/useTaskFilters";
-import useBottomSheetStore from "../../../stores/useBottomSheetStore";
+import { getTasksByDate } from "../../../api/staff/task";
 import useStoreStore from "../../../stores/storeStore";
-import TaskList from "./TaskList";
 import { useLayout } from "../../../hooks/useLayout";
 import { cn } from "../../../libs";
 import ArrowIcon from "../../../components/icons/ArrowIcon";
-import Button from "../../../components/common/Button";
-import TaskAddForm from "./TaskAddForm";
+import { toast } from "react-toastify";
 import { getKSTDate } from "../../../libs/date.ts";
+import { TaskStatus } from "../../../types/task.ts";
+import StaffCheckListTab from "./checklist/StaffCheckListTab.tsx";
 
 const tabItems = [
   { label: "업무", value: "task" },
   { label: "보고사항", value: "report" },
 ];
 
-const TaskListPage: React.FC = () => {
+const StaffTaskListPage: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(getKSTDate());
   const [tasks, setTasks] = useState<TaskStatus[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -37,29 +34,27 @@ const TaskListPage: React.FC = () => {
   const navigate = useNavigate();
 
   const { selectedStore } = useStoreStore();
-  const storeId = selectedStore?.storeId ?? "current-store-id"; // TODO: 실제 storeId로 교체 필요
-  const { setBottomSheetContent } = useBottomSheetStore();
-  const { filters } = useTaskFilters();
+  const storeId = selectedStore?.storeId;
 
   useLayout({
-    title: "업무 관리",
+    title: "업무 목록",
     theme: "default",
     headerVisible: true,
     bottomNavVisible: true,
-    onBack: () => navigate("/boss"),
+    onBack: () => navigate("/staff"),
   });
 
   const fetchTasks = async () => {
+    if (!storeId) return;
+
     try {
       setIsLoading(true);
       const date = format(currentDate, "yyyy-MM-dd");
-      const fetchedTasks = await BossTaskAPI.getTasksByDate(
-        String(storeId),
-        date,
-      );
+      const fetchedTasks = await getTasksByDate(storeId, date);
       setTasks(fetchedTasks);
     } catch (error) {
-      console.error("Failed to fetch tasks:", error);
+      console.error("업무 목록 조회 실패:", error);
+      toast.error("업무 목록을 불러오는데 실패했습니다.");
     } finally {
       setIsLoading(false);
     }
@@ -86,33 +81,6 @@ const TaskListPage: React.FC = () => {
   const handleTabChange = (type: string) => {
     setSearchParams({ type });
   };
-
-  const handleAddTask = () => {
-    setBottomSheetContent(<TaskAddForm defaultDate={currentDate} />, {
-      closeOnClickOutside: true,
-      leftButtonIcon: <ArrowIcon direction={"left"} />,
-      // onLeftButtonClick: () => goBack(),
-      title: "업무 추가하기",
-    });
-  };
-
-  const handleRoutineTask = () => {
-    navigate("/boss/task-routines"); // 이 경로는 실제 페이지 경로에 맞게 수정
-  };
-
-  const filteredTasks = tasks.filter((task) => {
-    if (filters.has("all")) return true;
-    return Array.from(filters).some((key) => {
-      const [type, value] = key.split(":");
-      if (type === "state") {
-        return task.taskLog ? value === "COMPLETED" : value === "IN_PROGRESS";
-      }
-      if (type === "type") {
-        return task.isPhotoRequired === (value === "PHOTO");
-      }
-      return false;
-    });
-  });
 
   const weekDays = eachDayOfInterval({
     start: startOfWeek(currentDate),
@@ -173,16 +141,8 @@ const TaskListPage: React.FC = () => {
 
       {/* 컨텐츠 영역 */}
       <div className="p-4">
-        <div className="flex justify-end mb-4 gap-4">
-          <Button size="sm" onClick={handleRoutineTask} theme="outline">
-            고정 관리하기
-          </Button>
-          <Button size="sm" onClick={handleAddTask} theme="outline">
-            업무 추가하기
-          </Button>
-        </div>
         {currentTab === "task" && (
-          <TaskList tasks={filteredTasks} isLoading={isLoading} />
+          <StaffCheckListTab tasks={tasks} isLoading={isLoading} />
         )}
         {currentTab === "report" && (
           <div className="text-center text-gray-500 py-8">준비 중입니다.</div>
@@ -192,4 +152,4 @@ const TaskListPage: React.FC = () => {
   );
 };
 
-export default TaskListPage;
+export default StaffTaskListPage;

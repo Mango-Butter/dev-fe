@@ -2,7 +2,6 @@ import axiosAuth from "../common/axiosAuth";
 import {
   SingleTaskRequest,
   TaskRoutineRequest,
-  TaskDetail,
   ReferenceImageUploadUrlResponse,
   TaskRoutine,
   TaskStatus,
@@ -11,19 +10,15 @@ import {
 export const BossTaskAPI = {
   // 단일 업무 생성
   createSingleTask: async (
-    storeId: string,
+    storeId: number,
     taskData: SingleTaskRequest,
-  ): Promise<TaskDetail> => {
-    const response = await axiosAuth.post(
-      `/api/boss/stores/${storeId}/tasks`,
-      taskData,
-    );
-    return response.data;
+  ): Promise<void> => {
+    await axiosAuth.post(`/api/boss/stores/${storeId}/tasks`, taskData);
   },
 
   // 반복 업무 생성
   createTaskRoutine: async (
-    storeId: string,
+    storeId: number,
     taskData: TaskRoutineRequest,
   ): Promise<void> => {
     await axiosAuth.post(
@@ -32,9 +27,9 @@ export const BossTaskAPI = {
     );
   },
 
-  // 참고 사진 업로드 URL 요청
+  // 참고 사진 업로드 presignedURL 요청
   getReferenceImageUploadUrl: async (
-    storeId: string,
+    storeId: number,
     extension: string,
     contentType: string,
   ): Promise<ReferenceImageUploadUrlResponse> => {
@@ -64,19 +59,9 @@ export const BossTaskAPI = {
     });
   },
 
-  // getReferenceImageViewUrl: async (
-  //   storeId: number,
-  //   taskId: number,
-  // ): Promise<{ viewUrl: string }> => {
-  //   const res = await axiosAuth.get(
-  //     `/api/boss/stores/${storeId}/tasks/${taskId}/reference-image/view-url`,
-  //   );
-  //   return res.data;
-  // },
-
   // 날짜별 업무 상태 조회
   getTasksByDate: async (
-    storeId: string,
+    storeId: number,
     date: string,
   ): Promise<TaskStatus[]> => {
     const response = await axiosAuth.get(`/api/boss/stores/${storeId}/tasks`, {
@@ -87,7 +72,7 @@ export const BossTaskAPI = {
 
   // 업무 상세 조회
   getTaskDetail: async (
-    storeId: string,
+    storeId: number,
     taskId: number,
   ): Promise<TaskStatus> => {
     const response = await axiosAuth.get<TaskStatus>(
@@ -97,7 +82,7 @@ export const BossTaskAPI = {
   },
 
   // 반복 업무 목록 조회
-  getTaskRoutines: async (storeId: string): Promise<TaskRoutine[]> => {
+  getTaskRoutines: async (storeId: number): Promise<TaskRoutine[]> => {
     const response = await axiosAuth.get(
       `/api/boss/stores/${storeId}/tasks/task-routines`,
     );
@@ -106,16 +91,20 @@ export const BossTaskAPI = {
 
   // 반복 업무 삭제
   deleteTaskRoutine: async (
-    storeId: string,
+    storeId: number,
+    taskRoutineId: number,
     deleteOption: "ALL" | "PENDING",
   ): Promise<void> => {
-    await axiosAuth.delete(`/api/boss/stores/${storeId}/tasks/task-routines`, {
-      params: { deleteOption },
-    });
+    await axiosAuth.delete(
+      `/api/boss/stores/${storeId}/tasks/task-routines/${taskRoutineId}`,
+      {
+        params: { deleteOption },
+      },
+    );
   },
 
   // 특정 업무 삭제
-  deleteTask: async (storeId: string, taskId: number): Promise<void> => {
+  deleteTask: async (storeId: number, taskId: number): Promise<void> => {
     await axiosAuth.delete(`/api/boss/stores/${storeId}/tasks/${taskId}`);
   },
 };
