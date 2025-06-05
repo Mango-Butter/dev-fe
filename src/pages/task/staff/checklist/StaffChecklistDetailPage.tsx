@@ -172,7 +172,7 @@ const StaffChecklistDetailPage = () => {
 
   return (
     <div className="w-full p-5 flex flex-col h-full justify-between">
-      <div className="w-full h-full flex justify-between items-start">
+      <div className="w-full h-full flex justify-between items-start overflow-auto scrollbar-hide">
         <div className="w-full flex flex-col gap-4">
           <div className="flex items-center gap-2">
             <Label size="lg" theme={task.taskLog ? "solid" : "ghost"}>
@@ -273,23 +273,31 @@ const StaffChecklistDetailPage = () => {
           )}
         </div>
       </div>
-      {task.taskLog ? (
-        myStaffId === task.taskLog.checkedStaff.staffId ? (
-          <Button size="sm" theme="danger" onClick={handleCancel}>
-            완료 취소하기
+      <div className="mt-4 shrink-0">
+        {task.taskLog ? (
+          myStaffId === task.taskLog.checkedStaff.staffId && (
+            <Button
+              size="sm"
+              theme="danger"
+              onClick={handleCancel}
+              className="w-full"
+            >
+              완료 취소하기
+            </Button>
+          )
+        ) : (
+          <Button
+            size="sm"
+            theme="secondary"
+            onClick={handleComplete}
+            disabled={!isValid}
+            state={isValid ? "default" : "disabled"}
+            className="w-full"
+          >
+            완료하기
           </Button>
-        ) : null
-      ) : (
-        <Button
-          size="sm"
-          theme="secondary"
-          onClick={handleComplete}
-          state={isValid ? "default" : "disabled"}
-          disabled={!isValid}
-        >
-          완료하기
-        </Button>
-      )}
+        )}
+      </div>
     </div>
   );
 };
