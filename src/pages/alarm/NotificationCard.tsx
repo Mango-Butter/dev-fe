@@ -23,7 +23,9 @@ const NotificationCard = ({ notification }: Props) => {
       className="flex gap-3 cursor-pointer rounded-xl bg-white px-4 py-3 shadow hover:bg-gray-50 transition-all"
     >
       <div className="flex flex-1 flex-col items-start justify-center">
-        <div className="title-2 text-black mb-1">{notification.title}</div>
+        <div className="title-2 text-black mb-1 line-clamp-1">
+          {notification.title}
+        </div>
         <div className="body-3 text-grayscale-700">{notification.content}</div>
         <div className="body-4 text-grayscale-400 mt-1">{formattedDate}</div>
       </div>

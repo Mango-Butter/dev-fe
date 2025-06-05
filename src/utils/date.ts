@@ -15,10 +15,16 @@ export const formatFullDate = (date: Date): string =>
   dayjs(date).tz("Asia/Seoul").format("YYYY-MM-DD");
 
 /**
- * Date를 'YYYY년 MM월 DD일' 형식의 문자열로 변환하는 함수 (KST 기준)
+ * Date를 'MM월 DD일' 형식의 문자열로 변환하는 함수 (KST 기준)
  */
 export const formatKRDate = (date: Date): string =>
   dayjs(date).tz("Asia/Seoul").format("MM월 DD일");
+
+/**
+ * Date를 'YYYY년 MM월 DD일' 형식의 문자열로 변환하는 함수 (KST 기준)
+ */
+export const formatKRDateWithYear = (date: Date): string =>
+  dayjs(date).tz("Asia/Seoul").format("YYYY년 MM월 DD일");
 
 /**
  * Date를 '2024년 1월 1일 월요일 오전 9시 30분' 형식의 문자열로 변환 (로컬 기준이지만 한국어 표기 목적)

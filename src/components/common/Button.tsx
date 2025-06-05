@@ -9,7 +9,7 @@ const buttonVariants = cva(
         xl: "h-14 px-6 py-[0.906rem] title-1",
         lg: "h-14 px-6 py-[0.906rem] body-1",
         md: "h-12 px-5 py-3 title-2",
-        sm: "h-11 px-4 py-2 body-2",
+        sm: "h-11 px-2 py-1 body-2",
         icon_xl: "h-14 w-14 p-4 [&_#icon]:h-6 [&_#icon]:w-6",
         icon_lg: "h-14 w-14 p-4 [&_#icon]:h-6 [&_#icon]:w-6",
         icon_md: "h-12 w-12 p-3 [&_#icon]:h-6 [&_#icon]:w-6",
@@ -27,13 +27,14 @@ const buttonVariants = cva(
         ghost2: "",
         outline: "",
         text: "",
+        danger: "",
       },
     },
     compoundVariants: [
       //state == disabled
       {
         state: "disabled",
-        theme: ["secondary", "primary"],
+        theme: ["secondary", "primary", "danger"],
         className: "bg-grayscale-300 text-white",
       },
       {
@@ -56,6 +57,11 @@ const buttonVariants = cva(
         state: "active",
         theme: "secondary",
         className: "bg-secondary-900 text-white",
+      },
+      {
+        state: "active",
+        theme: "danger",
+        className: "bg-red-800 text-white",
       },
       {
         state: "active",
@@ -88,6 +94,11 @@ const buttonVariants = cva(
         state: "default",
         theme: "secondary",
         className: "bg-secondary-900 text-white",
+      },
+      {
+        state: "default",
+        theme: "danger",
+        className: "bg-red-600 text-white",
       },
       {
         state: "default",
@@ -124,7 +135,14 @@ export interface ButtonProps extends React.ComponentProps<"button"> {
     | "icon_md"
     | "icon_sm";
   state?: "default" | "active" | "disabled";
-  theme?: "primary" | "secondary" | "ghost" | "ghost2" | "outline" | "text";
+  theme?:
+    | "primary"
+    | "secondary"
+    | "ghost"
+    | "ghost2"
+    | "outline"
+    | "text"
+    | "danger";
   icon?: React.ReactNode;
 }
 
