@@ -17,7 +17,6 @@ import FullScreenLoading from "./components/common/FullScreenLoading.tsx";
 import HomeBoss from "./pages/home/boss/HomeBoss.tsx";
 import HomeStaff from "./pages/home/staff/HomeStaff.tsx";
 import UnifiedPWAPrompt from "./libs/fcm/UnifiedPWAPrompt.tsx";
-import StaffChecklistDetailPage from "./pages/task/staff/checklist/StaffChecklistDetailPage.tsx";
 
 // Lazy-loaded components (boss)
 const Landing = lazy(() => import("./pages/landing/Landing.tsx"));
@@ -97,6 +96,9 @@ const ScheduleStaff = lazy(
 const TaskStaff = lazy(
   () => import("./pages/task/staff/StaffTaskListPage.tsx"),
 );
+const StaffChecklistDetailPage = lazy(
+  () => import("./pages/task/staff/checklist/StaffChecklistDetailPage.tsx"),
+);
 const StoreRegisterIntro = lazy(
   () => import("./pages/store/staff/StoreRegisterIntro.tsx"),
 );
@@ -170,10 +172,7 @@ function App() {
                   element={<TaskBossDetailPage />}
                 />
                 <Route path="boss/store" element={<BossStorePage />} />
-                <Route
-                  path="boss/task/routines"
-                  element={<TaskRoutinePage />}
-                />
+                <Route path="boss/task/routine" element={<TaskRoutinePage />} />
                 <Route path="boss/store" element={<Store />} />
                 <Route
                   path="boss/store/register"
