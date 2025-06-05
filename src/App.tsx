@@ -23,9 +23,6 @@ const Landing = lazy(() => import("./pages/landing/Landing.tsx"));
 const Schedule = lazy(() => import("./pages/schedule/boss/Schedule.tsx"));
 const Employees = lazy(() => import("./pages/employee/boss/Employees.tsx"));
 const Task = lazy(() => import("./pages/task/boss/TaskPage.tsx"));
-const BossStorePage = lazy(
-  () => import("./pages/mypage/boss/BossStorePage.tsx"),
-);
 const Store = lazy(() => import("./pages/mypage/boss/BossStorePage.tsx"));
 const StoreRegisterBossPage = lazy(
   () => import("./pages/store/boss/StoreRegisterBossPage.tsx"),
@@ -127,6 +124,9 @@ const StaffAccountRegisterPage = lazy(
 const StaffAlarmPage = lazy(
   () => import("./pages/alarm/staff/StaffAlarmPage.tsx"),
 );
+const StaffReportDetailPage = lazy(
+  () => import("./pages/task/staff/report/StaffReportDetailPage.tsx"),
+);
 
 function App() {
   return (
@@ -171,7 +171,6 @@ function App() {
                   path="boss/task/:taskId"
                   element={<TaskBossDetailPage />}
                 />
-                <Route path="boss/store" element={<BossStorePage />} />
                 <Route path="boss/task/routine" element={<TaskRoutinePage />} />
                 <Route path="boss/store" element={<Store />} />
                 <Route
@@ -240,6 +239,10 @@ function App() {
                 <Route
                   path="staff/task/:taskId"
                   element={<StaffChecklistDetailPage />}
+                />
+                <Route
+                  path="staff/report/:workReportId"
+                  element={<StaffReportDetailPage />}
                 />
                 <Route path="staff/payroll" element={<StaffPayrollPage />} />
                 <Route
