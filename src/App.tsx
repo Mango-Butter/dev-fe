@@ -17,12 +17,14 @@ import FullScreenLoading from "./components/common/FullScreenLoading.tsx";
 import HomeBoss from "./pages/home/boss/HomeBoss.tsx";
 import HomeStaff from "./pages/home/staff/HomeStaff.tsx";
 import UnifiedPWAPrompt from "./libs/fcm/UnifiedPWAPrompt.tsx";
+import TaskBossDetailPage from "./pages/task/boss/TaskDetailPage.tsx";
+import TaskStaffDetailPage from "./pages/task/staff/TaskDetailPage.tsx";
 
 // Lazy-loaded components (boss)
 const Landing = lazy(() => import("./pages/landing/Landing.tsx"));
 const Schedule = lazy(() => import("./pages/schedule/boss/Schedule.tsx"));
 const Employees = lazy(() => import("./pages/employee/boss/Employees.tsx"));
-const Task = lazy(() => import("./pages/Task"));
+const Task = lazy(() => import("./pages/task/boss/TaskListPage.tsx"));
 const Store = lazy(() => import("./pages/mypage/boss/BossStorePage.tsx"));
 const StoreRegisterBossPage = lazy(
   () => import("./pages/store/boss/StoreRegisterBossPage.tsx"),
@@ -57,6 +59,9 @@ const ContractTemplateRegisterPage = lazy(
 const ContractTemplatePage = lazy(
   () => import("./pages/contract/boss/ContractTemplatePage.tsx"),
 );
+const TaskRoutinePage = lazy(
+  () => import("./pages/task/boss/TaskRoutinePage.tsx"),
+);
 const BossDocumentPage = lazy(
   () => import("./pages/document/boss/BossDocumentPage.tsx"),
 );
@@ -84,6 +89,7 @@ const BossAlarmPage = lazy(
 const ScheduleStaff = lazy(
   () => import("./pages/schedule/staff/ScheduleStaff.tsx"),
 );
+const TaskStaff = lazy(() => import("./pages/task/staff/TaskListPage.tsx"));
 const StoreRegisterIntro = lazy(
   () => import("./pages/store/staff/StoreRegisterIntro.tsx"),
 );
@@ -152,6 +158,14 @@ function App() {
                   element={<EmployeeDetailPage />}
                 />
                 <Route path="boss/task" element={<Task />} />
+                <Route
+                  path="boss/task/:taskId"
+                  element={<TaskBossDetailPage />}
+                />
+                <Route
+                  path="boss/task/routines"
+                  element={<TaskRoutinePage />}
+                />
                 <Route path="boss/store" element={<Store />} />
                 <Route
                   path="boss/store/register"
@@ -215,7 +229,11 @@ function App() {
               <Route element={<RoleRoute allowedRole="STAFF" />}>
                 <Route path="staff" element={<HomeStaff />} />
                 <Route path="staff/schedule" element={<ScheduleStaff />} />
-                <Route path="staff/task" element={<NotFound />} />
+                <Route path="staff/task" element={<TaskStaff />} />
+                <Route
+                  path="staff/task/:id"
+                  element={<TaskStaffDetailPage />}
+                />
                 <Route path="staff/payroll" element={<StaffPayrollPage />} />
                 <Route
                   path="/staff/payroll/payslip"
