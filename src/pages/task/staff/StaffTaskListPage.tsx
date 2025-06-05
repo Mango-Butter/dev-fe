@@ -11,7 +11,6 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import "react-calendar/dist/Calendar.css";
 import "../../../styles/taskPageCalendar.css";
 import { getTasksByDate } from "../../../api/staff/task";
-import useStoreStore from "../../../stores/storeStore";
 import { useLayout } from "../../../hooks/useLayout";
 import { cn } from "../../../libs";
 import ArrowIcon from "../../../components/icons/ArrowIcon";
@@ -19,6 +18,11 @@ import { toast } from "react-toastify";
 import { getKSTDate } from "../../../libs/date.ts";
 import { TaskStatus } from "../../../types/task.ts";
 import StaffCheckListTab from "./checklist/StaffCheckListTab.tsx";
+import { getStaffWorkReportsByDate } from "../../../api/staff/report.ts";
+import { WorkReportItem } from "../../../types/report.ts";
+import StaffReportListTab from "./report/StaffReportListTab.tsx";
+import { isValidStoreId } from "../../../utils/store.ts";
+import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
 
 const tabItems = [
   { label: "업무", value: "task" },
@@ -28,12 +32,13 @@ const tabItems = [
 const StaffTaskListPage: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(getKSTDate());
   const [tasks, setTasks] = useState<TaskStatus[]>([]);
+  const [reports, setReports] = useState<WorkReportItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const currentTab = searchParams.get("type") || "task";
   const navigate = useNavigate();
 
-  const { selectedStore } = useStoreStore();
+  const { selectedStore } = useStaffStoreStore();
   const storeId = selectedStore?.storeId;
 
   useLayout({
@@ -45,7 +50,10 @@ const StaffTaskListPage: React.FC = () => {
   });
 
   const fetchTasks = async () => {
-    if (!storeId) return;
+    if (!isValidStoreId(storeId)) {
+      setIsLoading(false);
+      return;
+    }
 
     try {
       setIsLoading(true);
@@ -59,9 +67,25 @@ const StaffTaskListPage: React.FC = () => {
       setIsLoading(false);
     }
   };
+  const fetchReports = async () => {
+    if (!isValidStoreId(storeId)) {
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const date = format(currentDate, "yyyy-MM-dd");
+      const fetchedReports = await getStaffWorkReportsByDate(storeId, date);
+      setReports(fetchedReports);
+    } catch (error) {
+      console.error("보고사항 조회 실패:", error);
+      toast.error("보고사항을 불러오는데 실패했습니다.");
+    }
+  };
 
   useEffect(() => {
     fetchTasks();
+    fetchReports();
   }, [currentDate, storeId]);
 
   useEffect(() => {
@@ -145,7 +169,7 @@ const StaffTaskListPage: React.FC = () => {
           <StaffCheckListTab tasks={tasks} isLoading={isLoading} />
         )}
         {currentTab === "report" && (
-          <div className="text-center text-gray-500 py-8">준비 중입니다.</div>
+          <StaffReportListTab reports={reports} isLoading={isLoading} />
         )}
       </div>
     </div>
