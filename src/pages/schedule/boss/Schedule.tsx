@@ -217,11 +217,11 @@ const Schedule = () => {
           )}
         </div>
 
-        <div className="px-5 mt-4">
+        <div className="mt-4">
           <ScheduleFilter />
         </div>
 
-        <div className="px-5 mt-8 text-center">
+        <div className="px-4 mt-8 text-center">
           <StaffScheduleList
             records={filteredRecords}
             onClick={(schedule, staff, attendance) => {

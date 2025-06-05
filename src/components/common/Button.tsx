@@ -9,7 +9,7 @@ const buttonVariants = cva(
         xl: "h-14 px-6 py-[0.906rem] title-1",
         lg: "h-14 px-6 py-[0.906rem] body-1",
         md: "h-12 px-5 py-3 title-2",
-        sm: "h-11 px-4 py-2 body-2",
+        sm: "h-11 px-2 py-1 body-2",
         icon_xl: "h-14 w-14 p-4 [&_#icon]:h-6 [&_#icon]:w-6",
         icon_lg: "h-14 w-14 p-4 [&_#icon]:h-6 [&_#icon]:w-6",
         icon_md: "h-12 w-12 p-3 [&_#icon]:h-6 [&_#icon]:w-6",
@@ -121,7 +121,7 @@ const buttonVariants = cva(
         className: "text-black",
       },
     ],
-  }
+  },
 );
 
 export interface ButtonProps extends React.ComponentProps<"button"> {
