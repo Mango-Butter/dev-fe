@@ -66,7 +66,7 @@ const TaskDetailPage = () => {
 
   return (
     <div className="w-full p-5 flex flex-col h-full justify-between">
-      <div className="w-full h-full flex justify-between items-start">
+      <div className="w-full h-full flex justify-between items-start overflow-auto scrollbar-hide">
         <div className="w-full flex flex-col gap-4">
           <div className="flex items-center gap-2">
             <Label size="lg" theme={task.taskLog ? "solid" : "ghost"}>
@@ -137,9 +137,16 @@ const TaskDetailPage = () => {
           )}
         </div>
       </div>
-      <Button size="sm" theme="danger" onClick={handleDelete}>
-        업무 삭제
-      </Button>
+      <div className="w-full mt-4 shrink-0">
+        <Button
+          size="sm"
+          theme="danger"
+          onClick={handleDelete}
+          className="w-full"
+        >
+          업무 삭제
+        </Button>
+      </div>
     </div>
   );
 };
