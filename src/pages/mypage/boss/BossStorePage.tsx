@@ -43,6 +43,16 @@ const BossStorePage = () => {
         </div>
 
         <div
+          onClick={() => navigate("/boss/subscribe")}
+          className="cursor-pointer flex py-3 px-4 border border-grayscale-300 bg-white shadow-basic rounded-xl flex-col justify-center items-start gap-2 self-stretch"
+        >
+          <span className="title-2">구독 설정</span>
+          <span className="body-3 text-gray-500">
+            매장의 요금제를 확인하고 설정해요
+          </span>
+        </div>
+
+        <div
           onClick={() => navigate("/boss/store/attendance")}
           className="cursor-pointer flex py-3 px-4 border border-grayscale-300 bg-white shadow-basic rounded-xl flex-col justify-center items-start gap-2 self-stretch"
         >

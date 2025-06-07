@@ -17,6 +17,9 @@ import FullScreenLoading from "./components/common/FullScreenLoading.tsx";
 import HomeBoss from "./pages/home/boss/HomeBoss.tsx";
 import HomeStaff from "./pages/home/staff/HomeStaff.tsx";
 import UnifiedPWAPrompt from "./libs/fcm/UnifiedPWAPrompt.tsx";
+import SubscribePage from "./pages/mypage/boss/SubscribePage.tsx";
+import SuccessPage from "./pages/mypage/boss/SuccessPage.tsx";
+import FailPage from "./pages/mypage/boss/FailPage.tsx";
 
 // Lazy-loaded components (boss)
 const Landing = lazy(() => import("./pages/landing/Landing.tsx"));
@@ -234,6 +237,12 @@ function App() {
                   element={<BossAutoTransferEditPage />}
                 />
                 <Route path="/boss/alarm" element={<BossAlarmPage />} />
+                <Route path="/boss/subscribe" element={<SubscribePage />} />
+                <Route
+                  path="/boss/subscribe/success"
+                  element={<SuccessPage />}
+                />
+                <Route path="/boss/subscribe/fail" element={<FailPage />} />
               </Route>
 
               {/* STAFF Routes */}
