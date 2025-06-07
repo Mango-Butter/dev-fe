@@ -13,6 +13,7 @@ import { uploadStaffDocument } from "../../../api/staff/document.ts";
 import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
 import { useDocumentStore } from "../../../stores/staff/documentStore.ts";
 import { toast } from "react-toastify";
+import Spinner from "../../../components/common/Spinner.tsx";
 
 interface Props {
   document: StaffDocumentSummary;
@@ -20,6 +21,8 @@ interface Props {
 
 const DocumentSubmitBottomSheetContent = ({ document }: Props) => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const { setBottomSheetOpen } = useBottomSheetStore();
   const { selectedStore } = useStaffStoreStore();
   const { fetchDocuments } = useDocumentStore();
@@ -34,21 +37,26 @@ const DocumentSubmitBottomSheetContent = ({ document }: Props) => {
       return;
     }
 
+    setIsLoading(true);
     try {
       const compressed = await compressImageIfNeeded(uploadedFile);
-      const base64 = await fileToBase64(compressed); // data:image/... 형식
+      const base64 = await fileToBase64(compressed);
       const encrypted = encryptSignatureBase64(base64);
 
       await uploadStaffDocument(selectedStore.storeId, {
         documentType: document.documentType,
         documentData: encrypted,
       });
+
       await fetchDocuments();
 
       toast.success("제출이 완료되었습니다.");
       setBottomSheetOpen(false);
     } catch (err) {
       console.error(err);
+      toast.error("제출에 실패했습니다.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -59,8 +67,21 @@ const DocumentSubmitBottomSheetContent = ({ document }: Props) => {
         onChange={(file) => setUploadedFile(file)}
         placeholder={`${documentLabelMap[document.documentType]}을 등록해주세요.`}
       />
-      <Button theme="secondary" onClick={handleConfirm}>
-        확인
+      <Button
+        theme="secondary"
+        onClick={handleConfirm}
+        disabled={isLoading}
+        className="w-full"
+        state={isLoading ? "disabled" : "default"}
+      >
+        {isLoading ? (
+          <div className="flex items-center justify-center gap-2">
+            <Spinner className="w-4 h-4" />
+            <span>제출 중...</span>
+          </div>
+        ) : (
+          "확인"
+        )}
       </Button>
     </div>
   );
