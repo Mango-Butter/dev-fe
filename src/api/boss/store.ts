@@ -6,7 +6,6 @@ import {
   GpsSettings,
   QrCodeSettings,
   ReissueInviteCodeResponse,
-  StoreInfo,
   StoreSummaryBoss,
   UpdateStoreInfoRequest,
 } from "../../types/store.ts";
@@ -38,7 +37,9 @@ export const deleteStore = async (storeId: number): Promise<void> => {
 };
 
 //특정 매장 정보 가져오기
-export const getStoreInfo = async (storeId: number): Promise<StoreInfo> => {
+export const getStoreInfo = async (
+  storeId: number,
+): Promise<StoreSummaryBoss> => {
   const response = await axiosAuth.get(
     `/api/boss/stores/${storeId}/store-info`,
   );

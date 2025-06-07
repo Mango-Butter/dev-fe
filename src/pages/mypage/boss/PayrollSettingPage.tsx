@@ -22,6 +22,7 @@ import NHBankIcon from "../../../assets/NHBankIcon.png";
 import { useNavigate } from "react-router-dom";
 import { showConfirm } from "../../../libs/showConfirm.ts";
 import { useTooltip } from "../../../hooks/useTooltip.tsx";
+import TextField from "../../../components/common/TextField.tsx";
 
 const deductionOptions = [
   { label: "0분 단위", value: "ZERO_MIN" },
@@ -33,13 +34,6 @@ const deductionOptions = [
 const transferOptions = [
   { label: "자동송금 사용", value: "true" },
   { label: "수동 송금", value: "false" },
-];
-
-const extraWorkOptions = [
-  { label: "0분", value: "0" },
-  { label: "30분", value: "30" },
-  { label: "60분", value: "60" },
-  { label: "90분", value: "90" },
 ];
 
 const PayrollSettingPage = () => {
@@ -55,7 +49,7 @@ const PayrollSettingPage = () => {
     control,
     handleSubmit,
     reset,
-    formState: { isDirty, isValid },
+    formState: { isDirty, isValid, errors },
   } = useForm<PayrollSettingsForm>({
     resolver: zodResolver(payrollSettingsSchema),
     mode: "onChange",
@@ -239,15 +233,24 @@ const PayrollSettingPage = () => {
         />
 
         <Controller
-          control={control}
           name="commutingAllowance"
+          control={control}
           render={({ field }) => (
-            <SelectField
-              title="추가근무 허용시간"
+            <TextField
+              {...field}
+              onChange={(e) => {
+                const value = e.target.value;
+                field.onChange(value === "" ? 0 : Number(value));
+              }}
+              title="교통비"
+              description="급여지급 시, 출근일수 x 교통비가 추가됩니다."
+              theme="suffix"
+              suffix="원"
+              type="number"
+              min="0"
               required
-              options={extraWorkOptions}
-              value={String(field.value)}
-              onChange={(val) => field.onChange(Number(val))}
+              state={errors.commutingAllowance ? "warning" : "none"}
+              helperText={errors.commutingAllowance?.message}
             />
           )}
         />

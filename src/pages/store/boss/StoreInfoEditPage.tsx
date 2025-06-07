@@ -38,7 +38,7 @@ const StoreInfoEditPage = () => {
     watch,
     setError,
     handleSubmit,
-    formState: { isValid },
+    formState: { isValid, errors },
   } = useForm<StoreFormValues>({
     mode: "onChange",
     resolver: zodResolver(storeSchema),
@@ -49,6 +49,7 @@ const StoreInfoEditPage = () => {
       address: "",
       latitude: 0,
       longitude: 0,
+      overtimeLimit: 0,
     },
   });
 
@@ -61,6 +62,7 @@ const StoreInfoEditPage = () => {
       setValue("businessNumber", data.businessNumber);
       setValue("storeType", data.storeType);
       setValue("address", data.address);
+      setValue("overtimeLimit", data.overtimeLimit);
 
       // 주소 기반 좌표 설정
       try {
@@ -84,11 +86,13 @@ const StoreInfoEditPage = () => {
     if (!selectedStore) return;
 
     try {
-      const { address, storeType, latitude, longitude } = formData;
+      const { address, storeType, latitude, longitude, overtimeLimit } =
+        formData;
       await updateStoreInfo(selectedStore.storeId, {
         address,
         storeType,
         gps: { latitude, longitude },
+        overtimeLimit,
       });
 
       toast.success("매장 정보가 수정되었습니다.");
@@ -104,11 +108,11 @@ const StoreInfoEditPage = () => {
     try {
       setIsSpinning(true);
       const result = await reissueInviteCode(selectedStore.storeId);
-      setInviteCode(result.inviteCode); // 새 코드 반영
+      setInviteCode(result.inviteCode);
     } catch (err) {
       console.error(err);
     } finally {
-      setTimeout(() => setIsSpinning(false), 1000); // 1초 후 애니메이션 해제
+      setTimeout(() => setIsSpinning(false), 1000);
     }
   };
 
@@ -272,6 +276,30 @@ const StoreInfoEditPage = () => {
       {/* 좌표는 숨겨진 컨트롤러 */}
       <Controller name="latitude" control={control} render={() => <></>} />
       <Controller name="longitude" control={control} render={() => <></>} />
+
+      <Controller
+        name="overtimeLimit"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            onChange={(e) => {
+              const value = e.target.value;
+              field.onChange(value === "" ? 0 : Number(value));
+            }}
+            title="초과근무 허용 시간"
+            description="급여에 반영되는 초과근무 허용시간을 설정합니다."
+            theme="suffix"
+            suffix="분"
+            type="number"
+            min="0"
+            max="360"
+            required
+            state={errors.overtimeLimit ? "warning" : "none"}
+            helperText={errors.overtimeLimit?.message}
+          />
+        )}
+      />
 
       <button
         className="text-warning body-3 underline"
