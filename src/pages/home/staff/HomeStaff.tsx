@@ -6,6 +6,7 @@ import { ko } from "date-fns/locale";
 import StaffDocumentRequestContainer from "./StaffDocumentRequestContainer.tsx";
 import { getKSTDate } from "../../../libs/date.ts";
 import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
+import { isValidStoreId } from "../../../utils/store.ts";
 
 const HomeStaff = () => {
   const { user } = useUserStore();
@@ -24,7 +25,7 @@ const HomeStaff = () => {
       </div>
 
       <StaffStoreCard />
-      {storeId && Number.isInteger(storeId) && storeId! > 0 && (
+      {isValidStoreId(storeId) && (
         <>
           <StaffAttendanceContainer />
           <StaffDocumentRequestContainer />

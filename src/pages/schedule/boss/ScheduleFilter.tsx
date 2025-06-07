@@ -15,7 +15,7 @@ const ScheduleFilter = () => {
   const { filters, toggleFilter } = useScheduleFilters();
 
   return (
-    <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+    <div className="flex pl-2 gap-2 overflow-x-auto scrollbar-hide">
       {scheduleFilterItems.map(({ key, label }) => (
         <Label
           key={key}
