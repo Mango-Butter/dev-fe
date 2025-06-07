@@ -13,12 +13,10 @@ import {
   StaffDocumentStatus,
 } from "../../../types/document.ts";
 import { isValidStoreId } from "../../../utils/store.ts";
-import Spinner from "../../../components/common/Spinner.tsx";
 
 interface Props {
   documentType: BossRequiredDocumentType;
   isExpanded: boolean;
-  loading: boolean;
   onToggle: () => void;
   staffList: StaffDocumentStatus[];
 }
@@ -27,12 +25,14 @@ const BossDocumentEtcCard = ({
   documentType,
   isExpanded,
   onToggle,
-  loading,
   staffList,
 }: Props) => {
   const { selectedStore } = useStoreStore();
   const storeId = selectedStore?.storeId;
-  const [clicked, setClicked] = useState<number | null>(null); // 버튼 중복 클릭 방지용
+  const [clicked, setClicked] = useState<number | null>(null);
+  const unsubmittedCount = staffList.filter(
+    (staff) => !staff.isSubmitted,
+  ).length;
 
   const handleView = async (documentId: number) => {
     if (!isValidStoreId(storeId)) {
@@ -81,15 +81,24 @@ const BossDocumentEtcCard = ({
         className="w-full flex justify-between items-center px-4 py-5"
       >
         <span className="body-2">{documentTypeLabelMap[documentType]}</span>
-        <ArrowIcon direction={isExpanded ? "up" : "down"} className="w-4 h-4" />
+
+        <div className="flex items-center gap-2">
+          {unsubmittedCount > 0 && (
+            <span className="text-red-500 body-4">
+              미제출 {unsubmittedCount}명
+            </span>
+          )}
+          <ArrowIcon
+            direction={isExpanded ? "up" : "down"}
+            className="w-4 h-4"
+          />
+        </div>
       </button>
 
       {/* 내용 */}
       {isExpanded && (
         <div className="w-full flex justify-center px-4 pb-1">
-          {loading ? (
-            <Spinner />
-          ) : staffList.length === 0 ? (
+          {staffList.length === 0 ? (
             <span className="text-sm text-gray-400 text-center py-2">
               알바생 없음
             </span>
@@ -108,6 +117,7 @@ const BossDocumentEtcCard = ({
                         theme="ghost2"
                         onClick={() => handleView(staff.documentId!)}
                         disabled={clicked === staff.documentId}
+                        className="h-10"
                       >
                         보기
                       </Button>
@@ -116,6 +126,7 @@ const BossDocumentEtcCard = ({
                         theme="ghost2"
                         onClick={() => handleDownload(staff.documentId!)}
                         disabled={clicked === staff.documentId}
+                        className="h-10"
                       >
                         다운로드
                       </Button>

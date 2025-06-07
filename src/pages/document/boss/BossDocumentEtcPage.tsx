@@ -13,6 +13,7 @@ import {
 import BossDocumentEtcCard from "./BossDocumentEtcCard.tsx";
 import RequiredDocumentSheet from "./RequiredDocumentSheet.tsx";
 import { isValidStoreId } from "../../../utils/store.ts";
+import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx";
 
 const BossDocumentEtcPage = () => {
   const { selectedStore } = useStoreStore();
@@ -25,30 +26,42 @@ const BossDocumentEtcPage = () => {
   const [staffDocs, setStaffDocs] = useState<
     Record<string, StaffDocumentStatus[]>
   >({});
-  const [loadingDocType, setLoadingDocType] = useState<string | null>(null);
+  const [isPageLoading, setIsPageLoading] = useState(true);
 
   const storeId = selectedStore?.storeId;
 
   useEffect(() => {
-    if (!isValidStoreId(storeId)) return;
+    const fetchInitialData = async () => {
+      if (!isValidStoreId(storeId)) return;
 
-    getRequiredDocuments(storeId).then((res) => {
-      setRequiredDocs(res.result);
-    });
+      try {
+        setIsPageLoading(true);
+        const requiredRes = await getRequiredDocuments(storeId);
+        const required = requiredRes.result;
+        setRequiredDocs(required);
+
+        const docTypes = required
+          .filter((d) => d.isRequired)
+          .map((d) => d.documentType);
+
+        const staffResults: Record<string, StaffDocumentStatus[]> = {};
+        for (const docType of docTypes) {
+          const res = await getStaffDocumentStatuses(storeId, docType);
+          staffResults[docType] = res.result;
+        }
+        setStaffDocs(staffResults);
+      } catch (e) {
+        console.error("문서 초기 데이터 로딩 실패", e);
+      } finally {
+        setIsPageLoading(false);
+      }
+    };
+
+    fetchInitialData();
   }, [storeId]);
 
-  const handleToggle = async (documentType: string) => {
-    if (!isValidStoreId(storeId)) return;
-
-    const isOpen = expanded[documentType];
-    setExpanded((prev) => ({ ...prev, [documentType]: !isOpen }));
-
-    if (!isOpen && !staffDocs[documentType]) {
-      setLoadingDocType(documentType);
-      const res = await getStaffDocumentStatuses(storeId, documentType);
-      setStaffDocs((prev) => ({ ...prev, [documentType]: res.result }));
-      setLoadingDocType(null);
-    }
+  const handleToggle = (documentType: string) => {
+    setExpanded((prev) => ({ ...prev, [documentType]: !prev[documentType] }));
   };
 
   const openBottomSheet = () => {
@@ -70,6 +83,8 @@ const BossDocumentEtcPage = () => {
       },
     );
   };
+
+  if (isPageLoading) return <FullScreenLoading />;
 
   return (
     <div className="flex flex-col gap-4 p-4">
@@ -93,7 +108,6 @@ const BossDocumentEtcPage = () => {
               isExpanded={expanded[doc.documentType]}
               onToggle={() => handleToggle(doc.documentType)}
               staffList={staffDocs[doc.documentType] || []}
-              loading={loadingDocType === doc.documentType}
             />
           ))}
       </div>
