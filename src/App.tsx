@@ -85,14 +85,15 @@ const TaskBossDetailPage = lazy(
 const TaskRoutinePage = lazy(
   () => import("./pages/task/boss/checklist/TaskRoutinePage.tsx"),
 );
+const BossReportDetailPage = lazy(
+  () => import("./pages/task/boss/report/BossReportDetailPage.tsx"),
+);
 
 // Lazy-loaded components (staff)
 const ScheduleStaff = lazy(
   () => import("./pages/schedule/staff/ScheduleStaff.tsx"),
 );
-const TaskStaff = lazy(
-  () => import("./pages/task/staff/StaffTaskListPage.tsx"),
-);
+const TaskStaff = lazy(() => import("./pages/task/staff/StaffTaskPage.tsx"));
 const StaffChecklistDetailPage = lazy(
   () => import("./pages/task/staff/checklist/StaffChecklistDetailPage.tsx"),
 );
@@ -172,6 +173,10 @@ function App() {
                   element={<TaskBossDetailPage />}
                 />
                 <Route path="boss/task/routine" element={<TaskRoutinePage />} />
+                <Route
+                  path="boss/report/:workReportId"
+                  element={<BossReportDetailPage />}
+                />
                 <Route path="boss/store" element={<Store />} />
                 <Route
                   path="boss/store/register"

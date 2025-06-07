@@ -15,11 +15,6 @@ export interface WorkReportItem {
   targetType: WorkReportTargetType;
 }
 
-// 리스트 조회 응답 (사장/알바 공용)
-export interface WorkReportListResponse {
-  result: WorkReportItem[];
-}
-
 // 보고사항 작성 요청
 export interface CreateWorkReportRequest {
   content: string;
