@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useLayout } from "../../../hooks/useLayout.ts";
 import useStoreStore from "../../../stores/storeStore.ts";
 import {
+  deleteStore,
   getStoreInfo,
   reissueInviteCode,
   updateStoreInfo,
@@ -17,6 +18,7 @@ import { getCoordsFromAddress } from "../../../utils/kakaoGeocoder.ts";
 import ResetIcon from "../../../components/icons/ResetIcon.tsx";
 import GpsMapPreview from "../../../components/common/GpsMapPreview.tsx";
 import { toast } from "react-toastify";
+import { showConfirm } from "../../../libs/showConfirm.ts";
 
 const StoreInfoEditPage = () => {
   useLayout({
@@ -26,7 +28,7 @@ const StoreInfoEditPage = () => {
   });
 
   const navigate = useNavigate();
-  const { selectedStore } = useStoreStore();
+  const { selectedStore, clearSelectedStore } = useStoreStore();
   const [inviteCode, setInviteCode] = useState<string | null>(null);
   const [isSpinning, setIsSpinning] = useState(false);
 
@@ -110,6 +112,35 @@ const StoreInfoEditPage = () => {
     }
   };
 
+  const handleStoreDelete = async () => {
+    const navigate = useNavigate();
+
+    if (!selectedStore) {
+      toast.error("선택된 매장이 없습니다.");
+      return;
+    }
+
+    const confirmed = await showConfirm({
+      title: "정말 매장을 삭제할까요?",
+      text: `해당 매장을 삭제하면\n모든 알바 정보와 기록이 사라집니다.\n삭제 후에는 되돌릴 수 없습니다.`,
+      confirmText: "삭제하기",
+      cancelText: "취소",
+      icon: "warning",
+    });
+
+    if (!confirmed) return;
+
+    try {
+      await deleteStore(selectedStore.storeId);
+      toast.success("매장이 성공적으로 삭제되었습니다.");
+
+      clearSelectedStore();
+      navigate("/boss", { replace: true });
+    } catch (err) {
+      console.error("매장 삭제 실패", err);
+    }
+  };
+
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
       if (event.origin !== window.origin) return;
@@ -135,7 +166,7 @@ const StoreInfoEditPage = () => {
 
   if (!selectedStore) {
     toast.error("선택된 매장이 없습니다.");
-    navigate("/store");
+    navigate("/boss");
     return null;
   }
 
@@ -242,7 +273,10 @@ const StoreInfoEditPage = () => {
       <Controller name="latitude" control={control} render={() => <></>} />
       <Controller name="longitude" control={control} render={() => <></>} />
 
-      <button className="text-warning body-3 underline" onClick={() => {}}>
+      <button
+        className="text-warning body-3 underline"
+        onClick={handleStoreDelete}
+      >
         매장 삭제하기
       </button>
       {/* 수정 버튼 */}

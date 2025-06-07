@@ -31,6 +31,12 @@ export const registerStore = async (store: {
   return await axiosAuth.post("/api/boss/stores", store);
 };
 
+// 매장 삭제
+export const deleteStore = async (storeId: number): Promise<void> => {
+  const response = await axiosAuth.delete(`/api/boss/stores/${storeId}`);
+  return response.data;
+};
+
 //특정 매장 정보 가져오기
 export const getStoreInfo = async (storeId: number): Promise<StoreInfo> => {
   const response = await axiosAuth.get(

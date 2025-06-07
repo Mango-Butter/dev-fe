@@ -6,6 +6,7 @@ import { StoreSummaryBoss } from "../types/store.ts";
 interface StoreState {
   selectedStore: StoreSummaryBoss | null;
   setSelectedStore: (store: StoreSummaryBoss) => void;
+  clearSelectedStore: () => void;
 }
 
 const useStoreStore = create<StoreState>()(
@@ -13,9 +14,10 @@ const useStoreStore = create<StoreState>()(
     (set) => ({
       selectedStore: null,
       setSelectedStore: (store) => set({ selectedStore: store }),
+      clearSelectedStore: () => set({ selectedStore: null }),
     }),
     {
-      name: "selected-store", // localStorage key
+      name: "selected-store",
     },
   ),
 );
