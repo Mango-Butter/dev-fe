@@ -1,16 +1,21 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useBottomSheetStore from "../../../stores/useBottomSheetStore";
 import useStoreStore from "../../../stores/storeStore";
 import useSelectedStaffStore from "../../../stores/selectedStaffStore";
 import RegularScheduleAddForm from "./RegularScheduleAddForm";
 import { DayOfWeek, RegularSchedule, StaffBrief } from "../../../types/staff";
-import { getRegularSchedules, getStaffDetail } from "../../../api/boss/staff";
+import {
+  deleteStaff,
+  getRegularSchedules,
+  getStaffDetail,
+} from "../../../api/boss/staff";
 import RegularScheduleContainer from "./RegularScheduleContainer";
 import AttendanceRecordContainer from "./AttendanceRecordContainer.tsx";
 import DocumentContainer from "./DocumentContainer.tsx";
 import SkeletonStaffCard from "../../../components/skeleton/SkeletonStaffCard.tsx";
 import { toast } from "react-toastify";
+import { showConfirm } from "../../../libs/showConfirm.ts";
 
 const EmployeeDetailPage = () => {
   const { staffId } = useParams();
@@ -23,12 +28,36 @@ const EmployeeDetailPage = () => {
   );
   const [selectedDays, setSelectedDays] = useState<DayOfWeek[]>([]);
   const [availableDays, setAvailableDays] = useState<DayOfWeek[]>([]);
+  const navigate = useNavigate();
 
   const toggleDay = (day: DayOfWeek) => {
     if (!availableDays.includes(day)) return;
     setSelectedDays((prev) =>
       prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day],
     );
+  };
+
+  const handleDeleteStaff = async () => {
+    if (!selectedStore || !staff) return;
+
+    const confirmed = await showConfirm({
+      title: "정말 이 알바생을 삭제할까요?",
+      text: `해당 알바생은 퇴사 처리되어 오늘 이후의 스케줄 및 관련 서류가 모두 사라집니다.\n삭제 후에는 되돌릴 수 없습니다.`,
+      confirmText: "삭제하기",
+      cancelText: "취소",
+      icon: "warning",
+    });
+
+    if (!confirmed) return;
+
+    try {
+      await deleteStaff(selectedStore.storeId, staff.staffId);
+      toast.success("알바생이 성공적으로 삭제되었습니다.");
+      navigate(-1); // 또는 navigate("/boss/staff") 등
+    } catch (err) {
+      console.error("알바생 삭제 실패", err);
+      toast.error("알바생 삭제에 실패했습니다.");
+    }
   };
 
   const fetchStaffAndSchedules = async () => {
@@ -79,8 +108,11 @@ const EmployeeDetailPage = () => {
           />
           <div>
             <p className="text-lg font-semibold">{staff.name}</p>
-            <button className="text-sm text-gray-400 mt-1 underline">
-              근로자 삭제
+            <button
+              className="text-sm text-gray-400 mt-1 underline"
+              onClick={handleDeleteStaff}
+            >
+              알바생 삭제
             </button>
           </div>
         </div>
