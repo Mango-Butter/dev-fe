@@ -12,8 +12,8 @@ import {
   documentTypeLabelMap,
   StaffDocumentStatus,
 } from "../../../types/document.ts";
-import SkeletonStaffCard from "../../../components/skeleton/SkeletonStaffCard.tsx";
 import { isValidStoreId } from "../../../utils/store.ts";
+import Spinner from "../../../components/common/Spinner.tsx";
 
 interface Props {
   documentType: BossRequiredDocumentType;
@@ -86,17 +86,19 @@ const BossDocumentEtcCard = ({
 
       {/* 내용 */}
       {isExpanded && (
-        <div className="px-4 pb-1">
+        <div className="w-full flex justify-center px-4 pb-1">
           {loading ? (
-            <SkeletonStaffCard />
+            <Spinner />
           ) : staffList.length === 0 ? (
-            <span className="text-sm text-gray-400">알바생 없음</span>
+            <span className="text-sm text-gray-400 text-center py-2">
+              알바생 없음
+            </span>
           ) : (
-            <ul className="divide-y divide-grayscale-200">
+            <ul className="w-full divide-y divide-grayscale-200">
               {staffList.map((staff) => (
                 <li
                   key={staff.staffId}
-                  className="flex justify-between items-center py-3"
+                  className="flex w-full justify-between items-center py-3"
                 >
                   <span className="text-sm">{staff.staffName}</span>
                   {staff.isSubmitted && staff.documentId ? (
@@ -119,7 +121,7 @@ const BossDocumentEtcCard = ({
                       </Button>
                     </div>
                   ) : (
-                    <ErrorIcon className="w-4 h-4 text-red-500" />
+                    <ErrorIcon className="w-4 h-4" fill="#f33f3f" />
                   )}
                 </li>
               ))}
