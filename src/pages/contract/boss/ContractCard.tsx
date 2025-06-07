@@ -62,7 +62,7 @@ const ContractCard = ({ contract, onDelete }: Props) => {
         storeId,
         contract.contractId,
       );
-      window.open(url, "_blank");
+      navigate(`/pdf-viewer?url=${encodeURIComponent(url)}`);
     } catch (err) {
       console.error("PDF 보기 오류:", err);
     } finally {
@@ -83,8 +83,10 @@ const ContractCard = ({ contract, onDelete }: Props) => {
       );
       const a = document.createElement("a");
       a.href = url;
-      a.download = "contract.pdf";
+      a.download = "";
+      document.body.appendChild(a);
       a.click();
+      document.body.removeChild(a);
     } catch (err) {
       console.error("PDF 다운로드 오류:", err);
     } finally {

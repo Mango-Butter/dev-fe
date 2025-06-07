@@ -53,7 +53,7 @@ const StaffAttendanceContainer = () => {
 
   if (schedules.length === 0) {
     return (
-      <div className="text-center text-grayscale-400 body-3 py-4 shadow-basic rounded-lg h-[130px]">
+      <div className="text-center text-grayscale-400 body-3 py-4 shadow-basic rounded-lg h-[50px]">
         오늘 스케줄이 없습니다.
       </div>
     );

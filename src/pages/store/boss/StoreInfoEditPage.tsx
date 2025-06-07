@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useLayout } from "../../../hooks/useLayout.ts";
 import useStoreStore from "../../../stores/storeStore.ts";
 import {
+  deleteStore,
   getStoreInfo,
   reissueInviteCode,
   updateStoreInfo,
@@ -17,6 +18,7 @@ import { getCoordsFromAddress } from "../../../utils/kakaoGeocoder.ts";
 import ResetIcon from "../../../components/icons/ResetIcon.tsx";
 import GpsMapPreview from "../../../components/common/GpsMapPreview.tsx";
 import { toast } from "react-toastify";
+import { showConfirm } from "../../../libs/showConfirm.ts";
 
 const StoreInfoEditPage = () => {
   useLayout({
@@ -26,7 +28,7 @@ const StoreInfoEditPage = () => {
   });
 
   const navigate = useNavigate();
-  const { selectedStore } = useStoreStore();
+  const { selectedStore, clearSelectedStore } = useStoreStore();
   const [inviteCode, setInviteCode] = useState<string | null>(null);
   const [isSpinning, setIsSpinning] = useState(false);
 
@@ -36,7 +38,7 @@ const StoreInfoEditPage = () => {
     watch,
     setError,
     handleSubmit,
-    formState: { isValid },
+    formState: { isValid, errors },
   } = useForm<StoreFormValues>({
     mode: "onChange",
     resolver: zodResolver(storeSchema),
@@ -47,6 +49,7 @@ const StoreInfoEditPage = () => {
       address: "",
       latitude: 0,
       longitude: 0,
+      overtimeLimit: 0,
     },
   });
 
@@ -59,6 +62,7 @@ const StoreInfoEditPage = () => {
       setValue("businessNumber", data.businessNumber);
       setValue("storeType", data.storeType);
       setValue("address", data.address);
+      setValue("overtimeLimit", data.overtimeLimit);
 
       // 주소 기반 좌표 설정
       try {
@@ -82,11 +86,13 @@ const StoreInfoEditPage = () => {
     if (!selectedStore) return;
 
     try {
-      const { address, storeType, latitude, longitude } = formData;
+      const { address, storeType, latitude, longitude, overtimeLimit } =
+        formData;
       await updateStoreInfo(selectedStore.storeId, {
         address,
         storeType,
         gps: { latitude, longitude },
+        overtimeLimit,
       });
 
       toast.success("매장 정보가 수정되었습니다.");
@@ -102,11 +108,40 @@ const StoreInfoEditPage = () => {
     try {
       setIsSpinning(true);
       const result = await reissueInviteCode(selectedStore.storeId);
-      setInviteCode(result.inviteCode); // 새 코드 반영
+      setInviteCode(result.inviteCode);
     } catch (err) {
       console.error(err);
     } finally {
-      setTimeout(() => setIsSpinning(false), 1000); // 1초 후 애니메이션 해제
+      setTimeout(() => setIsSpinning(false), 1000);
+    }
+  };
+
+  const handleStoreDelete = async () => {
+    const navigate = useNavigate();
+
+    if (!selectedStore) {
+      toast.error("선택된 매장이 없습니다.");
+      return;
+    }
+
+    const confirmed = await showConfirm({
+      title: "정말 매장을 삭제할까요?",
+      text: `해당 매장을 삭제하면\n모든 알바 정보와 기록이 사라집니다.\n삭제 후에는 되돌릴 수 없습니다.`,
+      confirmText: "삭제하기",
+      cancelText: "취소",
+      icon: "warning",
+    });
+
+    if (!confirmed) return;
+
+    try {
+      await deleteStore(selectedStore.storeId);
+      toast.success("매장이 성공적으로 삭제되었습니다.");
+
+      clearSelectedStore();
+      navigate("/boss", { replace: true });
+    } catch (err) {
+      console.error("매장 삭제 실패", err);
     }
   };
 
@@ -135,7 +170,7 @@ const StoreInfoEditPage = () => {
 
   if (!selectedStore) {
     toast.error("선택된 매장이 없습니다.");
-    navigate("/store");
+    navigate("/boss");
     return null;
   }
 
@@ -242,7 +277,34 @@ const StoreInfoEditPage = () => {
       <Controller name="latitude" control={control} render={() => <></>} />
       <Controller name="longitude" control={control} render={() => <></>} />
 
-      <button className="text-warning body-3 underline" onClick={() => {}}>
+      <Controller
+        name="overtimeLimit"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            onChange={(e) => {
+              const value = e.target.value;
+              field.onChange(value === "" ? 0 : Number(value));
+            }}
+            title="초과근무 허용 시간"
+            description="급여에 반영되는 초과근무 허용시간을 설정합니다."
+            theme="suffix"
+            suffix="분"
+            type="number"
+            min="0"
+            max="360"
+            required
+            state={errors.overtimeLimit ? "warning" : "none"}
+            helperText={errors.overtimeLimit?.message}
+          />
+        )}
+      />
+
+      <button
+        className="text-warning body-3 underline"
+        onClick={handleStoreDelete}
+      >
         매장 삭제하기
       </button>
       {/* 수정 버튼 */}

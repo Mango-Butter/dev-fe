@@ -15,6 +15,7 @@ import { signup } from "../../api/common/auth.ts";
 import { useAuthStore } from "../../stores/authStore.ts";
 import FullScreenLoading from "../../components/common/FullScreenLoading.tsx";
 import { toast } from "react-toastify";
+import { useState } from "react";
 
 interface SignupStep2Props {
   role: "BOSS" | "STAFF";
@@ -34,6 +35,8 @@ const SignupStep2 = ({ role, onBack }: SignupStep2Props) => {
   const { isLoggedIn, isLoading } = useAuth();
   const { user } = useUserStore();
   const navigate = useNavigate();
+  const [isRequestingLocation, setIsRequestingLocation] = useState(false);
+  const [isRequestingCamera, setIsRequestingCamera] = useState(false);
 
   if (isLoading) return <FullScreenLoading />;
   if (!isLoggedIn || !user) return <Navigate to="/login" replace />;
@@ -72,6 +75,8 @@ const SignupStep2 = ({ role, onBack }: SignupStep2Props) => {
     setValue("isAgreePrivacy", checked, { shouldValidate: true });
 
     if (checked) {
+      setIsRequestingLocation(true);
+      setIsRequestingCamera(true);
       requestLocation();
       requestCamera();
     } else {
@@ -80,24 +85,26 @@ const SignupStep2 = ({ role, onBack }: SignupStep2Props) => {
     }
   };
 
-  // 카메라 권한 요청 성공/실패 처리
   const { permissionState: locationPermission, requestLocation } =
     useGeolocationPermission({
       onSuccess: () => {
+        setIsRequestingLocation(false);
         setValue("isAgreeLocation", true, { shouldValidate: true });
       },
       onError: () => {
+        setIsRequestingLocation(false);
         setValue("isAgreeLocation", false, { shouldValidate: true });
       },
     });
 
-  // 카메라 권한 요청 성공/실패 처리
   const { permissionState: cameraPermission, requestCamera } =
     useCameraPermission({
       onSuccess: () => {
+        setIsRequestingCamera(false);
         setValue("isAgreeCamera", true, { shouldValidate: true });
       },
       onError: () => {
+        setIsRequestingCamera(false);
         setValue("isAgreeCamera", false, { shouldValidate: true });
       },
     });
@@ -254,6 +261,7 @@ const SignupStep2 = ({ role, onBack }: SignupStep2Props) => {
                 if (field.value) {
                   setValue("isAgreeLocation", false, { shouldValidate: true });
                 } else {
+                  setIsRequestingLocation(true);
                   requestLocation();
                 }
               }}
@@ -264,6 +272,7 @@ const SignupStep2 = ({ role, onBack }: SignupStep2Props) => {
                   : "동의 시 위치 권한이 요청되며, 출퇴근 기능 등에 활용됩니다."
               }
               required
+              isLoading={isRequestingLocation}
             />
           )}
         />
@@ -278,6 +287,7 @@ const SignupStep2 = ({ role, onBack }: SignupStep2Props) => {
                 if (field.value) {
                   setValue("isAgreeCamera", false, { shouldValidate: true });
                 } else {
+                  setIsRequestingCamera(true);
                   requestCamera();
                 }
               }}
@@ -288,6 +298,7 @@ const SignupStep2 = ({ role, onBack }: SignupStep2Props) => {
                   : "동의 시 카메라 사용권한이 요청되며, 출퇴근 기능 등에 활용됩니다."
               }
               required
+              isLoading={isRequestingCamera}
             />
           )}
         />

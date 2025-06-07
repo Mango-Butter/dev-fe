@@ -12,13 +12,12 @@ import {
   documentTypeLabelMap,
   StaffDocumentStatus,
 } from "../../../types/document.ts";
-import SkeletonStaffCard from "../../../components/skeleton/SkeletonStaffCard.tsx";
 import { isValidStoreId } from "../../../utils/store.ts";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   documentType: BossRequiredDocumentType;
   isExpanded: boolean;
-  loading: boolean;
   onToggle: () => void;
   staffList: StaffDocumentStatus[];
 }
@@ -27,12 +26,15 @@ const BossDocumentEtcCard = ({
   documentType,
   isExpanded,
   onToggle,
-  loading,
   staffList,
 }: Props) => {
   const { selectedStore } = useStoreStore();
   const storeId = selectedStore?.storeId;
-  const [clicked, setClicked] = useState<number | null>(null); // 버튼 중복 클릭 방지용
+  const [clicked, setClicked] = useState<number | null>(null);
+  const navigate = useNavigate();
+  const unsubmittedCount = staffList.filter(
+    (staff) => !staff.isSubmitted,
+  ).length;
 
   const handleView = async (documentId: number) => {
     if (!isValidStoreId(storeId)) {
@@ -43,7 +45,7 @@ const BossDocumentEtcCard = ({
     try {
       setClicked(documentId);
       const { url } = await getDocumentViewUrl(storeId, documentId);
-      window.open(url, "_blank");
+      navigate(`/pdf-viewer?url=${encodeURIComponent(url)}`);
     } catch (e) {
       console.error("문서 보기 실패", e);
     } finally {
@@ -81,22 +83,33 @@ const BossDocumentEtcCard = ({
         className="w-full flex justify-between items-center px-4 py-5"
       >
         <span className="body-2">{documentTypeLabelMap[documentType]}</span>
-        <ArrowIcon direction={isExpanded ? "up" : "down"} className="w-4 h-4" />
+
+        <div className="flex items-center gap-2">
+          {unsubmittedCount > 0 && (
+            <span className="text-red-500 body-4">
+              미제출 {unsubmittedCount}명
+            </span>
+          )}
+          <ArrowIcon
+            direction={isExpanded ? "up" : "down"}
+            className="w-4 h-4"
+          />
+        </div>
       </button>
 
       {/* 내용 */}
       {isExpanded && (
-        <div className="px-4 pb-1">
-          {loading ? (
-            <SkeletonStaffCard />
-          ) : staffList.length === 0 ? (
-            <span className="text-sm text-gray-400">알바생 없음</span>
+        <div className="w-full flex justify-center px-4 pb-1">
+          {staffList.length === 0 ? (
+            <span className="text-sm text-gray-400 text-center py-2">
+              알바생 없음
+            </span>
           ) : (
-            <ul className="divide-y divide-grayscale-200">
+            <ul className="w-full divide-y divide-grayscale-200">
               {staffList.map((staff) => (
                 <li
                   key={staff.staffId}
-                  className="flex justify-between items-center py-3"
+                  className="flex w-full justify-between items-center py-3"
                 >
                   <span className="text-sm">{staff.staffName}</span>
                   {staff.isSubmitted && staff.documentId ? (
@@ -106,6 +119,7 @@ const BossDocumentEtcCard = ({
                         theme="ghost2"
                         onClick={() => handleView(staff.documentId!)}
                         disabled={clicked === staff.documentId}
+                        className="h-10"
                       >
                         보기
                       </Button>
@@ -114,12 +128,13 @@ const BossDocumentEtcCard = ({
                         theme="ghost2"
                         onClick={() => handleDownload(staff.documentId!)}
                         disabled={clicked === staff.documentId}
+                        className="h-10"
                       >
                         다운로드
                       </Button>
                     </div>
                   ) : (
-                    <ErrorIcon className="w-4 h-4 text-red-500" />
+                    <ErrorIcon className="w-4 h-4" fill="#f33f3f" />
                   )}
                 </li>
               ))}

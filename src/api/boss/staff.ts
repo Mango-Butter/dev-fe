@@ -74,3 +74,14 @@ export const getStaffAttendancesList = async (
   );
   return response.data.result;
 };
+
+// 알바생 삭제 (퇴사 처리)
+export const deleteStaff = async (
+  storeId: number,
+  staffId: number,
+): Promise<void> => {
+  const response = await axiosAuth.delete(
+    `/api/boss/stores/${storeId}/staffs/${staffId}`,
+  );
+  return response.data;
+};

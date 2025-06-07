@@ -193,7 +193,7 @@ const ScheduleStaff = () => {
         <div className="flex w-full justify-between bg-white itmes-center px-4 py-1 shadow-basic">
           <div className="title-1 py-2.5 px-3">{displayDate}</div>
         </div>
-        <div className="px-5 mt-4">
+        <div className="mt-4">
           <ScheduleFilter />
         </div>
 

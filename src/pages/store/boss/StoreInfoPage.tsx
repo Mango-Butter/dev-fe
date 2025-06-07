@@ -7,9 +7,10 @@ import PinLocationIcon from "../../../components/icons/PinLocationIcon.tsx";
 import { PersonOff } from "../../../components/icons/PersonIcon.tsx";
 import MenuIcon from "../../../components/icons/MenuIcon.tsx";
 import MailIcon from "../../../components/icons/MailIcon.tsx";
-import { StoreInfo } from "../../../types/store.ts";
+import { StoreSummaryBoss } from "../../../types/store.ts";
 import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx";
 import { toast } from "react-toastify";
+import TimeIcon from "../../../components/icons/TimeIcon.tsx";
 
 const StoreInfoPage = () => {
   useLayout({
@@ -20,7 +21,7 @@ const StoreInfoPage = () => {
 
   const navigate = useNavigate();
   const { selectedStore } = useStoreStore();
-  const [storeInfo, setStoreInfo] = useState<StoreInfo | null>(null);
+  const [storeInfo, setStoreInfo] = useState<StoreSummaryBoss | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -84,6 +85,11 @@ const StoreInfoPage = () => {
         <div className="flex items-center gap-2">
           <MailIcon />
           <span>{storeInfo.inviteCode}</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <TimeIcon />
+          <span>초과근무 최대 {storeInfo.overtimeLimit}분</span>
         </div>
       </div>
     </div>

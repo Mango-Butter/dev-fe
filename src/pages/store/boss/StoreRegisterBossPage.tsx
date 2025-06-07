@@ -31,6 +31,7 @@ const StoreRegisterBossPage = () => {
   const { user } = useUserStore();
   const [isBusinessNumberChecked, setIsBusinessNumberChecked] = useState(false);
   const [isChecking, setIsChecking] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -109,6 +110,9 @@ const StoreRegisterBossPage = () => {
   }, []);
 
   const onSubmit = async (data: StoreFormValues) => {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
     try {
       const {
         storeName,
@@ -118,6 +122,7 @@ const StoreRegisterBossPage = () => {
         latitude,
         longitude,
       } = data;
+
       const payload = {
         storeName,
         businessNumber,
@@ -125,9 +130,14 @@ const StoreRegisterBossPage = () => {
         storeType,
         gps: { latitude, longitude },
       };
+
       await registerStore(payload);
       navigate(-1);
-    } catch (err) {}
+    } catch (err) {
+      console.error("매장 등록 실패", err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isLoading) return <FullScreenLoading />;
@@ -256,11 +266,11 @@ const StoreRegisterBossPage = () => {
         size="md"
         theme="primary"
         type="submit"
-        state={isValid ? "default" : "disabled"}
-        disabled={!isValid}
+        state={!isValid || isSubmitting ? "disabled" : "default"}
+        disabled={!isValid || isSubmitting}
         className="w-full text-black"
       >
-        매장 등록하기
+        {isSubmitting ? <Spinner /> : "매장 등록하기"}
       </Button>
     </form>
   );

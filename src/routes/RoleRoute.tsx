@@ -5,7 +5,7 @@ import { useUserStore } from "../stores/userStore";
 import FullScreenLoading from "../components/common/FullScreenLoading.tsx";
 
 interface RoleRouteProps {
-  allowedRole: "BOSS" | "STAFF";
+  allowedRole: "BOSS" | "STAFF" | "ADMIN";
 }
 
 const RoleRoute = ({ allowedRole }: RoleRouteProps) => {

@@ -13,6 +13,7 @@ export interface UpdateStoreInfoRequest {
     latitude: number;
     longitude: number;
   };
+  overtimeLimit: number;
 }
 
 export interface StoreSummaryBoss {
@@ -22,13 +23,7 @@ export interface StoreSummaryBoss {
   storeType: "CAFE" | "RESTAURANT" | "CONVENIENCE_STORE";
   address: string;
   inviteCode: string;
-}
-
-export interface StoreSummaryStaff {
-  storeId: number;
-  storeName: string;
-  storeType: "CAFE" | "RESTAURANT" | "CONVENIENCE_STORE";
-  address: string;
+  overtimeLimit: number;
 }
 
 export interface ReissueInviteCodeResponse {
