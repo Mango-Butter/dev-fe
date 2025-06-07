@@ -20,6 +20,7 @@ import {
 } from "../../../api/staff/document.ts";
 import { parseDateStringToKST } from "../../../libs/date.ts";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   document: StaffDocumentSummary;
@@ -34,6 +35,7 @@ const StaffDocumentCard = ({ document: doc }: Props) => {
   const [popupOpen, setPopupOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null);
   useClickOutside(popupRef, () => setPopupOpen(false));
+  const navigate = useNavigate();
 
   const { documentType, isSubmitted, expiresAt, documentId } = doc;
   const { setBottomSheetContent } = useBottomSheetStore();
@@ -64,7 +66,7 @@ const StaffDocumentCard = ({ document: doc }: Props) => {
         selectedStore.storeId,
         documentId,
       );
-      window.open(url, "_blank");
+      navigate(`/pdf-viewer?url=${encodeURIComponent(url)}`);
     } catch (e) {
       console.error("PDF 보기 오류", e);
     }
@@ -85,11 +87,12 @@ const StaffDocumentCard = ({ document: doc }: Props) => {
         selectedStore.storeId,
         documentId,
       );
-
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${documentLabelMap[doc.documentType]}.pdf`;
+      a.download = "";
+      document.body.appendChild(a);
       a.click();
+      document.body.removeChild(a);
     } catch (e) {
       console.error("다운로드 오류", e);
     }

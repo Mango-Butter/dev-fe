@@ -17,6 +17,7 @@ import FullScreenLoading from "./components/common/FullScreenLoading.tsx";
 import HomeBoss from "./pages/home/boss/HomeBoss.tsx";
 import HomeStaff from "./pages/home/staff/HomeStaff.tsx";
 import UnifiedPWAPrompt from "./libs/fcm/UnifiedPWAPrompt.tsx";
+import PdfViewerPage from "./pages/PdfViewerPage.tsx";
 
 // Lazy-loaded components (boss)
 const Landing = lazy(() => import("./pages/landing/Landing.tsx"));
@@ -158,6 +159,7 @@ function App() {
               {/* COMMON Routes */}
               <Route path="/address-search" element={<AddressSearchPopup />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/pdf-viewer" element={<PdfViewerPage />} />
               {/* BOSS Routes */}
               <Route element={<RoleRoute allowedRole="BOSS" />}>
                 <Route path="boss" element={<HomeBoss />} />

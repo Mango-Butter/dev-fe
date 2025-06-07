@@ -73,7 +73,7 @@ const ContractViewStaffPage = () => {
         selectedStore.storeId,
         parseInt(id),
       );
-      window.open(url, "_blank");
+      navigate(`/pdf-viewer?url=${encodeURIComponent(url)}`);
     } catch (err) {
       console.error("PDF 보기 URL 요청 실패", err);
     }
@@ -86,7 +86,12 @@ const ContractViewStaffPage = () => {
         selectedStore.storeId,
         parseInt(id),
       );
-      window.open(url, "_blank"); // 또는 download 속성 있는 a 태그 만들어도 됨
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     } catch (err) {
       console.error("PDF 다운로드 URL 요청 실패", err);
     }

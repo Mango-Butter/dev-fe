@@ -13,6 +13,7 @@ import {
   StaffDocumentStatus,
 } from "../../../types/document.ts";
 import { isValidStoreId } from "../../../utils/store.ts";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   documentType: BossRequiredDocumentType;
@@ -30,6 +31,7 @@ const BossDocumentEtcCard = ({
   const { selectedStore } = useStoreStore();
   const storeId = selectedStore?.storeId;
   const [clicked, setClicked] = useState<number | null>(null);
+  const navigate = useNavigate();
   const unsubmittedCount = staffList.filter(
     (staff) => !staff.isSubmitted,
   ).length;
@@ -43,7 +45,7 @@ const BossDocumentEtcCard = ({
     try {
       setClicked(documentId);
       const { url } = await getDocumentViewUrl(storeId, documentId);
-      window.open(url, "_blank");
+      navigate(`/pdf-viewer?url=${encodeURIComponent(url)}`);
     } catch (e) {
       console.error("문서 보기 실패", e);
     } finally {
