@@ -12,6 +12,7 @@ const Forbidden = () => {
     const timer = setTimeout(() => {
       if (user?.role === "BOSS") navigate("/boss", { replace: true });
       else if (user?.role === "STAFF") navigate("/staff", { replace: true });
+      else if (user?.role === "ADMIN") navigate("/admin", { replace: true });
       else navigate("/", { replace: true });
     }, 2000);
 

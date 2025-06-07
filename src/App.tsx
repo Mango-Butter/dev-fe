@@ -16,6 +16,7 @@ import RoleRoute from "./routes/RoleRoute.tsx";
 import FullScreenLoading from "./components/common/FullScreenLoading.tsx";
 import HomeBoss from "./pages/home/boss/HomeBoss.tsx";
 import HomeStaff from "./pages/home/staff/HomeStaff.tsx";
+import HomeAdmin from "./pages/home/admin/HomeAdmin.tsx";
 import UnifiedPWAPrompt from "./libs/fcm/UnifiedPWAPrompt.tsx";
 import PdfViewerPage from "./pages/PdfViewerPage.tsx";
 
@@ -279,6 +280,11 @@ function App() {
                   element={<StaffAttendancePage />}
                 />
                 <Route path="/staff/alarm" element={<StaffAlarmPage />} />
+              </Route>
+
+              {/* ADMIN Routes */}
+              <Route element={<RoleRoute allowedRole="ADMIN" />}>
+                <Route path="admin" element={<HomeAdmin />} />
               </Route>
             </Route>
           </Route>

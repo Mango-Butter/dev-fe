@@ -10,15 +10,18 @@ const PublicRoute = () => {
 
   if (isLoading) return <FullScreenLoading />;
 
-  return isLoggedIn ? (
-    user?.role === "BOSS" ? (
-      <Navigate to="/boss" replace />
-    ) : (
-      <Navigate to="/staff" replace />
-    )
-  ) : (
-    <Outlet />
-  );
+  if (!isLoggedIn) return <Outlet />;
+
+  switch (user?.role) {
+    case "BOSS":
+      return <Navigate to="/boss" replace />;
+    case "STAFF":
+      return <Navigate to="/staff" replace />;
+    case "ADMIN":
+      return <Navigate to="/admin" replace />;
+    default:
+      return <Navigate to="/signup" replace />;
+  }
 };
 
 export default PublicRoute;
