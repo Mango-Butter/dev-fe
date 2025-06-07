@@ -23,13 +23,16 @@ import { WorkReportItem } from "../../../types/report.ts";
 import StaffReportListTab from "./report/StaffReportListTab.tsx";
 import { isValidStoreId } from "../../../utils/store.ts";
 import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
+import Button from "../../../components/common/Button.tsx";
+import modalStore from "../../../stores/modalStore.ts";
+import ReportAddModalContent from "./report/ReportAddModalContent.tsx";
 
 const tabItems = [
   { label: "업무", value: "task" },
   { label: "보고사항", value: "report" },
 ];
 
-const StaffTaskListPage: React.FC = () => {
+const StaffTaskPage: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(getKSTDate());
   const [tasks, setTasks] = useState<TaskStatus[]>([]);
   const [reports, setReports] = useState<WorkReportItem[]>([]);
@@ -40,6 +43,7 @@ const StaffTaskListPage: React.FC = () => {
 
   const { selectedStore } = useStaffStoreStore();
   const storeId = selectedStore?.storeId;
+  const { setModalOpen, setModalContent } = modalStore();
 
   useLayout({
     title: "업무 목록",
@@ -93,6 +97,11 @@ const StaffTaskListPage: React.FC = () => {
       setSearchParams({ type: "task" });
     }
   }, [searchParams, setSearchParams]);
+
+  const handleAddReport = () => {
+    setModalContent(<ReportAddModalContent fetchReports={fetchReports} />);
+    setModalOpen(true);
+  };
 
   const handlePrevWeek = () => {
     setCurrentDate((prev) => subWeeks(prev, 1));
@@ -169,11 +178,24 @@ const StaffTaskListPage: React.FC = () => {
           <StaffCheckListTab tasks={tasks} isLoading={isLoading} />
         )}
         {currentTab === "report" && (
-          <StaffReportListTab reports={reports} isLoading={isLoading} />
+          <>
+            <div className="flex justify-end mb-4">
+              <Button
+                size="sm"
+                onClick={handleAddReport}
+                theme="ghost2"
+                className="flex-1"
+              >
+                보고사항 추가하기
+              </Button>
+            </div>
+            {/*<StaffReportListTab reports={dummyReports} isLoading={false} />*/}
+            <StaffReportListTab reports={reports} isLoading={isLoading} />
+          </>
         )}
       </div>
     </div>
   );
 };
 
-export default StaffTaskListPage;
+export default StaffTaskPage;

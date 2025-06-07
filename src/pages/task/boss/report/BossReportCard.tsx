@@ -1,14 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
-import { WorkReportItem } from "../../../../types/report.ts";
+import { WorkReportItem } from "../../../../types/report";
 
 const formatDateTime = (dateTime: string) => {
   const date = new Date(dateTime);
   return format(date, "yyyy-MM-dd HH:mm");
 };
 
-const StaffReportCard: React.FC<WorkReportItem> = ({
+const BossReportCard: React.FC<WorkReportItem> = ({
   workReportId,
   content,
   reportImageUrl,
@@ -18,7 +18,7 @@ const StaffReportCard: React.FC<WorkReportItem> = ({
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/staff/report/${workReportId}`);
+    navigate(`/boss/report/${workReportId}`);
   };
 
   return (
@@ -52,4 +52,4 @@ const StaffReportCard: React.FC<WorkReportItem> = ({
   );
 };
 
-export default StaffReportCard;
+export default BossReportCard;

@@ -16,6 +16,9 @@ import { getKSTDate } from "../../../libs/date";
 import { isValidStoreId } from "../../../utils/store";
 import WeekCalendar from "../WeekCalendar.tsx";
 import TaskFilterBar from "./checklist/TaskFilterBar.tsx";
+import BossReportListTab from "./report/BossReportListTab.tsx";
+import { WorkReportItem } from "../../../types/report.ts";
+import { getBpssWorkReportsByDate } from "../../../api/boss/report.ts";
 
 const tabItems = [
   { label: "업무", value: "task" },
@@ -25,6 +28,7 @@ const tabItems = [
 const TaskPage: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(getKSTDate());
   const [tasks, setTasks] = useState<TaskStatus[]>([]);
+  const [reports, setReports] = useState<WorkReportItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const currentTab = searchParams.get("type") || "task";
@@ -60,9 +64,24 @@ const TaskPage: React.FC = () => {
       setIsLoading(false);
     }
   };
+  const fetchReports = async () => {
+    if (!isValidStoreId(storeId)) {
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const date = format(currentDate, "yyyy-MM-dd");
+      const fetchedReports = await getBpssWorkReportsByDate(storeId, date);
+      setReports(fetchedReports);
+    } catch (error) {
+      console.error("보고사항 조회 실패:", error);
+    }
+  };
 
   useEffect(() => {
     fetchTasks();
+    fetchReports();
   }, [currentDate, storeId]);
 
   useEffect(() => {
@@ -182,7 +201,7 @@ const TaskPage: React.FC = () => {
           </>
         )}
         {currentTab === "report" && (
-          <div className="text-center text-gray-500 py-8">준비 중입니다.</div>
+          <BossReportListTab reports={reports} isLoading={isLoading} />
         )}
       </div>
     </div>
