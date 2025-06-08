@@ -11,11 +11,14 @@ import { getCoordsFromAddress } from "../../../utils/kakaoGeocoder.ts";
 import { useEffect, useState } from "react";
 import SelectField from "../../../components/common/SelectField.tsx";
 import {
+  getStoreList,
   registerStore,
   validateBusinessNumber,
 } from "../../../api/boss/store.ts";
 import Spinner from "../../../components/common/Spinner.tsx";
 import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx";
+import useStoreStore from "../../../stores/storeStore.ts";
+import { toast } from "react-toastify";
 
 const StoreRegisterBossPage = () => {
   useLayout({
@@ -29,6 +32,7 @@ const StoreRegisterBossPage = () => {
 
   const { isLoggedIn, isLoading } = useAuth();
   const { user } = useUserStore();
+  const { setSelectedStore } = useStoreStore();
   const [isBusinessNumberChecked, setIsBusinessNumberChecked] = useState(false);
   const [isChecking, setIsChecking] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,7 +44,7 @@ const StoreRegisterBossPage = () => {
     watch,
     setValue,
     getValues,
-    formState: { isValid },
+    formState: { isValid, errors },
     setError,
     clearErrors,
   } = useForm<StoreFormValues>({
@@ -53,6 +57,7 @@ const StoreRegisterBossPage = () => {
       storeType: "CAFE",
       latitude: undefined,
       longitude: undefined,
+      overtimeLimit: 0,
     },
   });
 
@@ -121,6 +126,7 @@ const StoreRegisterBossPage = () => {
         storeType,
         latitude,
         longitude,
+        overtimeLimit,
       } = data;
 
       const payload = {
@@ -129,9 +135,16 @@ const StoreRegisterBossPage = () => {
         address,
         storeType,
         gps: { latitude, longitude },
+        overtimeLimit,
       };
 
-      await registerStore(payload);
+      const { storeId } = await registerStore(payload);
+      const stores = await getStoreList();
+      const registered = stores.find((s) => s.storeId === storeId);
+      if (registered) {
+        setSelectedStore(registered);
+      }
+      toast.success("매장 등록에 성공했습니다!");
       navigate(-1);
     } catch (err) {
       console.error("매장 등록 실패", err);
@@ -261,6 +274,30 @@ const StoreRegisterBossPage = () => {
       {/*위도/경도*/}
       <Controller name="latitude" control={control} render={() => <></>} />
       <Controller name="longitude" control={control} render={() => <></>} />
+
+      <Controller
+        name="overtimeLimit"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            onChange={(e) => {
+              const value = e.target.value;
+              field.onChange(value === "" ? 0 : Number(value));
+            }}
+            title="초과근무 허용 시간"
+            description="급여에 반영되는 초과근무 허용시간을 설정합니다."
+            theme="suffix"
+            suffix="분"
+            type="number"
+            min="0"
+            max="360"
+            required
+            state={errors.overtimeLimit ? "warning" : "none"}
+            helperText={errors.overtimeLimit?.message}
+          />
+        )}
+      />
 
       <Button
         size="md"

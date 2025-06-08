@@ -10,6 +10,7 @@ import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { getKSTDate } from "../../../libs/date.ts";
 import { isValidStoreId } from "../../../utils/store.ts";
+import StoreRequestCard from "./StoreRequestCard.tsx";
 
 const HomeBoss = () => {
   const koreaNow = getKSTDate();
@@ -39,6 +40,7 @@ const HomeBoss = () => {
       <BossStoreCard />
       {selectedStore && (
         <>
+          <StoreRequestCard storeId={selectedStore.storeId} />
           <div className="w-full">
             <p className="title-1 mb-3">오늘 근무자</p>
             <div className="p-2 border border-grayscale-300 bg-white shadow-basic rounded-xl">

@@ -7,8 +7,12 @@ import Button from "../../../components/common/Button.tsx";
 import { useLayout } from "../../../hooks/useLayout.ts";
 import { useAuth } from "../../../hooks/useAuth.ts";
 import { useUserStore } from "../../../stores/userStore.ts";
-import { joinStoreAsStaff } from "../../../api/staff/store.ts";
+import {
+  fetchStaffStores,
+  joinStoreAsStaff,
+} from "../../../api/staff/store.ts";
 import FullScreenLoading from "../../../components/common/FullScreenLoading.tsx";
+import useStaffStoreStore from "../../../stores/useStaffStoreStore.ts";
 
 const inviteCodeSchema = z.object({
   inviteCode: z
@@ -30,6 +34,7 @@ const StoreRegisterStaffPage = () => {
 
   const { isLoggedIn, isLoading } = useAuth();
   const { user } = useUserStore();
+  const { setSelectedStore } = useStaffStoreStore();
   const navigate = useNavigate();
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -74,7 +79,14 @@ const StoreRegisterStaffPage = () => {
 
   const onSubmit = async (data: InviteCodeForm) => {
     try {
-      await joinStoreAsStaff(data.inviteCode);
+      const { storeId } = await joinStoreAsStaff(data.inviteCode);
+
+      const stores = await fetchStaffStores();
+      const joinedStore = stores.find((store) => store.storeId === storeId);
+
+      if (joinedStore) {
+        setSelectedStore(joinedStore);
+      }
       navigate("/staff");
     } catch (err: any) {
       console.log(err);

@@ -34,9 +34,13 @@ const WeekCalendar = ({
               "calendar-day",
               index === 0 && "sunday",
               index === 6 && "saturday",
+              "relative",
             )}
             onClick={() => onChange(day)}
           >
+            {format(day, "d") === "1" && (
+              <span className="calendar-month">{format(day, "M")}월</span>
+            )}
             <span
               className={cn(
                 format(day, "yyyy-MM-dd") ===

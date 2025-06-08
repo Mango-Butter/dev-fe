@@ -20,7 +20,7 @@ const StaffAlarmPage = () => {
     theme: "plain",
     headerVisible: true,
     bottomNavVisible: false,
-    onBack: () => navigate("/staff"),
+    onBack: () => navigate("/staff", { replace: true }),
     rightIcon: null,
   });
 

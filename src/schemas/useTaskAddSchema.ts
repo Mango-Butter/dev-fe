@@ -4,11 +4,22 @@ import { dayOfWeekList } from "../types/staff.ts";
 
 // 공통 필드
 const baseFields = {
-  title: z.string().min(1).max(32),
-  description: z.string().optional(),
+  title: z
+    .string({ required_error: "업무 제목을 입력해주세요." })
+    .min(1, { message: "업무 제목은 1자 이상이어야 해요." })
+    .max(32, { message: "업무 제목은 최대 32자까지 입력할 수 있어요." })
+    .transform((v) => v.trim()),
+
+  description: z
+    .string({ required_error: "업무 설명을 입력해주세요." })
+    .min(1, { message: "업무 설명은 1자 이상이어야 해요." })
+    .transform((v) => v.trim()),
+
   photoRequired: z.boolean(),
-  startTime: z.string().min(1),
-  endTime: z.string().min(1),
+
+  startTime: z.string().min(1, { message: "시작 시간을 입력해주세요." }),
+  endTime: z.string().min(1, { message: "종료 시간을 입력해주세요." }),
+
   referenceImageUrl: z.string().optional(),
 };
 
@@ -35,7 +46,9 @@ const weeklySchema = z.object({
   startDate: z.date(),
   endDate: z.date(),
   repeatRule: z.object({
-    repeatDays: z.array(z.enum(dayOfWeekList)).nonempty("하나 이상 선택하세요"),
+    repeatDays: z
+      .array(z.enum(dayOfWeekList), { required_error: "요일을 선택해주세요." })
+      .nonempty("요일을 하나 이상 선택해주세요."),
   }),
 });
 
@@ -47,8 +60,10 @@ const monthlySchema = z.object({
   endDate: z.date(),
   repeatRule: z.object({
     repeatDates: z
-      .array(z.number().min(1).max(31))
-      .nonempty("하나 이상 선택하세요"),
+      .array(z.number().min(1).max(31), {
+        required_error: "반복 날짜를 선택해주세요.",
+      })
+      .nonempty("날짜를 하나 이상 선택해주세요."),
   }),
 });
 

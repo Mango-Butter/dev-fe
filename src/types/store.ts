@@ -60,3 +60,8 @@ export interface StaffStore {
     profileImageUrl: string;
   };
 }
+
+export interface StoreRequestSummary {
+  requestedCount: number;
+  profileImageUrls: string[];
+}

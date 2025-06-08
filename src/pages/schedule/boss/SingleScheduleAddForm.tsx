@@ -76,6 +76,10 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
       try {
         const data = await getStaffBriefList(storeId);
         setStaffList(data);
+
+        if (data.length > 0) {
+          setValue("staffId", data[0].staffId, { shouldValidate: true });
+        }
       } catch (err) {
         console.error("알바생 목록 조회 실패", err);
       }
@@ -123,11 +127,11 @@ const SingleScheduleAddForm = ({ defaultDate }: SingleScheduleAddFormProps) => {
         </div>
 
         <div className="overflow-x-auto w-full scrollbar-hide">
-          <ul className="flex gap-3 w-max pb-1">
+          <ul className="flex gap-2 w-max pb-1">
             {staffList.map((staff) => (
               <li
                 key={staff.staffId}
-                className={`flex flex-col items-center cursor-pointer m-1 ${
+                className={`flex flex-col shrink-0 items-center cursor-pointer m-1 ${
                   selectedStaffId === staff.staffId
                     ? "font-bold text-yellow-500"
                     : ""

@@ -26,8 +26,9 @@ export const registerStore = async (store: {
     latitude: number;
     longitude: number;
   };
-}) => {
-  return await axiosAuth.post("/api/boss/stores", store);
+}): Promise<{ storeId: number }> => {
+  const response = await axiosAuth.post("/api/boss/stores", store);
+  return response.data;
 };
 
 // 매장 삭제
@@ -136,5 +137,15 @@ export const updateGpsSettings = async (
     `/api/boss/stores/${storeId}/attendance-settings/gps`,
     body,
   );
+  return response.data;
+};
+
+import { StoreRequestSummary } from "../../types/store.ts";
+
+// 매장 요청수 및 알바 프로필 이미지 일부 조회
+export const getStoreRequestSummary = async (
+  storeId: number,
+): Promise<StoreRequestSummary> => {
+  const response = await axiosAuth.get(`/api/boss/stores/${storeId}/requests`);
   return response.data;
 };

@@ -15,6 +15,9 @@ const TaskStep1 = ({ onNext }: Props) => {
     formState: { errors },
   } = useFormContext();
   const title = watch("title");
+  const description = watch("description");
+
+  const isValid = !!title?.trim() && !!description?.trim();
 
   return (
     <div className="flex flex-col gap-6 h-full">
@@ -33,7 +36,10 @@ const TaskStep1 = ({ onNext }: Props) => {
 
       {/* 업무 설명 */}
       <section className="flex flex-col gap-2">
-        <label className="title-1 text-grayscale-900">업무 설명</label>
+        <div className="flex items-center gap-1">
+          <label className="title-1 text-grayscale-900">업무 설명</label>
+          <span className="text-warning text-lg">*</span>
+        </div>
         <textarea
           {...register("description")}
           placeholder="설명 입력"
@@ -47,8 +53,9 @@ const TaskStep1 = ({ onNext }: Props) => {
           type="button"
           theme="primary"
           className="w-full"
+          state={isValid ? "default" : "disabled"}
           onClick={onNext}
-          disabled={!title}
+          disabled={!isValid}
         >
           다음
         </Button>
