@@ -23,7 +23,7 @@ const TaskStep2 = ({ onBack }: Props) => {
     control,
     watch,
     setValue,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useFormContext<TaskAddFormValues>();
 
   const taskRoutineRepeatType = watch("taskRoutineRepeatType");
@@ -375,13 +375,19 @@ const TaskStep2 = ({ onBack }: Props) => {
         <div className="flex gap-2">
           <Button
             type="button"
-            theme="ghost"
+            theme="outline"
             className="flex-1"
             onClick={onBack}
           >
             이전
           </Button>
-          <Button type="submit" theme="primary" className="flex-1">
+          <Button
+            type="submit"
+            theme="primary"
+            className="flex-1"
+            disabled={!isValid}
+            state={isValid ? "default" : "disabled"}
+          >
             업무 추가하기
           </Button>
         </div>

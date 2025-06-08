@@ -57,7 +57,7 @@ const TaskAddForm = ({ defaultDate, onClose }: TaskAddFormProps) => {
     const common = {
       title: values.title,
       photoRequired: values.photoRequired,
-      description: values.description?.trim() || " ",
+      description: values.description,
       referenceImageUrl: values.referenceImageUrl ?? "",
     };
 
