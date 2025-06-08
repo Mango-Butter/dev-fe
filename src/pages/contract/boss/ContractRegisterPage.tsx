@@ -26,6 +26,7 @@ import {
   formatDateToKSTString,
   parseDateStringToKST,
 } from "../../../libs/date.ts";
+import { showConfirm } from "../../../libs/showConfirm.ts";
 
 interface ContractFormValues {
   staffId: string | null;
@@ -98,6 +99,18 @@ const ContractRegisterPage = () => {
     if (!selectedStore) return;
 
     try {
+      if (data.hourlyWage >= 100000) {
+        const confirm = await showConfirm({
+          title: "시급 확인",
+          text: `입력하신 시급은 ${data.hourlyWage.toLocaleString()}원입니다.\n정확한 금액이 맞나요?`,
+          confirmText: "예, 맞습니다",
+          cancelText: "수정할게요",
+          icon: "warning",
+        });
+
+        if (!confirm) return;
+      }
+
       setLoading(true);
 
       const [contractStart, contractEnd] = data.range;

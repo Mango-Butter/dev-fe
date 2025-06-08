@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import TextField from "../../../../components/common/TextField";
 import { cn } from "../../../../libs";
 import { updateStaffHourlyWage } from "../../../../api/boss/payroll.ts";
+import { showConfirm } from "../../../../libs/showConfirm.ts";
 
 // 나중에 실제 API 연결 시 사용
 // import { updateStaffHourlyWage } from "../../../../api/boss/payroll";
@@ -34,6 +35,19 @@ const StaffWageCard = ({ storeId, staff, initialWage }: StaffWageCardProps) => {
     if (isNaN(wageNumber) || wageNumber < 0) {
       toast.error("유효한 시급을 입력해주세요.");
       return;
+    }
+
+    // 💡 10만원 이상이면 경고창 표시
+    if (wageNumber >= 100000) {
+      const confirm = await showConfirm({
+        title: "시급 확인",
+        text: `입력하신 시급은 ${wageNumber.toLocaleString()}원입니다.\n정말 저장하시겠습니까?`,
+        confirmText: "예, 저장할게요",
+        cancelText: "아니요",
+        icon: "warning",
+      });
+
+      if (!confirm) return;
     }
 
     try {
