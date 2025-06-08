@@ -11,7 +11,8 @@ import SkeletonStoreCard from "../../../components/skeleton/SkeletonStoreCard.ts
 
 const BossStoreCard = () => {
   const navigate = useNavigate();
-  const { selectedStore, setSelectedStore } = useStoreStore();
+  const { selectedStore, setSelectedStore, clearSelectedStore } =
+    useStoreStore();
   const { setBottomSheetContent } = useBottomSheetStore();
   const [storeList, setStoreList] = useState<StoreSummaryBoss[] | null>(null);
   const [loading, setLoading] = useState(true);
@@ -20,35 +21,37 @@ const BossStoreCard = () => {
     const fetchStores = async () => {
       try {
         const stores = await getStoreList();
-        if (stores.length === 0) return;
 
         setStoreList(stores);
 
-        const firstStore = stores[0];
+        if (stores.length === 0) {
+          clearSelectedStore();
+          return;
+        }
 
-        if (!selectedStore) {
-          setSelectedStore(firstStore);
-        } else {
-          const matched = stores.find(
-            (s) => s.storeId === selectedStore.storeId,
-          );
+        const matched = selectedStore
+          ? stores.find((s) => s.storeId === selectedStore.storeId)
+          : null;
 
-          if (
-            matched &&
-            JSON.stringify(matched) !== JSON.stringify(selectedStore)
-          ) {
+        if (matched) {
+          // 서버 데이터와 로컬 상태가 다르면 갱신
+          if (JSON.stringify(matched) !== JSON.stringify(selectedStore)) {
             setSelectedStore(matched);
           }
+        } else {
+          // electedStore가 서버 목록에 없음 => 초기화
+          setSelectedStore(stores[0]);
         }
       } catch (error) {
         console.error("매장 조회 실패", error);
+        clearSelectedStore();
       } finally {
         setLoading(false);
       }
     };
 
     fetchStores();
-  }, [selectedStore, setSelectedStore]);
+  }, []);
 
   const openStoreSheet = () => {
     setBottomSheetContent(<StoreBottomSheetContent />, {
