@@ -26,8 +26,9 @@ export const registerStore = async (store: {
     latitude: number;
     longitude: number;
   };
-}) => {
-  return await axiosAuth.post("/api/boss/stores", store);
+}): Promise<{ storeId: number }> => {
+  const response = await axiosAuth.post("/api/boss/stores", store);
+  return response.data;
 };
 
 // 매장 삭제
