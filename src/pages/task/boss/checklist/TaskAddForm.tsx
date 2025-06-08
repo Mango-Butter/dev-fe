@@ -26,9 +26,10 @@ import { addMonths } from "date-fns";
 interface TaskAddFormProps {
   defaultDate?: Date;
   onClose?: () => void;
+  onSuccess?: () => void;
 }
 
-const TaskAddForm = ({ defaultDate, onClose }: TaskAddFormProps) => {
+const TaskAddForm = ({ defaultDate, onClose, onSuccess }: TaskAddFormProps) => {
   const [step, setStep] = useState(1);
   const startDate = defaultDate ?? getKSTDate();
   const endDate = addMonths(startDate, 1);
@@ -115,6 +116,7 @@ const TaskAddForm = ({ defaultDate, onClose }: TaskAddFormProps) => {
       }
 
       toast.success("업무가 성공적으로 생성되었습니다.");
+      onSuccess?.();
       onClose?.();
     } catch (err) {
       console.error(err);

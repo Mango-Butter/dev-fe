@@ -64,6 +64,7 @@ const TaskPage: React.FC = () => {
       setIsLoading(false);
     }
   };
+
   const fetchReports = async () => {
     if (!isValidStoreId(storeId)) {
       setIsLoading(false);
@@ -83,6 +84,10 @@ const TaskPage: React.FC = () => {
     fetchTasks();
     fetchReports();
   }, [currentDate, storeId]);
+
+  const refetchTasks = async () => {
+    await fetchTasks();
+  };
 
   useEffect(() => {
     if (!searchParams.get("type")) {
@@ -107,6 +112,7 @@ const TaskPage: React.FC = () => {
       <TaskAddForm
         defaultDate={currentDate}
         onClose={() => setBottomSheetOpen(false)}
+        onSuccess={refetchTasks}
       />,
       {
         closeOnClickOutside: true,
