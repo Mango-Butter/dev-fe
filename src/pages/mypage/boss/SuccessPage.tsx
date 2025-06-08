@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { registerBillingKey } from "../../../api/boss/payment";
+import { useUserStore } from "../../../stores/userStore";
 
 const SuccessPage = () => {
+  const { user } = useUserStore();
   const [params] = useSearchParams();
   const navigate = useNavigate();
 
@@ -13,6 +15,11 @@ const SuccessPage = () => {
   useEffect(() => {
     const authKey = params.get("authKey");
     const customerKey = params.get("customerKey");
+
+    if (!authKey || !customerKey || !user) {
+      setStatus("error");
+      return;
+    }
 
     if (authKey && customerKey) {
       console.log("BillingKey: " + authKey);

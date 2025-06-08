@@ -2,25 +2,28 @@ import { useEffect, useState } from "react";
 import { loadTossPayments } from "@tosspayments/tosspayments-sdk";
 import { useUserStore } from "../../../stores/userStore.ts";
 import { toast } from "react-toastify";
+import { fetchCustomerKey } from "../../../api/boss/subscription.ts";
 
 const clientKey = import.meta.env.VITE_TOSS_CLIENT_KEY!;
 
 const SubscribePage = () => {
   const { user } = useUserStore();
-  const customerKey = "P9kwY25Ns4F1wIHN7j8Rn";
   const [payment, setPayment] = useState<any>(null);
   useEffect(() => {
-    const fetchPayment = async () => {
+    const initialize = async () => {
       try {
+        const { customerKey } = await fetchCustomerKey();
+
         const tossPayments = await loadTossPayments(clientKey);
         const instance = tossPayments.payment({ customerKey });
         setPayment(instance);
       } catch (error) {
-        console.error("TossPayments 초기화 오류:", error);
+        console.error("초기화 중 오류:", error);
+        toast.error("결제 모듈 초기화 실패");
       }
     };
 
-    fetchPayment();
+    initialize();
   }, []);
 
   const requestBillingAuth = async () => {
