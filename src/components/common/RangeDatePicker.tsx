@@ -88,7 +88,7 @@ export default function RangeDatePicker({
       </div>
 
       {open && (
-        <div className="date-picker-calendar absolute z-10 mt-2 w-fit">
+        <div className="date-picker-calendar absolute z-30 mt-2 w-fit">
           <Calendar
             calendarType="gregory"
             value={value}

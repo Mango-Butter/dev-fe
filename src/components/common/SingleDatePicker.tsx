@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import Calendar, { CalendarProps } from "react-calendar";
 import { formatFullDate } from "../../utils/date";
-import { getKSTDate } from "../../libs/date"; // ✅ KST 기준 유틸
+import { getKSTDate } from "../../libs/date";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
@@ -74,7 +74,7 @@ export default function SingleDatePicker({
       />
 
       {open && (
-        <div className="date-picker-calendar absolute z-10 mt-2 w-fit">
+        <div className="date-picker-calendar absolute z-30 mt-2 w-fit">
           <Calendar
             calendarType="gregory"
             value={value}
