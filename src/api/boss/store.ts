@@ -139,3 +139,13 @@ export const updateGpsSettings = async (
   );
   return response.data;
 };
+
+import { StoreRequestSummary } from "../../types/store.ts";
+
+// 매장 요청수 및 알바 프로필 이미지 일부 조회
+export const getStoreRequestSummary = async (
+  storeId: number,
+): Promise<StoreRequestSummary> => {
+  const response = await axiosAuth.get(`/api/boss/stores/${storeId}/requests`);
+  return response.data;
+};
