@@ -62,6 +62,10 @@ const AttendanceAddForm = ({ defaultDate }: AddAttendanceFormProps) => {
       try {
         const data = await getStaffBriefList(storeId);
         setStaffList(data);
+
+        if (data.length > 0) {
+          setValue("staffId", data[0].staffId, { shouldValidate: true });
+        }
       } catch (err) {
         console.error("알바생 목록 조회 실패", err);
       }
@@ -103,11 +107,11 @@ const AttendanceAddForm = ({ defaultDate }: AddAttendanceFormProps) => {
           <label className="title-1 text-grayscale-900">근무자</label>
           <span className="title-1 text-warning">*</span>
         </div>
-        <ul className="flex gap-3 overflow-x-auto scrollbar-hide">
+        <ul className="flex gap-2 overflow-x-auto scrollbar-hide">
           {staffList.map((staff) => (
             <li
               key={staff.staffId}
-              className={`flex flex-col items-center cursor-pointer m-1 ${
+              className={`flex flex-col items-center shrink-0 cursor-pointer m-1 ${
                 selectedStaffId === staff.staffId
                   ? "text-yellow-500 font-bold"
                   : ""

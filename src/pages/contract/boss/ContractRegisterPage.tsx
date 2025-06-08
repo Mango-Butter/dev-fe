@@ -143,6 +143,12 @@ const ContractRegisterPage = () => {
       const storeId = selectedStore.storeId;
       const staffs = await getStaffBriefList(storeId);
       setStaffList(staffs);
+
+      if (!selectedStaffId && staffs.length > 0) {
+        const firstId = staffs[0].staffId.toString();
+        setSelectedStaffId(firstId);
+        setValue("staffId", firstId, { shouldValidate: true });
+      }
     };
     fetchStaffs();
   }, []);
@@ -226,38 +232,36 @@ const ContractRegisterPage = () => {
               <div className="flex items-center gap-1 title-1 text-black">
                 근무자<span className="text-warning">*</span>
               </div>
-              <div className="flex gap-3 overflow-x-auto">
+              <ul className="flex gap-2 overflow-x-auto scrollbar-hide">
                 {staffList.map((staff) => (
-                  <div
+                  <li
                     key={staff.staffId}
-                    className="flex flex-col items-center gap-2 cursor-pointer"
+                    className={`flex flex-col shrink-0 items-center cursor-pointer m-1 ${
+                      localSelectedId === staff.staffId.toString()
+                        ? "text-yellow-500 font-bold"
+                        : ""
+                    }`}
                     onClick={() => {
                       setLocalSelectedId(staff.staffId.toString());
                       setSelectedStaffId(staff.staffId.toString());
-                      setValue("staffId", staff.staffId.toString());
+                      setValue("staffId", staff.staffId.toString(), {
+                        shouldValidate: true,
+                      });
                     }}
                   >
                     <img
                       src={staff.profileImageUrl}
                       alt={staff.name}
-                      className={`w-14 h-14 rounded-full border-2 ${
+                      className={`h-12 w-12 rounded-full object-cover ring-4 ${
                         localSelectedId === staff.staffId.toString()
-                          ? "border-primary-900"
-                          : "border-transparent"
+                          ? "ring-yellow-400"
+                          : "ring-transparent"
                       }`}
                     />
-                    <div
-                      className={`title-2 ${
-                        localSelectedId === staff.staffId.toString()
-                          ? "font-semibold text-black"
-                          : "font-medium text-grayscale-500"
-                      }`}
-                    >
-                      {staff.name}
-                    </div>
-                  </div>
+                    <span className="text-xs mt-1">{staff.name}</span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           )}
         />
