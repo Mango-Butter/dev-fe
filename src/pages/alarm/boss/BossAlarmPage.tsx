@@ -20,7 +20,7 @@ const BossAlarmPage = () => {
     theme: "plain",
     headerVisible: true,
     bottomNavVisible: false,
-    onBack: () => navigate("/boss"),
+    onBack: () => navigate("/boss", { replace: true }),
     rightIcon: null,
   });
 
