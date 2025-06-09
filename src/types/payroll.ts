@@ -216,3 +216,8 @@ export interface StaffPayrollBriefInfo {
   hourlyWage: number;
   withholdingType: WithholdingType;
 }
+
+export interface PayrollSummary {
+  transferDate: string; // YYYY-MM-DD 형식의 날짜
+  isTransferred: "PENDING" | "COMPLETED" | "NOT_YET";
+}

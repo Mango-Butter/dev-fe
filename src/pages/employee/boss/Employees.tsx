@@ -17,6 +17,9 @@ const Employees = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchParams] = useSearchParams();
   const currentTab = searchParams.get("type") || "attendance";
+  const koreaNow = getKSTDate();
+  const koreaNowDisplay = `${koreaNow.getFullYear()}-${String(koreaNow.getMonth() + 1).padStart(2, "0")}`;
+
   const [selectedYearMonth, setSelectedYearMonth] = useState(() => {
     const koreaNow = getKSTDate();
     return `${koreaNow.getFullYear()}-${String(koreaNow.getMonth() + 1).padStart(2, "0")}`;
@@ -52,7 +55,7 @@ const Employees = () => {
           <MonthPicker
             value={selectedYearMonth}
             onChange={(val) => setSelectedYearMonth(val)}
-            max={selectedYearMonth}
+            max={koreaNowDisplay}
           />
         </div>
         {!selectedStore ? (

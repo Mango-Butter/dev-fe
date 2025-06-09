@@ -14,6 +14,7 @@ import {
   StaffWithholdingItem,
   UpdateHourlyWageRequest,
   UpdateWithholdingRequest,
+  PayrollSummary,
 } from "../../types/payroll";
 
 /**
@@ -210,4 +211,17 @@ export const updateStaffHourlyWage = async (
     `/api/boss/stores/${storeId}/staffs/${staffId}/hourly-wage`,
     payload,
   );
+};
+
+/**
+ * 자동송금 D-Day 및 유효성 상태 조회
+ * GET /api/boss/stores/{storeId}/payrolls/summary
+ */
+export const fetchPayrollSummary = async (
+  storeId: number,
+): Promise<PayrollSummary> => {
+  const response = await axiosAuth.get(
+    `/api/boss/stores/${storeId}/payrolls/summary`,
+  );
+  return response.data;
 };

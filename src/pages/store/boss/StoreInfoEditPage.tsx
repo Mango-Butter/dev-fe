@@ -283,9 +283,11 @@ const StoreInfoEditPage = () => {
         render={({ field }) => (
           <TextField
             {...field}
+            value={field.value === 0 ? "" : field.value}
             onChange={(e) => {
-              const value = e.target.value;
-              field.onChange(value === "" ? 0 : Number(value));
+              const val = e.target.value;
+              const numeric = val === "" ? 0 : parseInt(val, 10);
+              field.onChange(numeric);
             }}
             title="초과근무 허용 시간"
             description="급여에 반영되는 초과근무 허용시간을 설정합니다."

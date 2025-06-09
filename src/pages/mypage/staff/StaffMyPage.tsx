@@ -47,6 +47,15 @@ const StaffMyPage = () => {
       </div>
       <StaffPayrollSettingContainer />
       <StaffDocumentContainer />
+      <div
+        onClick={() => navigate("/staff/mypage/faq")}
+        className="cursor-pointer flex py-3 px-4 border border-grayscale-300 bg-white shadow-basic rounded-xl flex-col justify-center items-start gap-2 self-stretch"
+      >
+        <span className="title-2">FAQ</span>
+        <span className="body-3 text-gray-500">
+          서비스 이용 시 자주 묻는 질문을 확인해보세요
+        </span>
+      </div>
     </div>
   );
 };

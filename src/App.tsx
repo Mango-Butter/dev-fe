@@ -44,9 +44,7 @@ const AttendanceSettingPage = lazy(
 const PayrollSettingPage = lazy(
   () => import("./pages/mypage/boss/PayrollSettingPage.tsx"),
 );
-const NotificationSettingPage = lazy(
-  () => import("./pages/mypage/boss/NotificationSettingPage.tsx"),
-);
+const FAQPage = lazy(() => import("./pages/mypage/boss/FAQPage.tsx"));
 const ContractViewPage = lazy(
   () => import("./pages/contract/boss/ContractViewPage.tsx"),
 );
@@ -205,10 +203,7 @@ function App() {
                   path="boss/store/account-register"
                   element={<AccountRegisterPage />}
                 />
-                <Route
-                  path="boss/store/notification"
-                  element={<NotificationSettingPage />}
-                />
+                <Route path="boss/store/faq" element={<FAQPage />} />
                 <Route
                   path="/boss/contract/template"
                   element={<ContractTemplatePage />}
@@ -267,6 +262,7 @@ function App() {
                   element={<StaffPayslipPage />}
                 />
                 <Route path="staff/mypage" element={<StaffMyPage />} />
+                <Route path="staff/mypage/faq" element={<FAQPage />} />
                 <Route path="staff/document" element={<StaffDocumentPage />} />
                 <Route
                   path="staff/store/intro"
