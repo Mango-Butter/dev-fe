@@ -11,11 +11,14 @@ import { toast } from "react-toastify";
 import { getKSTISOString } from "../../../libs/date.ts";
 import ApproveIcon from "../../../components/icons/ApproveIcon.tsx";
 import ErrorIcon from "../../../components/icons/ErrorIcon.tsx";
+import ReportAddModalContent from "../../task/staff/report/ReportAddModalContent.tsx";
+import modalStore from "../../../stores/modalStore.ts";
 
 const StaffAttendancePage = () => {
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const { selectedStore } = useStaffStoreStore();
+  const { setModalOpen, setModalContent } = modalStore();
 
   const [currentPosition, setCurrentPosition] = useState<{
     latitude: number;
@@ -52,6 +55,8 @@ const StaffAttendancePage = () => {
       } else {
         await clockOut(selectedStore.storeId, parsed);
         toast.success("퇴근이 완료되었습니다.");
+        setModalContent(<ReportAddModalContent />);
+        setModalOpen(true);
       }
 
       navigate("/staff", { replace: true });

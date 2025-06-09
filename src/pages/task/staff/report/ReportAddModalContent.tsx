@@ -19,7 +19,7 @@ import {
 } from "../../../../components/icons/RadioIcon.tsx";
 
 interface ReportAddModalContentProps {
-  fetchReports: () => void;
+  fetchReports?: () => void;
 }
 
 const schema = z.object({
@@ -101,7 +101,7 @@ const ReportAddModalContent: React.FC<ReportAddModalContentProps> = ({
       setIsSubmitting(true);
       await createWorkReport(storeId, data);
       toast.success("보고사항이 등록되었습니다.");
-      fetchReports();
+      fetchReports?.();
       setModalOpen(false);
     } catch {
       toast.error("보고사항 등록에 실패했습니다.");
