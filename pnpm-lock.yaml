@@ -20,6 +20,9 @@ importers:
       axios:
         specifier: ^1.8.4
         version: 1.9.0
+      chart.js:
+        specifier: ^4.4.9
+        version: 4.4.9
       chartjs-plugin-datalabels:
         specifier: ^2.2.0
         version: 2.2.0(chart.js@4.4.9)
@@ -62,6 +65,9 @@ importers:
       react-calendar:
         specifier: ^5.1.0
         version: 5.1.0(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      react-chartjs-2:
+        specifier: ^5.3.0
+        version: 5.3.0(chart.js@4.4.9)(react@19.1.0)
       react-daum-postcode:
         specifier: ^3.2.0
         version: 3.2.0(react@19.1.0)
@@ -120,6 +126,9 @@ importers:
       '@storybook/react-vite':
         specifier: ^8.6.14
         version: 8.6.14(@storybook/test@8.6.14(storybook@8.6.14(prettier@3.5.3)))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(rollup@2.79.2)(storybook@8.6.14(prettier@3.5.3))(typescript@5.7.3)(vite@6.3.5(@types/node@22.15.21)(jiti@1.21.7)(terser@5.40.0)(yaml@2.8.0))
+      '@types/chart.js':
+        specifier: ^4.0.1
+        version: 4.0.1
       '@types/lodash.isequal':
         specifier: ^4.5.8
         version: 4.5.8
@@ -1655,6 +1664,10 @@ packages:
 
   '@types/babel__traverse@7.20.7':
     resolution: {integrity: sha512-dkO5fhS7+/oos4ciWxyEyjWe48zmG6wbCheo/G2ZnHx4fs3EU6YC6UM8rk56gAjNJ9P3MTH2jo5jb92/K6wbng==}
+
+  '@types/chart.js@4.0.1':
+    resolution: {integrity: sha512-OwXJ6Eg14eFpCsTG6sljiGnvVpit5R9rapG7nwDnQlljsdplVIOYVuCSwy07IduCtihrOwvOnbhXKLyp3nvPcw==}
+    deprecated: This is a stub types definition. chart.js provides its own type definitions, so you do not need this installed.
 
   '@types/doctrine@0.0.9':
     resolution: {integrity: sha512-eOIHzCUSH7SMfonMG1LsC2f8vxBFtho6NGBznK41R84YzPuvSBzrhEps33IsQiOW9+VL6NQ9DbjQJznk/S4uRA==}
@@ -3199,6 +3212,12 @@ packages:
     peerDependenciesMeta:
       '@types/react':
         optional: true
+
+  react-chartjs-2@5.3.0:
+    resolution: {integrity: sha512-UfZZFnDsERI3c3CZGxzvNJd02SHjaSJ8kgW1djn65H1KK8rehwTjyrRKOG3VTMG8wtHZ5rgAO5oTHtHi9GCCmw==}
+    peerDependencies:
+      chart.js: ^4.1.1
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   react-daum-postcode@3.2.0:
     resolution: {integrity: sha512-NHY8TUicZXMqykbKYT8kUo2PEU7xu1DFsdRmyWJrLEUY93Xhd3rEdoJ7vFqrvs+Grl9wIm9Byxh3bI+eZxepMQ==}
@@ -5604,6 +5623,10 @@ snapshots:
     dependencies:
       '@babel/types': 7.27.3
 
+  '@types/chart.js@4.0.1':
+    dependencies:
+      chart.js: 4.4.9
+
   '@types/doctrine@0.0.9': {}
 
   '@types/estree@0.0.39': {}
@@ -7289,6 +7312,11 @@ snapshots:
       warning: 4.0.3
     optionalDependencies:
       '@types/react': 19.1.6
+
+  react-chartjs-2@5.3.0(chart.js@4.4.9)(react@19.1.0):
+    dependencies:
+      chart.js: 4.4.9
+      react: 19.1.0
 
   react-daum-postcode@3.2.0(react@19.1.0):
     dependencies:

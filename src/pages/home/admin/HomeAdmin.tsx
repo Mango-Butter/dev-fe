@@ -45,7 +45,7 @@ const HomeAdmin = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-8 px-12 py-12 w-full h-full rounded-3xl bg-white">
+    <div className="flex flex-col gap-8 px-12 py-12 w-full rounded-3xl bg-white">
       <div className="inline-flex justify-between w-full gap-5">
         <StatCard
           label="함께하는 사장님"

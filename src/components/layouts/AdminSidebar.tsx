@@ -20,14 +20,6 @@ const AdminSidebar = () => {
         </li>
         <li className="py-4 px-6 flex rounded-xl bg-white gap-4">
           <button
-            onClick={() => navigate("/admin/Subscribe")}
-            className="heading-2 text-left text-grayscale-900"
-          >
-            요금제 관리
-          </button>
-        </li>
-        <li className="py-4 px-6 flex rounded-xl bg-white gap-4">
-          <button
             onClick={() => navigate("/admin/FAQ")}
             className="heading-2 text-left text-grayscale-900"
           >
