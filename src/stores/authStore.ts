@@ -1,6 +1,9 @@
 // src/stores/authStore.ts
 import { create } from "zustand";
 import { useUserStore } from "./userStore";
+import { logoutFromServer } from "../api/common/auth.ts";
+import useStoreStore from "./storeStore.ts";
+import useStaffStoreStore from "./useStaffStoreStore.ts";
 
 interface AuthState {
   accessToken: string | null;
@@ -25,10 +28,27 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ accessToken });
   },
 
-  logout: () => {
+  logout: async () => {
+    const refreshToken = localStorage.getItem("refreshToken");
+    try {
+      if (refreshToken) {
+        await logoutFromServer(refreshToken);
+      }
+    } catch (err) {
+      console.error("서버 로그아웃 실패:", err);
+    }
+
+    useUserStore.getState().clearUser();
+    useStoreStore.getState().clearSelectedStore();
+    useStaffStoreStore.getState().clearSelectedStore();
+
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
-    useUserStore.getState().clearUser();
+    localStorage.removeItem("fcmToken");
+    localStorage.removeItem("pwaInstallDismissed");
+    localStorage.removeItem("selected-store");
+    localStorage.removeItem("selected-staff-store");
+
     set({ accessToken: null, refreshToken: null });
   },
 }));

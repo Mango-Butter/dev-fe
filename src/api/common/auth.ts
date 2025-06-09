@@ -23,3 +23,11 @@ export const signup = async (
   });
   return res.data;
 };
+
+export const logoutFromServer = async (refreshToken: string): Promise<void> => {
+  await axiosAuth.post("/api/auth/logout", null, {
+    headers: {
+      "X-Refresh-Token": refreshToken,
+    },
+  });
+};

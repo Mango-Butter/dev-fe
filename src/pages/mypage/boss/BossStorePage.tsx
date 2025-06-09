@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import BossStoreCard from "../../store/boss/BossStoreCard.tsx";
 import { useUserStore } from "../../../stores/userStore.ts";
+import { useAuthStore } from "../../../stores/authStore.ts";
 
 const BossStorePage = () => {
   const { user } = useUserStore();
@@ -15,7 +16,7 @@ const BossStorePage = () => {
           alt="profile"
           className="w-10 h-10 rounded-full object-cover"
         />
-        <div className="flex flex-col justify-center items-start gap-2">
+        <div className="flex flex-col justify-center items-start gap-2 flex-1">
           <p className="title-1">{user?.name}</p>
           <div className="flex flex-col justify-center items-start gap-1">
             <div className="flex w-full gap-2">
@@ -28,6 +29,15 @@ const BossStorePage = () => {
             </div>
           </div>
         </div>
+        <button
+          onClick={async () => {
+            await useAuthStore.getState().logout();
+            navigate("/login");
+          }}
+          className="text-red-400 underline body-4 ml-auto"
+        >
+          로그아웃
+        </button>
       </div>
       <BossStoreCard />
       {/* 메뉴 카드들 */}
