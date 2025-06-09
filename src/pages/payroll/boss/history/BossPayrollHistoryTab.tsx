@@ -28,11 +28,11 @@ const BossPayrollHistoryTab = () => {
         const baseDate = new Date(now);
 
         // COMPLETED → 저번달, 나머지(PENDING, NOT_YET) → 저저번달
-        const offsetMonth = summary.isTransferred === "COMPLETED" ? 1 : 2;
-        baseDate.setMonth(baseDate.getMonth() - offsetMonth);
+        // const offsetMonth = summary.isTransferred === "COMPLETED" ? 1 : 2;
+        // baseDate.setMonth(baseDate.getMonth() - offsetMonth);
 
         const year = baseDate.getFullYear();
-        const month = String(baseDate.getMonth() + 1).padStart(2, "0"); // 0-indexed 보정
+        const month = String(baseDate.getMonth() + 1).padStart(2, "0");
         const computedMonth = `${year}-${month}`;
 
         setSelectedYearMonth(computedMonth);
