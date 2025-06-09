@@ -2,6 +2,12 @@ import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { DayOfWeek } from "../types/task";
 import { parseDateStringToKST } from "../libs/date.ts";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export const formatTaskTime = (time: string): string => {
   return format(parseDateStringToKST(time), "HH:mm");
@@ -51,8 +57,12 @@ export const validateImageFile = (file: File): boolean => {
 };
 
 export const toISOStringWithTime = (date: Date, time: string): string => {
-  const [hour, minute] = time.split(":");
-  const result = new Date(date);
-  result.setHours(Number(hour), Number(minute), 0, 0);
-  return result.toISOString();
+  const [hour, minute] = time.split(":").map(Number);
+  return dayjs(date)
+    .tz("Asia/Seoul")
+    .hour(hour)
+    .minute(minute)
+    .second(0)
+    .millisecond(0)
+    .format("YYYY-MM-DDTHH:mm");
 };
