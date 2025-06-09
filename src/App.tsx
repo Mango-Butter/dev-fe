@@ -22,6 +22,7 @@ import PdfViewerPage from "./pages/PdfViewerPage.tsx";
 import SubscribePage from "./pages/mypage/boss/SubscribePage.tsx";
 import SuccessPage from "./pages/mypage/boss/SuccessPage.tsx";
 import FailPage from "./pages/mypage/boss/FailPage.tsx";
+import AdminFAQ from "./pages/home/admin/AdminFAQ.tsx";
 
 // Lazy-loaded components (boss)
 const Landing = lazy(() => import("./pages/landing/Landing.tsx"));
@@ -290,6 +291,7 @@ function App() {
               {/* ADMIN Routes */}
               <Route element={<RoleRoute allowedRole="ADMIN" />}>
                 <Route path="admin" element={<HomeAdmin />} />
+                <Route path="admin/FAQ" element={<AdminFAQ />} />
               </Route>
             </Route>
           </Route>
