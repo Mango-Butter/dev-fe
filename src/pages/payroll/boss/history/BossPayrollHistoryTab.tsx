@@ -5,9 +5,8 @@ import { MonthlyPayrollItem } from "../../../../types/payroll.ts";
 import BossPayrollCard from "../BossPayrollCard.tsx";
 import {
   fetchMonthlyPayrolls,
-  fetchPayrollSettings,
+  fetchPayrollSummary,
 } from "../../../../api/boss/payroll.ts";
-import { getRemainingDays } from "../../../../utils/date.ts";
 import MonthPicker from "../../../../components/common/MonthPicker.tsx";
 
 const BossPayrollHistoryTab = () => {
@@ -20,34 +19,30 @@ const BossPayrollHistoryTab = () => {
   const [maxMonth, setMaxMonth] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchSettingsAndInit = async () => {
+    const fetchSummaryAndInit = async () => {
       if (!selectedStore) return;
 
       try {
-        const settingsResult = await fetchPayrollSettings(
-          selectedStore.storeId,
-        );
-
+        const summary = await fetchPayrollSummary(selectedStore.storeId);
         const now = getKSTDate();
-        const year = now.getFullYear();
-        let month = now.getMonth(); // 0-indexed
+        const baseDate = new Date(now);
 
-        if (settingsResult.transferDate != null) {
-          const remaining = getRemainingDays(settingsResult.transferDate);
-          if (remaining < 0) {
-            month += 1; // 급여일 지났으면 이번달까지
-          }
-        }
+        // COMPLETED → 저번달, 나머지(PENDING, NOT_YET) → 저저번달
+        const offsetMonth = summary.isTransferred === "COMPLETED" ? 1 : 2;
+        baseDate.setMonth(baseDate.getMonth() - offsetMonth);
 
-        const computedMonth = `${year}-${String(month - 1).padStart(2, "0")}`;
+        const year = baseDate.getFullYear();
+        const month = String(baseDate.getMonth() + 1).padStart(2, "0"); // 0-indexed 보정
+        const computedMonth = `${year}-${month}`;
+
         setSelectedYearMonth(computedMonth);
         setMaxMonth(computedMonth);
       } catch (err) {
-        console.error("급여 설정 불러오기 실패:", err);
+        console.error("급여 요약 정보 조회 실패:", err);
       }
     };
 
-    fetchSettingsAndInit();
+    fetchSummaryAndInit();
   }, [selectedStore]);
 
   // 급여 내역 불러오기
