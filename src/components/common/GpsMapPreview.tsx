@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { loadKakaoMapScript } from "../../utils/loadKakaoMapScript.ts";
 
 interface GpsMapPreviewProps {
   latitude: number;
@@ -16,36 +15,36 @@ const GpsMapPreview = ({
 
   useEffect(() => {
     const initMap = async () => {
-      await loadKakaoMapScript(); // ✅ 지도 SDK 로딩 보장
+      if (!window.naver || !mapRef.current) return;
 
-      if (!window.kakao || !mapRef.current) return;
+      const center = new window.naver.maps.LatLng(latitude, longitude);
 
-      const kakao = window.kakao;
-      const center = new kakao.maps.LatLng(latitude, longitude);
-
-      const map = new kakao.maps.Map(mapRef.current, {
+      const map = new window.naver.maps.Map(mapRef.current, {
         center,
-        level: 3,
+        zoom: 16, // level 3에 대응하는 줌 수준
       });
 
-      new kakao.maps.Marker({ position: center, map });
+      new window.naver.maps.Marker({
+        position: center,
+        map,
+      });
 
       if (radiusMeters > 0) {
-        new kakao.maps.Circle({
+        new window.naver.maps.Circle({
+          map,
           center,
           radius: radiusMeters,
-          strokeWeight: 2,
           strokeColor: "#4A90E2",
           strokeOpacity: 0.8,
+          strokeWeight: 2,
           fillColor: "#4A90E2",
           fillOpacity: 0.2,
-          map,
         });
       }
 
-      // DOM 렌더링 완료 후 레이아웃 재계산
+      // 지도 리사이즈 및 중심 재설정
       setTimeout(() => {
-        map.relayout();
+        window.naver.maps.Event.trigger(map, "resize");
         map.setCenter(center);
       }, 100);
     };
