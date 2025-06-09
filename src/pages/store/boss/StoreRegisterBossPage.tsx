@@ -7,7 +7,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { useLayout } from "../../../hooks/useLayout.ts";
 import { useUserStore } from "../../../stores/userStore.ts";
 import { useAuth } from "../../../hooks/useAuth.ts";
-import { getCoordsFromAddress } from "../../../utils/kakaoGeocoder.ts";
+import { getCoordsFromAddress } from "../../../utils/naverGeocoder.ts";
 import { useEffect, useState } from "react";
 import SelectField from "../../../components/common/SelectField.tsx";
 import {

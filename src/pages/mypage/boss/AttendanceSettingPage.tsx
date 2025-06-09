@@ -18,7 +18,7 @@ import {
 } from "../../../api/boss/store.ts";
 import { QRCodeCanvas } from "qrcode.react";
 import { z } from "zod";
-import { getCoordsFromAddress } from "../../../utils/kakaoGeocoder.ts";
+import { getCoordsFromAddress } from "../../../utils/naverGeocoder.ts";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import GpsMapPreview from "../../../components/common/GpsMapPreview.tsx";

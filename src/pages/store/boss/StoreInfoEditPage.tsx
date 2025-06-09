@@ -14,11 +14,11 @@ import TextField from "../../../components/common/TextField.tsx";
 import Button from "../../../components/common/Button.tsx";
 import SelectField from "../../../components/common/SelectField.tsx";
 import { useNavigate } from "react-router-dom";
-import { getCoordsFromAddress } from "../../../utils/kakaoGeocoder.ts";
 import ResetIcon from "../../../components/icons/ResetIcon.tsx";
 import GpsMapPreview from "../../../components/common/GpsMapPreview.tsx";
 import { toast } from "react-toastify";
 import { showConfirm } from "../../../libs/showConfirm.ts";
+import { getCoordsFromAddress } from "../../../utils/naverGeocoder.ts";
 
 const StoreInfoEditPage = () => {
   useLayout({
@@ -54,27 +54,29 @@ const StoreInfoEditPage = () => {
   });
 
   useEffect(() => {
-    if (!selectedStore) return;
-
     const fetchData = async () => {
+      if (!selectedStore) return;
       const data = await getStoreInfo(selectedStore.storeId);
+
       setValue("storeName", data.storeName);
       setValue("businessNumber", data.businessNumber);
       setValue("storeType", data.storeType);
       setValue("address", data.address);
       setValue("overtimeLimit", data.overtimeLimit);
 
-      // 주소 기반 좌표 설정
       try {
-        const coords = await getCoordsFromAddress(data.address);
-        setValue("latitude", coords.latitude);
-        setValue("longitude", coords.longitude);
+        const { latitude, longitude } = await getCoordsFromAddress(
+          data.address,
+        );
+        setValue("latitude", latitude);
+        setValue("longitude", longitude);
       } catch (err) {
         console.error("좌표 변환 실패", err);
       }
     };
+
     fetchData();
-  }, [selectedStore, setValue]);
+  }, [selectedStore]);
 
   useEffect(() => {
     if (selectedStore) {
