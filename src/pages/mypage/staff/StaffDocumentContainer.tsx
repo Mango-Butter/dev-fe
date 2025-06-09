@@ -57,10 +57,10 @@ const StaffDocumentContainer = () => {
   );
 
   return (
-    <div className="flex flex-col gap-3 w-full mb-6">
+    <div className="flex flex-col gap-3 w-full">
       <p className="title-1">내가 제출한 서류</p>
       {isDocsCountZero ? (
-        <div className="text-center text-grayscale-400 body-3 py-4 rounded-lg border border-grayscale-300 mb-4">
+        <div className="text-center text-grayscale-400 body-3 py-4 rounded-lg border border-grayscale-300">
           제출한 서류가 없습니다.
         </div>
       ) : (

@@ -83,12 +83,12 @@ const BossStorePage = () => {
         </div>
 
         <div
-          onClick={() => navigate("/boss/store/notification")}
+          onClick={() => navigate("/boss/store/faq")}
           className="cursor-pointer flex py-3 px-4 border border-grayscale-300 bg-white shadow-basic rounded-xl flex-col justify-center items-start gap-2 self-stretch"
         >
-          <span className="title-2">알림 설정</span>
+          <span className="title-2">FAQ</span>
           <span className="body-3 text-gray-500">
-            매장에서의 알림 범위를 설정해요
+            서비스 이용 시 자주 묻는 질문을 확인해보세요
           </span>
         </div>
       </div>
