@@ -45,11 +45,11 @@ jobs:
           echo "VITE_TOSS_CLIENT_KEY=${{ secrets.VITE_TOSS_CLIENT_KEY }}" >> .env
 
           if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            echo "VITE_KAKAO_REDIRECT_URI=${{ secrets.VITE_KAKAO_REDIRECT_URI_PROD }}" >> .env.production
+            echo "VITE_KAKAO_REDIRECT_URI=${{ secrets.VITE_KAKAO_REDIRECT_URI_PROD }}" >> .env
           elif [ "${{ github.ref }}" = "refs/heads/test" ]; then
-            echo "VITE_KAKAO_REDIRECT_URI=${{ secrets.VITE_KAKAO_REDIRECT_URI_TEST }}" >> .env.test
+            echo "VITE_KAKAO_REDIRECT_URI=${{ secrets.VITE_KAKAO_REDIRECT_URI_TEST }}" >> .env
           else
-            echo "VITE_KAKAO_REDIRECT_URI=${{ secrets.VITE_KAKAO_REDIRECT_URI_DEV }}" >> .env.development
+            echo "VITE_KAKAO_REDIRECT_URI=${{ secrets.VITE_KAKAO_REDIRECT_URI_DEV }}" >> .env
           fi
 
       - name: Build React app
