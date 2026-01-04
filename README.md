@@ -1,9 +1,11 @@
 # 🥭 MangoBoss (망고보스)
 
+> [<img width="1720" height="1144" alt="image (10)" src="https://github.com/user-attachments/assets/56359780-bdb8-4f1b-8508-ed3af7fa37ce" />](https://drive.google.com/file/d/1avQXxRjYqYMZdZu0MLEnuBWkBaB1wWlD/view)
+> 서비스 시연 영상 (Service Demo)
+
+
 > **"복잡한 매장 관리, 이제 망고보스 하나로 끝."**
 > 소상공인 사장님들을 위한 **올인원 매장 관리 솔루션(SaaS)** 프론트엔드 저장소입니다.
-
-<img width="1720" height="1144" alt="image (10)" src="https://github.com/user-attachments/assets/56359780-bdb8-4f1b-8508-ed3af7fa37ce" />
 
 <br/>
 
