@@ -1,7 +1,13 @@
 // src/pages/LandingDocSection.tsx
-import BriefCaseIcon from "../../components/icons/BriefCaseIcon.tsx";
-import LandingDoc from "../../components/icons/LandingDoc.tsx";
-import LandingSign from "../../components/icons/LandingSign.tsx";
+import { lazy, Suspense } from "react";
+
+const BriefCaseIcon = lazy(
+  () => import("../../components/icons/BriefCaseIcon.tsx"),
+);
+const LandingDoc = lazy(() => import("../../components/icons/LandingDoc.tsx"));
+const LandingSign = lazy(
+  () => import("../../components/icons/LandingSign.tsx"),
+);
 
 const LandingDocSection = () => {
   return (
@@ -9,7 +15,13 @@ const LandingDocSection = () => {
       <div className="py-12 flex flex-col items-center gap-6">
         <div className="flex flex-col items-center gap-3">
           <div className="w-20 h-20 bg-primary-100 rounded-xl flex justify-center items-center">
-            <BriefCaseIcon />
+            <Suspense
+              fallback={
+                <div className="w-10 h-10 bg-primary-200 animate-pulse rounded" />
+              }
+            >
+              <BriefCaseIcon />
+            </Suspense>
           </div>
           <div className="text-center">
             <span className="text-grayscale-900 text-3xl font-bold">
@@ -26,8 +38,20 @@ const LandingDocSection = () => {
         </div>
       </div>
       <div className="w-full py-8 bg-primary-100 flex justify-center items-center gap-4">
-        <LandingDoc className="w-48 h-96" />
-        <LandingSign className="w-48 h-96" />
+        <Suspense
+          fallback={
+            <div className="w-48 h-96 bg-primary-200 animate-pulse rounded-xl" />
+          }
+        >
+          <LandingDoc className="w-48 h-96" />
+        </Suspense>
+        <Suspense
+          fallback={
+            <div className="w-48 h-96 bg-primary-200 animate-pulse rounded-xl" />
+          }
+        >
+          <LandingSign className="w-48 h-96" />
+        </Suspense>
       </div>
     </div>
   );

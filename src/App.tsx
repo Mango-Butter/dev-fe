@@ -14,9 +14,10 @@ import Signup from "./pages/signup/Signup.tsx";
 import AddressSearchPopup from "./pages/store/boss/AddressSearchPopup.tsx";
 import RoleRoute from "./routes/RoleRoute.tsx";
 import FullScreenLoading from "./components/common/FullScreenLoading.tsx";
-import HomeBoss from "./pages/home/boss/HomeBoss.tsx";
-import HomeStaff from "./pages/home/staff/HomeStaff.tsx";
-import HomeAdmin from "./pages/home/admin/HomeAdmin.tsx";
+// Lazy-loaded home pages (role-based: no need to load all roles on initial bundle)
+const HomeBoss = lazy(() => import("./pages/home/boss/HomeBoss.tsx"));
+const HomeStaff = lazy(() => import("./pages/home/staff/HomeStaff.tsx"));
+const HomeAdmin = lazy(() => import("./pages/home/admin/HomeAdmin.tsx"));
 import UnifiedPWAPrompt from "./libs/fcm/UnifiedPWAPrompt.tsx";
 import PdfViewerPage from "./pages/PdfViewerPage.tsx";
 import SubscribePage from "./pages/mypage/boss/SubscribePage.tsx";

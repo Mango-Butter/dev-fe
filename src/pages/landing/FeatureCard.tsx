@@ -1,4 +1,4 @@
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
 
 interface FeatureCardProps {
   title: string;
@@ -22,7 +22,9 @@ export const FeatureCard = ({ title, description, icon }: FeatureCardProps) => {
         <div className="text-grayscale-900 title-1">{title}</div>
         <div className="text-grayscale-500 body-2 text-left">{description}</div>
       </div>
-      <IconComponent />
+      <Suspense fallback={<div className="w-6 h-6 rounded bg-gray-100 animate-pulse" />}>
+        <IconComponent />
+      </Suspense>
     </div>
   );
 };
