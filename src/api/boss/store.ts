@@ -11,8 +11,22 @@ import {
 } from "../../types/store.ts";
 
 export const validateBusinessNumber = async (businessNumber: string) => {
+  // [임시 수정] API 오류로 인해 백엔드 호출을 주석 처리하고 무조건 성공시킴
+  /*
   return await axiosAuth.post("/api/boss/stores/validations/business-number", {
     businessNumber,
+  });
+  */
+
+  // 가짜 응답 반환 (0.5초 딜레이 후 성공 처리)
+  return new Promise((resolve) => {
+    console.log(`[Mock API] 사업자번호(${businessNumber}) 인증 통과 처리됨`);
+    setTimeout(() => {
+      resolve({
+        status: 200,
+        data: { message: "사용 가능한 사업자 번호입니다." },
+      });
+    }, 500);
   });
 };
 

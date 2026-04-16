@@ -8,16 +8,16 @@ const LandingPayLazy = () => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
 
   return (
-    <div ref={ref} className="w-full">
-      {inView && (
+    <div ref={ref} className="w-full min-h-[400px]">
+      {inView ? (
         <Suspense
           fallback={
-            <div className="py-10 text-gray-400">급여 정보 불러오는 중...</div>
+            <div className="min-h-[400px] flex items-center justify-center text-gray-400">급여 정보 불러오는 중...</div>
           }
         >
           <LandingPaySection />
         </Suspense>
-      )}
+      ) : null}
     </div>
   );
 };

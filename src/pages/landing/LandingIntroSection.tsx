@@ -1,7 +1,19 @@
 // src/pages/LandingIntroSection.tsx
-import LandingProblem from "../../components/icons/LandingProblem.tsx";
-import LandingArrow from "../../components/icons/LandingArrow.tsx";
-import LandingGroup from "../../components/icons/LandingGroup.tsx";
+import { lazy, Suspense } from "react";
+
+const LandingProblem = lazy(
+  () => import("../../components/icons/LandingProblem.tsx"),
+);
+const LandingArrow = lazy(
+  () => import("../../components/icons/LandingArrow.tsx"),
+);
+const LandingGroup = lazy(
+  () => import("../../components/icons/LandingGroup.tsx"),
+);
+
+const IconSkeleton = ({ height = "h-48" }: { height?: string }) => (
+  <div className={`w-full ${height} bg-gray-100 animate-pulse rounded-xl`} />
+);
 
 const LandingIntroSection = () => {
   return (
@@ -10,9 +22,15 @@ const LandingIntroSection = () => {
         망고보스는 <br />
         이렇게 만들어졌어요!
       </div>
-      <LandingProblem />
-      <LandingArrow />
-      <LandingGroup />
+      <Suspense fallback={<IconSkeleton height="h-64" />}>
+        <LandingProblem />
+      </Suspense>
+      <Suspense fallback={<IconSkeleton height="h-12" />}>
+        <LandingArrow />
+      </Suspense>
+      <Suspense fallback={<IconSkeleton height="h-64" />}>
+        <LandingGroup />
+      </Suspense>
     </div>
   );
 };
