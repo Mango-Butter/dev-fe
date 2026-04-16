@@ -50,6 +50,10 @@ export default defineConfig({
             if (id.includes("react-hook-form")) return "vendor-form";
             if (id.includes("zod")) return "vendor-zod";
             if (id.includes("axios")) return "vendor-axios";
+            // 대형 라이브러리 별도 분리: vendor-others 과부하 방지
+            if (id.includes("firebase")) return "vendor-firebase";
+            if (id.includes("chart.js") || id.includes("recharts")) return "vendor-charts";
+            if (id.includes("tosspayments")) return "vendor-toss";
             return "vendor-others";
           }
 

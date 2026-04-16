@@ -1,6 +1,10 @@
 // src/pages/LandingPaySection.tsx
-import MoneyIcon from "../../components/icons/MoneyIcon.tsx";
-import LandingCoin from "../../components/icons/LandingCoin.tsx";
+import { lazy, Suspense } from "react";
+
+const MoneyIcon = lazy(() => import("../../components/icons/MoneyIcon.tsx"));
+const LandingCoin = lazy(
+  () => import("../../components/icons/LandingCoin.tsx"),
+);
 
 const LandingPaySection = () => {
   return (
@@ -8,7 +12,13 @@ const LandingPaySection = () => {
       <div className="py-12 flex flex-col items-center gap-6">
         <div className="flex flex-col items-center gap-3">
           <div className="w-20 h-20 bg-primary-100 rounded-xl flex justify-center items-center">
-            <MoneyIcon />
+            <Suspense
+              fallback={
+                <div className="w-10 h-10 bg-primary-200 animate-pulse rounded" />
+              }
+            >
+              <MoneyIcon />
+            </Suspense>
           </div>
           <div className="text-center">
             <span className="text-grayscale-900 text-3xl font-bold">
@@ -25,7 +35,13 @@ const LandingPaySection = () => {
         </div>
       </div>
       <div className="w-full py-8 bg-primary-100 flex justify-center items-center gap-6">
-        <LandingCoin className="w-48 h-96" />
+        <Suspense
+          fallback={
+            <div className="w-48 h-96 bg-primary-200 animate-pulse rounded-xl" />
+          }
+        >
+          <LandingCoin className="w-48 h-96" />
+        </Suspense>
       </div>
     </div>
   );

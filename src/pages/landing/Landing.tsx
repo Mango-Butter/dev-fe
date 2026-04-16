@@ -6,9 +6,9 @@ import { FeatureCard } from "./FeatureCard.tsx";
 import LandingIntroLazy from "./LandingIntroLazy.tsx";
 import LandingPayLazy from "./LandingPayLazy.tsx";
 import LandingDocLazy from "./LandingDocLazy.tsx";
+import LogoIcon from "../../components/icons/LogoIcon.tsx";
 
-// 아이콘 최소화: 큰 사이즈 / 하단 렌더링만 lazy import
-const LogoIcon = lazy(() => import("../../components/icons/LogoIcon.tsx"));
+// 히어로 아래쪽 요소만 lazy: 초기 뷰포트 밖에 위치
 const PartyIcon = lazy(() => import("../../components/icons/PartyIcon.tsx"));
 const Footer = lazy(() => import("../../components/layouts/Footer.tsx"));
 
@@ -27,12 +27,10 @@ const Landing = () => {
       <div className="w-full bg-white inline-flex flex-col justify-center items-center overflow-hidden">
         <div className="w-full px-9 py-12 bg-primary-100 inline-flex justify-center items-center">
           <div className="inline-flex flex-col justify-center items-center gap-12">
-            <Suspense fallback={null}>
-              <LogoIcon
-                className="w-50 h-auto object-contain overflow-visible"
-                theme="full"
-              />
-            </Suspense>
+            <LogoIcon
+              className="w-50 h-auto object-contain overflow-visible"
+              theme="full"
+            />
             <div className="text-center text-grayscale-900 text-3xl font-bold leading-tight">
               사장님의 부담을 줄여주는 <br />
               <span className="text-primary-900">알바생 관리</span>의 새로운
