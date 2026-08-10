@@ -44,17 +44,22 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes("node_modules")) {
-            if (id.includes("react")) return "vendor-react";
-            if (id.includes("zustand")) return "vendor-zustand";
-            if (id.includes("react-router-dom")) return "vendor-router";
-            if (id.includes("react-hook-form")) return "vendor-form";
-            if (id.includes("zod")) return "vendor-zod";
-            if (id.includes("axios")) return "vendor-axios";
-            // 대형 라이브러리 별도 분리: vendor-others 과부하 방지
-            if (id.includes("firebase")) return "vendor-firebase";
-            if (id.includes("chart.js") || id.includes("recharts")) return "vendor-charts";
-            if (id.includes("tosspayments")) return "vendor-toss";
-            return "vendor-others";
+            // react runtime은 항상 함께 로드·버전업되는 단일 단위 → 하나로 묶어 장기 캐시
+            if (/[\\/](react|react-dom|scheduler)[\\/]/.test(id)) return "vendor-react";
+
+            // react-router 생태계는 하나로 묶음: react-router-dom(재export)·set-cookie-parser
+            // (react-router 의존성)가 개별 청크로 잡히면 빈 청크가 생성되므로 통합
+            if (/[\\/](react-router|react-router-dom|set-cookie-parser)[\\/]/.test(id))
+              return "vendor-router";
+
+            // 그 외 라이브러리는 패키지 단위로 자동 분리:
+            // 특정 라이브러리를 업데이트해도 해당 청크만 무효화되고 나머지는 캐시 유지
+            const parts = id.split("node_modules/");
+            const pkgPath = parts[parts.length - 1].split("/");
+            const pkg = pkgPath[0].startsWith("@")
+              ? `${pkgPath[0]}/${pkgPath[1]}`
+              : pkgPath[0];
+            return `vendor-${pkg.replace("@", "").replace("/", "-")}`;
           }
 
           if (id.includes("/pages/landing/")) return "chunk-landing";
