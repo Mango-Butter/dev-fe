@@ -62,14 +62,14 @@ export default defineConfig({
             return `vendor-${pkg.replace("@", "").replace("/", "-")}`;
           }
 
-          if (id.includes("/pages/landing/")) return "chunk-landing";
-          if (id.includes("/pages/home/")) return "chunk-home";
-          if (id.includes("/pages/schedule/")) return "chunk-schedule";
-          if (id.includes("/pages/contract/")) return "chunk-contract";
-          if (id.includes("/pages/store/")) return "chunk-store";
-          if (id.includes("/pages/employee/")) return "chunk-employee";
-          if (id.includes("/pages/payroll/")) return "chunk-payroll";
-          if (id.includes("/pages/document/")) return "chunk-document";
+          // 앱 코드(페이지)는 manualChunks로 묶지 않는다.
+          // 디렉터리 단위로 묶으면 Rollup이 여러 라우트가 공유하는 모듈을 특정
+          // 페이지 청크에 몰아넣고, 그 청크를 entry가 정적 import하게 되어
+          // (예: index → chunk-landing → chunk-home/contract) 모든 페이지 청크가
+          // 랜딩 초기 로드에 강제 편입되는 누수가 발생한다.
+          // React.lazy가 이미 라우트별 async 청크를 자동 생성하므로,
+          // Rollup 기본 분할에 맡겨 공유 모듈이 올바른 공용 청크로 빠지게 한다.
+          return undefined;
         },
       },
     },

@@ -8,10 +8,6 @@ import PublicRoute from "./routes/PublicRoute";
 import AppInitializer from "./routes/AppInitializer.tsx";
 import MobileLayout from "./components/layouts/MobileLayout";
 import NotFound from "./pages/NotFound";
-import LoginSuccess from "./pages/login/LoginSuccess.tsx";
-import Login from "./pages/login/Login.tsx";
-import Signup from "./pages/signup/Signup.tsx";
-import AddressSearchPopup from "./pages/store/boss/AddressSearchPopup.tsx";
 import RoleRoute from "./routes/RoleRoute.tsx";
 import FullScreenLoading from "./components/common/FullScreenLoading.tsx";
 // Lazy-loaded home pages (role-based: no need to load all roles on initial bundle)
@@ -19,11 +15,20 @@ const HomeBoss = lazy(() => import("./pages/home/boss/HomeBoss.tsx"));
 const HomeStaff = lazy(() => import("./pages/home/staff/HomeStaff.tsx"));
 const HomeAdmin = lazy(() => import("./pages/home/admin/HomeAdmin.tsx"));
 import UnifiedPWAPrompt from "./libs/fcm/UnifiedPWAPrompt.tsx";
-import PdfViewerPage from "./pages/PdfViewerPage.tsx";
-import SubscribePage from "./pages/mypage/boss/SubscribePage.tsx";
-import SuccessPage from "./pages/mypage/boss/SuccessPage.tsx";
-import FailPage from "./pages/mypage/boss/FailPage.tsx";
-import AdminFAQ from "./pages/home/admin/AdminFAQ.tsx";
+// 아래 페이지들은 인증 후에만 진입하는 라우트 → lazy 전환으로 랜딩 초기 번들에서 제외
+// (특히 AddressSearchPopup/AdminFAQ는 page-chunk를 정적 그래프로 끌어와 preload를 유발했음)
+const AddressSearchPopup = lazy(
+  () => import("./pages/store/boss/AddressSearchPopup.tsx"),
+);
+// 인증 페이지도 라우트 진입 시에만 필요 → 랜딩 초기 번들에서 폼/캘린더 의존성 제외
+const Login = lazy(() => import("./pages/login/Login.tsx"));
+const LoginSuccess = lazy(() => import("./pages/login/LoginSuccess.tsx"));
+const Signup = lazy(() => import("./pages/signup/Signup.tsx"));
+const PdfViewerPage = lazy(() => import("./pages/PdfViewerPage.tsx"));
+const SubscribePage = lazy(() => import("./pages/mypage/boss/SubscribePage.tsx"));
+const SuccessPage = lazy(() => import("./pages/mypage/boss/SuccessPage.tsx"));
+const FailPage = lazy(() => import("./pages/mypage/boss/FailPage.tsx"));
+const AdminFAQ = lazy(() => import("./pages/home/admin/AdminFAQ.tsx"));
 
 // Lazy-loaded components (boss)
 const Landing = lazy(() => import("./pages/landing/Landing.tsx"));

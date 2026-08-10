@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../stores/authStore";
 import { useUserStore } from "../stores/userStore";
 import { fetchUserProfile } from "../api/common/user.ts";
-import { initForegroundFCM } from "../libs/fcm/messaging.tsx";
-import { requestUserPermission } from "../libs/fcm/requestPermission.ts";
 
 const AppInitializer = () => {
   const navigate = useNavigate();
@@ -20,8 +18,15 @@ const AppInitializer = () => {
           setUser(user);
           const hasToken = localStorage.getItem("fcmToken");
           if (!hasToken && Notification.permission !== "granted") {
+            // firebase/FCM은 로그인 사용자에게만 필요 → 동적 import로 초기 번들에서 제외
+            const { requestUserPermission } = await import(
+              "../libs/fcm/requestPermission.ts"
+            );
             requestUserPermission();
           }
+          const { initForegroundFCM } = await import(
+            "../libs/fcm/messaging.tsx"
+          );
           initForegroundFCM();
         } catch (err) {
           logout();
