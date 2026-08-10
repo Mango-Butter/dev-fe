@@ -1,7 +1,7 @@
 // components/common/FullScreenLoading.tsx
-import { Player } from "@lottiefiles/react-lottie-player";
-import mangoLoading from "../../assets/mangoLoading.json";
-
+// Suspense fallback으로 초기(eager) 로드되는 컴포넌트라 의존성을 최소화한다.
+// 기존 Lottie(@lottiefiles/react-lottie-player)는 gzip 84KB로 랜딩 초기 전송량의
+// 최대 단일 항목이었으므로, 무의존 CSS 스피너로 대체해 초기 번들에서 제거했다.
 const FullScreenLoading = () => {
   return (
     <div
@@ -11,11 +11,10 @@ const FullScreenLoading = () => {
         touchAction: "none",
       }}
     >
-      <Player
-        autoplay
-        loop
-        src={mangoLoading}
-        style={{ height: 120, width: 120 }}
+      <div
+        className="h-16 w-16 animate-spin rounded-full border-4 border-white/30 border-t-primary-900"
+        role="status"
+        aria-label="로딩 중"
       />
     </div>
   );
